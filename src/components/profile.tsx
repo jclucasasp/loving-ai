@@ -3,18 +3,6 @@ import { useState, useEffect } from "react";
 import { GetRandomProfile } from "../api/profiles";
 import { ProfileInterface } from "../lib/interfaces";
 
-type ProfileProps = {
-    id: string;
-    firstName: string;
-    lastName: string;
-    age: number;
-    ethnicity: string;
-    gender: string;
-    bio: string;
-    imageUrl: string;
-    myersBriggsPersonalityType: string;
-}
-
 export default function Profiles() {
 
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface>({} as ProfileInterface);
