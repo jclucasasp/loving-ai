@@ -11,15 +11,17 @@ export async function GetMatches(): Promise<MatchInterface[]> {
             return data;
         }).catch((err) => {
             console.log(err);
+            throw new Error('Failed to GetMatches: \n' + err);
         });
 }
 
 export async function GetMatchesProfile(): Promise<ProfileInterface[]> {
+
+    const data = await GetMatches();
+
     return await fetch('http://127.0.0.1:8080/match/profiles', {
-        body: JSON.stringify([
-            { "id": "8b0e4a15-95c2-45bd-937d-f001a8bfbfec" },
-            { "id": "a4e6d728-17e2-48ca-ba4c-6b980dee7001" }
-        ]), method: 'GET'
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
     })
         .then((res) => {
             if (!res.ok) {
@@ -27,8 +29,11 @@ export async function GetMatchesProfile(): Promise<ProfileInterface[]> {
             }
             return res.json();
         }).then((data) => {
+            console.log("Profiles: \n", data);
             return data;
-        }).catch((err) => {
+        })
+        .catch((err) => {
             console.log(err);
+            throw new Error('Failed to GetMatchesProfile: \n' + err);
         });
 }

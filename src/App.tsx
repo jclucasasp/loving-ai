@@ -1,10 +1,9 @@
 import './App.css';
 import { User, MessageCircle } from 'lucide-react';
-import { MatchList } from './lib/constants';
 import { useState } from 'react';
-import ChatMessages from './components/chat';
-import Profiles from './components/profile';
-import Matches from './components/matches';
+import ChatMessages from './components/chat.component';
+import Profiles from './components/profile.component';
+import Matches from './components/matches.component';
 
 function App() {
 
@@ -21,7 +20,7 @@ function App() {
         <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
       </nav>
       {currentScreen === 'profile' && <Profiles />}
-      {currentScreen === 'match' && <Matches profiles={MatchList} screen={setCurrentScreen} />}
+      {currentScreen === 'match' && <Matches screen={setCurrentScreen} />}
       {currentScreen === 'chat' && <ChatMessages  />}
     </div>
   );
