@@ -29,7 +29,6 @@ export default function Matches({ screen }: { screen: SetScreenProps }) {
                         <img src={"http://localhost:8080/images/"+ profile.imageUrl} width={50} height={50} className="rounded-full" />
                     </button>
                     <h3>{profile.firstName} {profile.lastName}</h3>
-                    <p>{"http://localhost:8080/images/"+ profile.imageUrl}</p>
                 </li>
             ))}
         </ul>
