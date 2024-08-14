@@ -7,19 +7,18 @@ type NextProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | n
 
 export default function Profiles({ profile, nextProfile }: { profile: ProfileInterface | null, nextProfile: NextProfileProps }) {
 
-    
+
     const [isMatched, setIsMatched] = useState(false);
 
 
     //TODO: fix the hard coded fromProfileId once log in is implemented
     const createMatchHandler = async () => {
         const match = await CreateMatch('8133d336-d2ca-4e06-94a8-d59c90d959ed', profile!.id);
+        console.log("Is matched state: " + isMatched)
         if (match.toProfileId.includes(profile!.id)) {
             setIsMatched(true);
             window.alert('Match created successfully');
-        } else {
-            window.alert('Unable to match');
-        }
+        } 
     }
 
     return (
@@ -36,12 +35,12 @@ export default function Profiles({ profile, nextProfile }: { profile: ProfileInt
             </div>
             <div className="flex justify-between w-full mt-6">
                 <button className="rounded-lg bg-red-500 text-white px-9 py-3 hover:shadow-lg hover:bg-red-700 hover:text-black">
-                    <X size={25} onClick={() => {nextProfile(null)}} />
+                    <X size={25} onClick={() => { nextProfile(null), setIsMatched(false) }} />
                 </button>
-                <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600"
-                    disabled={isMatched}>
+                {!isMatched ? <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600">
                     <Heart size={25} onClick={createMatchHandler} />
                 </button>
+                    : <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600">Matched</button>}
             </div>
         </div>
     )

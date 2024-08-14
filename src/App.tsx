@@ -1,11 +1,11 @@
 import './App.css';
+import { GetProfileById, GetRandomProfile } from './api/profiles';
 import { User, MessageCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { ProfileInterface } from './lib/interfaces';
 import ChatMessages from './components/chat.component';
 import Profiles from './components/profile.component';
 import Matches from './components/matches.component';
-import { ProfileInterface } from './lib/interfaces';
-import { GetProfileById, GetRandomProfile } from './api/profiles';
 
 function App() {
 
@@ -32,7 +32,6 @@ function App() {
 
   useEffect(() => {
     currentProfileSelect();
-    console.log("UseEffect ran");
   }, []);
 
 
