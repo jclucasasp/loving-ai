@@ -4,7 +4,7 @@ import { ProfileInterface } from "../lib/interfaces";
 import { XCircle } from "lucide-react";
 
 type SetScreenProps = React.Dispatch<React.SetStateAction<StateTypes>>;
-type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface>>;
+type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
 type StateTypes = 'profile' | 'match' | 'chat';
 
 

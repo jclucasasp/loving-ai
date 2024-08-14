@@ -12,7 +12,7 @@ function App() {
   type StateTypes = 'profile' | 'match' | 'chat'
 
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
-  const [currentProfile, setCurrentProfile] = useState<ProfileInterface>({} as ProfileInterface);
+  const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
 
   const currentProfileSelect = async (id?: string) => {
     let profileData = {} as Promise<ProfileInterface>;
@@ -26,9 +26,14 @@ function App() {
     setCurrentProfile(profile);
   }
 
+  if (!currentProfile) {
+    currentProfileSelect();
+  }
+
   useEffect(() => {
     currentProfileSelect();
-  }, [setCurrentProfile]);
+    console.log("UseEffect ran");
+  }, []);
 
 
   return (
@@ -39,7 +44,7 @@ function App() {
         <div className='w-9 h-9' />
         <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
       </nav>
-      {currentScreen === 'profile' && <Profiles profile={currentProfile} />}
+      {currentScreen === 'profile' && <Profiles profile={currentProfile} nextProfile={setCurrentProfile} />}
       {currentScreen === 'match' && <Matches screen={setCurrentScreen} viewProfile={setCurrentProfile} />}
       {currentScreen === 'chat' && <ChatMessages />}
     </div>
