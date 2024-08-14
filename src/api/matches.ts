@@ -29,7 +29,6 @@ export async function GetMatchesProfile(): Promise<ProfileInterface[]> {
             }
             return res.json();
         }).then((data) => {
-            console.log("Profiles: \n", data);
             return data;
         })
         .catch((err) => {
@@ -58,5 +57,16 @@ export async function CreateMatch(fromProfileId: string, toProfileId: string): P
     }).catch((err) => {
         console.log(err);
         throw new Error('Failed to CreateMatch: \n' + err);
+    });
+}
+
+export default async function deleteMatchById(id: string) {
+    return await fetch('http://127.0.0.1:8080/match/delete-by-id', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({id})
+    }).catch((err) => {
+        console.log(err);
+        throw new Error(`Failed to deleteMatchById: [${id}] \n` + err);
     });
 }
