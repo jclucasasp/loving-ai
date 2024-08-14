@@ -4,10 +4,11 @@ import { ProfileInterface } from "../lib/interfaces";
 import { XCircle } from "lucide-react";
 
 type SetScreenProps = React.Dispatch<React.SetStateAction<StateTypes>>;
+type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface>>;
 type StateTypes = 'profile' | 'match' | 'chat';
 
 
-export default function Matches({ screen }: { screen: SetScreenProps }) {
+export default function Matches({ screen, viewProfile }: { screen: SetScreenProps, viewProfile: ViewProfileProps }) {
 
     const matchProfiles = async () => {
         return await GetMatchesProfile();
@@ -36,7 +37,7 @@ export default function Matches({ screen }: { screen: SetScreenProps }) {
             {profiles.map((profile) => (
                 <li className="flex items-center justify-between" key={profile.id}>
                     <section className="flex gap-2 items-center">
-                        <button onClick={() => { console.log(profile.firstName); }}>
+                        <button onClick={() => { viewProfile(profile); screen('profile') }}>
                             <img src={"http://localhost:8080/images/" + profile.imageUrl} width={50} height={50} className="rounded-full" />
                         </button>
                         <h3>{profile.firstName} {profile.lastName}</h3>

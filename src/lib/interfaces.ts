@@ -17,3 +17,15 @@ export interface MatchInterface {
     toProfileId: string;
     conversationId: string;
 }
+
+export interface ConversationInterface {
+    id: string;
+    profileId: string;
+    messages: Message[]
+}
+
+interface Message {
+    messageText: string;
+    profileId: string;
+    messageTime: string;
+}
