@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react"
 import deleteMatchById, { GetMatchesProfile } from "../api/matches";
-import { ProfileInterface } from "../lib/interfaces";
+import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
 import { XCircle } from "lucide-react";
 import { GetConversationFromTo } from "../api/conversation";
 
 type SetScreenProps = React.Dispatch<React.SetStateAction<StateTypes>>;
 type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
+type CurrentConversationProps = React.Dispatch<React.SetStateAction<ConversationInterface>>;
 type StateTypes = 'profile' | 'match' | 'chat';
 
 
-export default function Matches({ screen, viewProfile }: { screen: SetScreenProps, viewProfile: ViewProfileProps }) {
+export default function Matches({ screen, viewProfile, currentConversation }: 
+    { screen: SetScreenProps, viewProfile: ViewProfileProps, currentConversation: CurrentConversationProps }) {
 
     const matchProfiles = async () => {
         return await GetMatchesProfile();
     }
 
     const viewConversations = async (fromProfileId: string, toProfileId: string) => {
-        //  return await GetConversation(fromProfileId, toProfileId);
-        return GetConversationFromTo(fromProfileId, toProfileId);
+        const conversation = await GetConversationFromTo(fromProfileId, toProfileId);
+        currentConversation(conversation);
+        screen('chat');
     }
 
     const handleDelete = async (id: string) => {
@@ -32,9 +35,7 @@ export default function Matches({ screen, viewProfile }: { screen: SetScreenProp
     const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
 
     const handleChat = async (fromProfileId: string, toProfileId: string) => {
-        const res = await viewConversations(fromProfileId, toProfileId);
-        console.log(res);
-        // screen('chat');
+        await viewConversations(fromProfileId, toProfileId);
     }
 
     useEffect(() => {
@@ -56,7 +57,8 @@ export default function Matches({ screen, viewProfile }: { screen: SetScreenProp
                     </section>
                     <section className="flex gap-6">
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                            onClick={() => handleChat("8133d336-d2ca-4e06-94a8-d59c90d959ed", "d58f1c20-c802-4939-abfa-ca3e91d5d8e7")}><XCircle />Chat</button>
+                        // {/*TODO: fix the hard coded fromProfileId once log in is implemented*/}
+                            onClick={() => {handleChat("8133d336-d2ca-4e06-94a8-d59c90d959ed", profile.id)}}><XCircle />Chat</button>
                         <button className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
                             onClick={() => { handleDelete(profile.id) }}><XCircle />Del</button>
                     </section>

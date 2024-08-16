@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { MessagesArr } from "../lib/constants";
+import { ConversationInterface } from "../lib/interfaces";
 
-export default function ChatMessages() {
+export default function ChatMessages({ chatmessages}: {chatmessages: ConversationInterface}) {
+
     const [message, setMessage] = useState<string>('');
 
     const handleClick = () => {
@@ -13,7 +15,7 @@ export default function ChatMessages() {
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with Katerina</h2>
+            <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {chatmessages.id}</h2>
             <div className="h-[50vh] overflow-y-auto">
                 {MessagesArr.map((m, i) => {
                     return (<p key={i} className="">{m}</p>)

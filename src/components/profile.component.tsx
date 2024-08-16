@@ -14,7 +14,6 @@ export default function Profiles({ profile, nextProfile }: { profile: ProfileInt
     //TODO: fix the hard coded fromProfileId once log in is implemented
     const createMatchHandler = async () => {
         const match = await CreateMatch('8133d336-d2ca-4e06-94a8-d59c90d959ed', profile!.id);
-        console.log("Is matched state: " + isMatched)
         if (match.toProfileId.includes(profile!.id)) {
             setIsMatched(true);
             window.alert('Match created successfully');
