@@ -1,8 +1,9 @@
 import { ConversationInterface } from "../lib/interfaces";
 
-export async function GetConversation(id: string): Promise<ConversationInterface> {
-    return await fetch('http://127.0.0.1:8080/chat/messages' + id, {
-        method: 'GET', headers: { 'Content-Type': 'application/json' }
+export async function GetConversationFromTo(fromProfileId:string, toProfileId: string): Promise<ConversationInterface> {
+    return await fetch('http://127.0.0.1:8080/conversation/from-to', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({fromProfileId, toProfileId})
     })
         .then((res) => {
             if (!res.ok) {

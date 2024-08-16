@@ -20,12 +20,13 @@ export interface MatchInterface {
 
 export interface ConversationInterface {
     id: string;
-    profileId: string;
+    fromProfileId: string;
+    toProfileId: string;
     messages: Message[]
 }
 
 interface Message {
     messageText: string;
-    profileId: string;
+    toProfileId: string;
     messageTime: string;
 }
