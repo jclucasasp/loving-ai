@@ -1,7 +1,8 @@
 import { Heart, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ProfileInterface } from "../lib/interfaces";
 import { CreateMatch } from "../api/matches";
+import UserProfile from "../context/loged-in-user";
 
 type NextProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
 
@@ -9,15 +10,15 @@ export default function Profiles({ profile, nextProfile }: { profile: ProfileInt
 
 
     const [isMatched, setIsMatched] = useState(false);
+    const { id } = useContext(UserProfile);
+    const userId = id;
 
-
-    //TODO: fix the hard coded fromProfileId once log in is implemented
     const createMatchHandler = async () => {
-        const match = await CreateMatch('8133d336-d2ca-4e06-94a8-d59c90d959ed', profile!.id);
+        const match = await CreateMatch(userId, profile!.id);
         if (match.toProfileId.includes(profile!.id)) {
             setIsMatched(true);
             window.alert('Match created successfully');
-        } 
+        }
     }
 
     return (

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
+import UserProfile from "../context/loged-in-user";
 import deleteMatchById, { GetMatchesProfile } from "../api/matches";
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
 import { XCircle } from "lucide-react";
@@ -10,8 +11,11 @@ type CurrentConversationProps = React.Dispatch<React.SetStateAction<Conversation
 type StateTypes = 'profile' | 'match' | 'chat';
 
 
-export default function Matches({ screen, viewProfile, currentConversation }: 
+export default function Matches({ screen, viewProfile, currentConversation }:
     { screen: SetScreenProps, viewProfile: ViewProfileProps, currentConversation: CurrentConversationProps }) {
+
+    const { id } = useContext(UserProfile);
+    const logedinUserId = id;
 
     const matchProfiles = async () => {
         return await GetMatchesProfile();
@@ -57,8 +61,7 @@ export default function Matches({ screen, viewProfile, currentConversation }:
                     </section>
                     <section className="flex gap-6">
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                        // {/*TODO: fix the hard coded fromProfileId once log in is implemented*/}
-                            onClick={() => {handleChat("8133d336-d2ca-4e06-94a8-d59c90d959ed", profile.id)}}><XCircle />Chat</button>
+                            onClick={() => { handleChat(logedinUserId, profile.id) }}><XCircle />Chat</button>
                         <button className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
                             onClick={() => { handleDelete(profile.id) }}><XCircle />Del</button>
                     </section>
