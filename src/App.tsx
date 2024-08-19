@@ -1,11 +1,12 @@
-import './App.css';
+import { ConversationInterface, ProfileInterface } from './lib/interfaces';
 import { GetProfileById, GetRandomProfile } from './api/profiles';
 import { User, MessageCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { ConversationInterface, ProfileInterface } from './lib/interfaces';
 import ChatMessages from './components/chat.component';
 import Profiles from './components/profile.component';
 import Matches from './components/matches.component';
+import SelectedUser from './context/user-selected';
+import './App.css';
 
 function App() {
 
@@ -44,9 +45,11 @@ function App() {
         <div className='w-9 h-9' />
         <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
       </nav>
-      {currentScreen === 'profile' && <Profiles profile={currentProfile} nextProfile={setCurrentProfile} />}
-      {currentScreen === 'match' && <Matches screen={setCurrentScreen} viewProfile={setCurrentProfile} currentConversation={setCurrentConversation} />}
-      {currentScreen === 'chat' && <ChatMessages chatmessages={currentConversation} />}
+        {currentScreen === 'profile' && <Profiles profile={currentProfile} nextProfile={setCurrentProfile} />}
+        {currentScreen === 'match' && <Matches screen={setCurrentScreen} viewProfile={setCurrentProfile} currentConversation={setCurrentConversation} />}
+        <SelectedUser.Provider value={currentProfile}>
+        {currentScreen === 'chat' && <ChatMessages chatmessages={currentConversation} />}
+      </SelectedUser.Provider>
     </div>
   );
 }

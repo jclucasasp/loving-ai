@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { MessagesArr } from "../lib/constants";
 import { ConversationInterface } from "../lib/interfaces";
+import { useContext, useState } from "react";
+import { MessagesArr } from "../lib/constants";
+import SelectedUser from "../context/user-selected";
 
 export default function ChatMessages({ chatmessages}: {chatmessages: ConversationInterface}) {
 
     const [message, setMessage] = useState<string>('');
+
+    const currentUser = useContext(SelectedUser);
 
     const handleClick = () => {
         if (message.trim()) {
@@ -15,7 +18,7 @@ export default function ChatMessages({ chatmessages}: {chatmessages: Conversatio
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {chatmessages.id}</h2>
+            <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {currentUser?.firstName + " " + currentUser?.lastName}</h2>
             <div className="h-[50vh] overflow-y-auto">
                 {MessagesArr.map((m, i) => {
                     return (<p key={i} className="">{m}</p>)

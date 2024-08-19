@@ -11,7 +11,7 @@ type CurrentConversationProps = React.Dispatch<React.SetStateAction<Conversation
 type StateTypes = 'profile' | 'match' | 'chat';
 
 
-export default function Matches({ screen, viewProfile, currentConversation }:
+export default function Matches({ screen, viewProfile: setMatchedProfile, currentConversation }:
     { screen: SetScreenProps, viewProfile: ViewProfileProps, currentConversation: CurrentConversationProps }) {
 
     const { id } = useContext(UserProfile);
@@ -54,14 +54,14 @@ export default function Matches({ screen, viewProfile, currentConversation }:
             {profiles.map((profile) => (
                 <li className="flex items-center justify-between" key={profile.id}>
                     <section className="flex gap-2 items-center">
-                        <button onClick={() => { viewProfile(profile); screen('profile') }}>
+                        <button onClick={() => { setMatchedProfile(profile); screen('profile') }}>
                             <img src={"http://localhost:8080/images/" + profile.imageUrl} width={50} height={50} className="rounded-full" />
                         </button>
                         <h3>{profile.firstName} {profile.lastName}</h3>
                     </section>
                     <section className="flex gap-6">
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                            onClick={() => { handleChat(logedinUserId, profile.id) }}><XCircle />Chat</button>
+                            onClick={() => { handleChat(logedinUserId, profile.id); setMatchedProfile(profile) }}><XCircle />Chat</button>
                         <button className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
                             onClick={() => { handleDelete(profile.id) }}><XCircle />Del</button>
                     </section>
