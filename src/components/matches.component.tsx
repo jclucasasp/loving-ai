@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, { useEffect, useState, useContext, useCallback } from "react"
 import deleteMatchById, { GetMatchesProfile } from "../api/matches";
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
 import { GetConversationFromTo } from "../api/conversation";
@@ -16,10 +16,6 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
 
     const { id } = useContext(UserProfile);
     const logedinUserId = id;
-
-    const matchProfiles = async () => {
-        return await GetMatchesProfile();
-    }
 
     const viewConversations = async (fromProfileId: string, toProfileId: string) => {
         const conversation = await GetConversationFromTo(fromProfileId, toProfileId);
@@ -42,11 +38,15 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
         await viewConversations(fromProfileId, toProfileId);
     }
 
+    const setMatchedProfiles = useCallback(async () => {
+        return await GetMatchesProfile();
+    }, [handleDelete]);
+
     useEffect(() => {
-        matchProfiles().then((data) => {
+        setMatchedProfiles().then((data) => {
             setProfiles(data);
         })
-    }, []);
+    }, [setMatchedProfiles]);
 
     return (
         <ul className="flex flex-col gap-3">
@@ -62,8 +62,7 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
                     <section className="flex gap-6">
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
                             onClick={() => { handleChat(logedinUserId, profile.id); setMatchedProfile(profile) }}><XCircle />Chat</button>
-                        <button className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                            onClick={() => { handleDelete(profile.id) }}><XCircle />Del</button>
+                        <button onClick={() => { handleDelete(profile.id) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
                     </section>
                 </li>
             ))}
