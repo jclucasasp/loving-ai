@@ -4,8 +4,6 @@ import { useState } from "react";
 
 export default function ChatMessages({ chatmessages, selectedProfile }: { chatmessages: ConversationInterface, selectedProfile: ProfileInterface | null }) {
 
-    console.log("Chatmessages passed from matches component to chat component \n", chatmessages);
-
     const [message, setMessage] = useState<string>('');
     const [conversation, setConversation] = useState<ConversationInterface>(chatmessages);
 
