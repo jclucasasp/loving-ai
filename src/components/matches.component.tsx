@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react"
-import UserProfile from "../context/loged-in-user";
 import deleteMatchById, { GetMatchesProfile } from "../api/matches";
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
-import { XCircle } from "lucide-react";
 import { GetConversationFromTo } from "../api/conversation";
+import { XCircle } from "lucide-react";
+import UserProfile from "../context/loged-in-user";
 
 type SetScreenProps = React.Dispatch<React.SetStateAction<StateTypes>>;
 type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;

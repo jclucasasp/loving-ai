@@ -4,14 +4,14 @@ import { useState } from "react";
 
 export default function ChatMessages({ chatmessages, selectedProfile }: { chatmessages: ConversationInterface, selectedProfile: ProfileInterface | null }) {
 
+    console.log("Chatmessages passed from matches component to chat component \n", chatmessages);
+
     const [message, setMessage] = useState<string>('');
     const [conversation, setConversation] = useState<ConversationInterface>(chatmessages);
 
 
     const handleMessageSubmit = async () => {
         if (message.trim()) {
-            console.log(message);
-            console.log(chatmessages.id);
             const conversation = await CreateMessage(chatmessages.id, { messageText: message });
             setConversation(conversation);
         }
@@ -22,11 +22,12 @@ export default function ChatMessages({ chatmessages, selectedProfile }: { chatme
         <div>
             <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {selectedProfile?.firstName + " " + selectedProfile?.lastName}</h2>
             <div className="h-[50vh] overflow-y-auto">
-                {conversation.messages.map((m, i) => {
+                { !!conversation && conversation.messages.map((m, i) => {
                     return (
-                        <div key={i} className="">
-                            <p>Date: {m.messageTime}</p>
-                            <p>{m.messageText}</p>
+                        <div key={i} className="text-sm text-gray-600 pointer-events-none">
+                            <p>Date: {m.createDate?.substring(0, 10)}</p>
+                            <p>Time: {m.createDate?.substring(11, 19)}</p>
+                            <p className="text-balance text-lg text-black">{m.messageText}</p>
                         </div>
                     )
                 })}
