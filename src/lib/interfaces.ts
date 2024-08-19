@@ -22,11 +22,11 @@ export interface ConversationInterface {
     id: string;
     fromProfileId: string;
     toProfileId: string;
-    messages: Message[]
+    messages: MessageInterface[]
 }
 
-interface Message {
+export interface MessageInterface {
     messageText: string;
-    toProfileId: string;
-    messageTime: string;
+    toProfileId?: string;
+    messageTime?: string;
 }

@@ -1,27 +1,34 @@
-import { ConversationInterface } from "../lib/interfaces";
-import { useContext, useState } from "react";
-import { MessagesArr } from "../lib/constants";
-import SelectedUser from "../context/user-selected";
+import { CreateMessage } from "../api/conversation";
+import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
+import { useState } from "react";
 
-export default function ChatMessages({ chatmessages}: {chatmessages: ConversationInterface}) {
+export default function ChatMessages({ chatmessages, selectedProfile }: { chatmessages: ConversationInterface, selectedProfile: ProfileInterface | null }) {
 
     const [message, setMessage] = useState<string>('');
+    const [conversation, setConversation] = useState<ConversationInterface>(chatmessages);
 
-    const currentUser = useContext(SelectedUser);
 
-    const handleClick = () => {
+    const handleMessageSubmit = async () => {
         if (message.trim()) {
             console.log(message);
+            console.log(chatmessages.id);
+            const conversation = await CreateMessage(chatmessages.id, { messageText: message });
+            setConversation(conversation);
         }
         setMessage('');
     }
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {currentUser?.firstName + " " + currentUser?.lastName}</h2>
+            <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {selectedProfile?.firstName + " " + selectedProfile?.lastName}</h2>
             <div className="h-[50vh] overflow-y-auto">
-                {MessagesArr.map((m, i) => {
-                    return (<p key={i} className="">{m}</p>)
+                {conversation.messages.map((m, i) => {
+                    return (
+                        <div key={i} className="">
+                            <p>Date: {m.messageTime}</p>
+                            <p>{m.messageText}</p>
+                        </div>
+                    )
                 })}
             </div>
             <div className="flex gap-2 align-center">
@@ -32,7 +39,7 @@ export default function ChatMessages({ chatmessages}: {chatmessages: Conversatio
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full p-2 mb-3 border border-gray-300 rounded-lg"
                 />
-                <button onClick={handleClick} className="rounded-lg bg-blue-500 text-white p-2 h-11 hover:shadow-lg">Send</button>
+                <button onClick={handleMessageSubmit} className="rounded-lg bg-blue-500 text-white p-2 h-11 hover:shadow-lg">Send</button>
             </div>
         </div>
     );
