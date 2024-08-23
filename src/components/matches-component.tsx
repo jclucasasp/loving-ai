@@ -8,7 +8,7 @@ import UserProfile from "../context/loged-in-user";
 type SetScreenProps = React.Dispatch<React.SetStateAction<StateTypes>>;
 type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
 type CurrentConversationProps = React.Dispatch<React.SetStateAction<ConversationInterface>>;
-type StateTypes = 'profile' | 'match' | 'chat';
+type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 
 
 export default function Matches({ screen, viewProfile: setMatchedProfile, currentConversation }:

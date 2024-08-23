@@ -2,14 +2,15 @@ import { ConversationInterface, ProfileInterface } from './lib/interfaces';
 import { GetProfileById, GetRandomProfile } from './api/profiles';
 import { User, MessageCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import ChatMessages from './components/chat.component';
-import Profiles from './components/profile.component';
-import Matches from './components/matches.component';
+import ChatMessages from './components/chat-component';
+import Profiles from './components/profile-component';
+import Matches from './components/matches-component';
 import './App.css';
+import Login from './auth/login';
 
 function App() {
 
-  type StateTypes = 'profile' | 'match' | 'chat'
+  type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
@@ -35,6 +36,10 @@ function App() {
     currentProfileSelect();
   }, []);
 
+  if (currentScreen === 'login') {
+    return <Login />;
+  }
+
 
   return (
     <div className='max-w-lg mx-auto mt-3'>
@@ -44,9 +49,9 @@ function App() {
         <div className='w-9 h-9' />
         <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
       </nav>
-        {currentScreen === 'profile' && <Profiles profile={currentProfile} nextProfile={setCurrentProfile} />}
-        {currentScreen === 'match' && <Matches screen={setCurrentScreen} viewProfile={setCurrentProfile} currentConversation={setCurrentConversation} />}
-        {currentScreen === 'chat' && <ChatMessages chatmessages={currentConversation} selectedProfile={currentProfile} />}
+      {currentScreen === 'profile' && <Profiles profile={currentProfile} nextProfile={setCurrentProfile} />}
+      {currentScreen === 'match' && <Matches screen={setCurrentScreen} viewProfile={setCurrentProfile} currentConversation={setCurrentConversation} />}
+      {currentScreen === 'chat' && <ChatMessages chatmessages={currentConversation} selectedProfile={currentProfile} />}
     </div>
   );
 }
