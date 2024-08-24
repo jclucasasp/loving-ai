@@ -5,8 +5,8 @@ import { useEffect, useState } from 'react';
 import ChatMessages from './components/chat-component';
 import Profiles from './components/profile-component';
 import Matches from './components/matches-component';
-import './App.css';
 import Login from './auth/login';
+import './App.css';
 
 function App() {
 

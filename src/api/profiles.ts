@@ -3,7 +3,7 @@ import { ProfileInterface } from "../lib/interfaces";
 export async function GetRandomProfile(): Promise<ProfileInterface> {
     return await fetch('http://127.0.0.1:8080/profile/random', {
         headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
     })
@@ -24,7 +24,7 @@ export async function GetProfileById(id: string): Promise<ProfileInterface> {
     return await fetch('http://127.0.0.1:8080/profile/id', {
         method: 'POST',
         headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })

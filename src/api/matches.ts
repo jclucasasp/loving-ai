@@ -3,7 +3,7 @@ import { MatchInterface, ProfileInterface } from "../lib/interfaces";
 export async function GetMatches(): Promise<MatchInterface[]> {
     return await fetch('http://127.0.0.1:8080/matches/all', {
         headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         }
     })
@@ -27,7 +27,7 @@ export async function GetMatchesProfile(): Promise<ProfileInterface[]> {
     return await fetch('http://127.0.0.1:8080/match/profiles', {
         method: 'POST',
         headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
@@ -55,7 +55,7 @@ export async function CreateMatch(fromProfileId: string, toProfileId: string): P
     return await fetch('http://127.0.0.1:8080/match/create', {
         method: 'POST',
         headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ fromProfileId, toProfileId })
@@ -76,7 +76,7 @@ export default async function deleteMatchById(id: string) {
     return await fetch('http://127.0.0.1:8080/match/delete-by-id', {
         method: 'DELETE',
         headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })

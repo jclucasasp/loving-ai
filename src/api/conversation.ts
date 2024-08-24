@@ -3,7 +3,7 @@ import { ConversationInterface, MessageInterface } from "../lib/interfaces";
 export async function GetConversationFromTo(fromProfileId: string, toProfileId: string): Promise<ConversationInterface> {
     return await fetch('http://127.0.0.1:8080/conversation/from-to', {
         method: 'POST', headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ fromProfileId, toProfileId })
@@ -41,7 +41,7 @@ export async function GetConversationFromTo(fromProfileId: string, toProfileId: 
 export async function CreateMessage(conversationId: string, message: MessageInterface): Promise<ConversationInterface> {
     return await fetch('http://127.0.0.1:8080/conversation/add/' + conversationId, {
         method: 'POST', headers: {
-            'Authorization': 'Basic dGluZGVyRnJvbnQ6dGluZGVyRnJvbnRQYXNzd29yZA==',
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(message)
