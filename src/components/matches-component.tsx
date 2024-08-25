@@ -3,7 +3,7 @@ import deleteMatchById, { GetMatchesProfile } from "../api/matches";
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
 import { GetConversationFromTo } from "../api/conversation";
 import { XCircle } from "lucide-react";
-import UserProfile from "../context/loged-in-user";
+import LoggedInUserContext from "../context/logged-in-user-context";
 
 type SetScreenProps = React.Dispatch<React.SetStateAction<StateTypes>>;
 type ViewProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
@@ -14,7 +14,7 @@ type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 export default function Matches({ screen, viewProfile: setMatchedProfile, currentConversation }:
     { screen: SetScreenProps, viewProfile: ViewProfileProps, currentConversation: CurrentConversationProps }) {
 
-    const { id } = useContext(UserProfile);
+    const { loggedInUser: { id } } = useContext(LoggedInUserContext);
     const logedinUserId = id;
 
     const viewConversations = async (fromProfileId: string, toProfileId: string) => {

@@ -1,10 +1,14 @@
+import setLoggedInUserProfile from '../hooks/set-loggedin-user';
+import { LoginAuth } from '../api/user-auth';
 import { FormEvent, useState } from 'react';
 
 interface LoginFormInterface {
   email: string;
   password: string;
 }
-export default function Login() {
+
+type StateTypes = 'profile' | 'match' | 'chat' | 'login';
+export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Dispatch<React.SetStateAction<StateTypes>> }) {
 
   const [formObject, setformObject] = useState<LoginFormInterface>({} as LoginFormInterface);
 
@@ -15,9 +19,22 @@ export default function Login() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formObject);
     e.currentTarget.reset();
     setformObject({} as LoginFormInterface);
+    handleLogin();
+    setCurrentScreen('profile');
+  }
+
+  const { updateLoggedInUser } = setLoggedInUserProfile();
+
+  const handleLogin = async () => {
+    const data = await LoginAuth(formObject.email, formObject.password);
+    if (!data) {
+      console.log('Failed to login');
+      return;
+    }
+    console.log("Log in succesfull, updating logged in user, \n" , data);
+    updateLoggedInUser(data);
   }
 
   return (

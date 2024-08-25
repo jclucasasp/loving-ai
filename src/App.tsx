@@ -1,17 +1,18 @@
 import { ConversationInterface, ProfileInterface } from './lib/interfaces';
 import { GetProfileById, GetRandomProfile } from './api/profiles';
-import { User, MessageCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import setLoggedInUserProfile from './hooks/set-loggedin-user';
 import ChatMessages from './components/chat-component';
 import Profiles from './components/profile-component';
 import Matches from './components/matches-component';
+import { User, MessageCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Login from './auth/login';
 import './App.css';
 
 function App() {
 
   type StateTypes = 'profile' | 'match' | 'chat' | 'login';
-
+  const { loggedInUser } = setLoggedInUserProfile();
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
   const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
@@ -36,8 +37,8 @@ function App() {
     currentProfileSelect();
   }, []);
 
-  if (currentScreen === 'login') {
-    return <Login />;
+  if (!loggedInUser.id) {
+    return <Login  setCurrentScreen={setCurrentScreen}/>;
   }
 
 

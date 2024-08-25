@@ -2,7 +2,7 @@ import { Heart, X } from "lucide-react";
 import { useState, useContext } from "react";
 import { ProfileInterface } from "../lib/interfaces";
 import { CreateMatch } from "../api/matches";
-import UserProfile from "../context/loged-in-user";
+import LoggedInUserContext from "../context/logged-in-user-context";
 
 type NextProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
 
@@ -10,7 +10,7 @@ export default function Profiles({ profile, nextProfile }: { profile: ProfileInt
 
 
     const [isMatched, setIsMatched] = useState(false);
-    const { id } = useContext(UserProfile);
+    const { loggedInUser: { id } } = useContext(LoggedInUserContext);
     const userId = id;
 
     const createMatchHandler = async () => {
