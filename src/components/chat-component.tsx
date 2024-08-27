@@ -7,10 +7,10 @@ export default function ChatMessages({ chatmessages, selectedProfile }: { chatme
     const [message, setMessage] = useState<string>('');
     const [conversation, setConversation] = useState<ConversationInterface>(chatmessages);
 
-
+// 'MessageInterface': conversationId, senderProfileId, receiverProfileId
     const handleMessageSubmit = async () => {
         if (message.trim()) {
-            const conversation = await CreateMessage(chatmessages.id, { messageText: message });
+            const conversation = await CreateMessage(chatmessages.id, { conversationId: chatmessages.id, senderProfileId: chatmessages.messages[0].senderProfileId, receiverProfileId: chatmessages.messages[0].receiverProfileId, messageText: message });
             setConversation(conversation);
         }
         setMessage('');
@@ -23,8 +23,8 @@ export default function ChatMessages({ chatmessages, selectedProfile }: { chatme
                 { !!conversation && conversation.messages.map((m, i) => {
                     return (
                         <div key={i} className="text-sm text-gray-600 pointer-events-none">
-                            <p>Date: {m.createDate?.substring(0, 10)}</p>
-                            <p>Time: {m.createDate?.substring(11, 19)}</p>
+                            <p>Date: {m.sendDate?.substring(0, 10)}</p>
+                            <p>Time: {m.sendDate?.substring(11, 19)}</p>
                             <p className="text-balance text-lg text-black">{m.messageText}</p>
                         </div>
                     )

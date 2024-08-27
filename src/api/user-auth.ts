@@ -21,14 +21,14 @@ export async function LoginAuth(email: string, password: string) {
     });
 }
 
-export async function LogoutAuth(sessionId: string, profileId: string) {
+export async function LogoutAuth(id: string) {
     return await fetch('http://127.0.0.1:8080/user/logout', {
         method: 'POST',
         headers: {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ sessionId, profileId })
+        body: JSON.stringify({ id })
     }).then((res) => {
         if (!res.ok) {
             throw new Error('Failed to fetch data');

@@ -14,11 +14,10 @@ type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 export default function Matches({ screen, viewProfile: setMatchedProfile, currentConversation }:
     { screen: SetScreenProps, viewProfile: ViewProfileProps, currentConversation: CurrentConversationProps }) {
 
-    const { loggedInUser: { id } } = useContext(LoggedInUserContext);
-    const logedinUserId = id;
+    const { loggedInUser: { userId } } = useContext(LoggedInUserContext);
 
-    const viewConversations = async (fromProfileId: string, toProfileId: string) => {
-        const conversation = await GetConversationFromTo(fromProfileId, toProfileId);
+    const viewConversations = async (profileId: string, toProfileId: string) => {
+        const conversation = await GetConversationFromTo(profileId, toProfileId);
         currentConversation(conversation);
         screen('chat');
     }
@@ -38,6 +37,7 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
         await viewConversations(fromProfileId, toProfileId);
     }
 
+    // TODO: this method is being called on a loop
     const setMatchedProfiles = useCallback(async () => {
         return await GetMatchesProfile();
     }, [handleDelete]);
@@ -52,7 +52,7 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
         <ul className="flex flex-col gap-3">
             <h2 className="text-2xl font-bold border-b-2 border-gray-300">Current Matches</h2>
             {profiles.map((profile) => (
-                <li className="flex items-center justify-between" key={profile.id}>
+                <li className="flex items-center justify-between" key={profile.userId}>
                     <section className="flex gap-2 items-center">
                         <button onClick={() => { setMatchedProfile(profile); screen('profile') }}>
                             <img src={"http://localhost:8080/images/" + profile.imageUrl} width={50} height={50} className="rounded-full" />
@@ -61,8 +61,8 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
                     </section>
                     <section className="flex gap-6">
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                            onClick={() => { handleChat(logedinUserId, profile.id); setMatchedProfile(profile) }}><XCircle />Chat</button>
-                        <button onClick={() => { handleDelete(profile.id) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
+                            onClick={() => { handleChat(userId, profile.userId); setMatchedProfile(profile) }}><XCircle />Chat</button>
+                        <button onClick={() => { handleDelete(profile.userId) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
                     </section>
                 </li>
             ))}

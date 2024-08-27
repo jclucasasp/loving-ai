@@ -20,14 +20,14 @@ export async function GetRandomProfile(): Promise<ProfileInterface> {
         });
 }
 
-export async function GetProfileById(id: string): Promise<ProfileInterface> {
+export async function GetProfileById(userId: string): Promise<ProfileInterface> {
     return await fetch('http://127.0.0.1:8080/profile/id', {
         method: 'POST',
         headers: {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({ userId })
     }).then((res) => {
         if (!res.ok) {
             throw new Error('Failed to fetch data');
@@ -37,6 +37,6 @@ export async function GetProfileById(id: string): Promise<ProfileInterface> {
 
     }).catch((err) => {
         console.log(err);
-        throw new Error('Failed to GetProfileById: [' + id + ']' + err);
+        throw new Error('Failed to GetProfileById: [' + userId + ']' + err);
     });
 }

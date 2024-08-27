@@ -1,5 +1,5 @@
 export interface ProfileInterface {
-    id: string;
+    userId: string;
     firstName: string;
     lastName: string;
     age: number;
@@ -11,11 +11,10 @@ export interface ProfileInterface {
 }
 
 export interface MatchInterface {
-    matchId: string;
-    createDate: string;
-    fromProfileId: string;
+    id: string;
+    matchedDate: string;
+    profileId: string;
     toProfileId: string;
-    conversationId: string;
 }
 
 export interface ConversationInterface {
@@ -25,6 +24,9 @@ export interface ConversationInterface {
 
 export interface MessageInterface {
     id?: string;
-    createDate?: string;
+    conversationId: string;
+    senderProfileId: string;
+    receiverProfileId: string;
+    sendDate?: string;
     messageText: string;
 }

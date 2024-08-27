@@ -1,12 +1,12 @@
 import { ConversationInterface, MessageInterface } from "../lib/interfaces";
 
-export async function GetConversationFromTo(fromProfileId: string, toProfileId: string): Promise<ConversationInterface> {
+export async function GetConversationFromTo(profileId: string, toProfileId: string): Promise<ConversationInterface> {
     return await fetch('http://127.0.0.1:8080/conversation/from-to', {
         method: 'POST', headers: {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ fromProfileId, toProfileId })
+        body: JSON.stringify({ fromProfileId: profileId, toProfileId })
     })
         .then((res) => {
             if (!res.ok) {

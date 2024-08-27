@@ -37,7 +37,7 @@ function App() {
     currentProfileSelect();
   }, []);
 
-  if (!loggedInUser.id) {
+  if (!loggedInUser.userId) {
     return <Login  setCurrentScreen={setCurrentScreen}/>;
   }
 

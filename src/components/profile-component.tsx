@@ -10,12 +10,11 @@ export default function Profiles({ profile, nextProfile }: { profile: ProfileInt
 
 
     const [isMatched, setIsMatched] = useState(false);
-    const { loggedInUser: { id } } = useContext(LoggedInUserContext);
-    const userId = id;
-
+    const { loggedInUser: { userId } } = useContext(LoggedInUserContext);
+    
     const createMatchHandler = async () => {
-        const match = await CreateMatch(userId, profile!.id);
-        if (match.toProfileId.includes(profile!.id)) {
+        const match = await CreateMatch(userId, profile!.userId);
+        if (match.toProfileId.includes(profile!.userId)) {
             setIsMatched(true);
             window.alert('Match created successfully');
         }
