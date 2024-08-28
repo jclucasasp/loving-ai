@@ -22,6 +22,16 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
         screen('chat');
     }
 
+    const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
+
+    const handleChat = async (fromProfileId: string, toProfileId: string) => {
+        await viewConversations(fromProfileId, toProfileId);
+    }
+
+    const setMatchedProfiles = async () => {
+        return await GetMatchesProfile();
+    };
+
     const handleDelete = async (userId: string) => {
         const res = await deleteMatchById(userId);
         if (res.ok) {
@@ -29,24 +39,16 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
         } else {
             window.alert('Unable to delete match');
         }
-    }
-
-    const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
-
-    const handleChat = async (fromProfileId: string, toProfileId: string) => {
-        await viewConversations(fromProfileId, toProfileId);
-    }
-
-    // TODO: this method is being called on a loop
-    const setMatchedProfiles = useCallback(async () => {
-        return await GetMatchesProfile();
-    }, [handleDelete]);
+        setMatchedProfiles().then((data) => {
+            setProfiles(data);
+        });
+    };
 
     useEffect(() => {
         setMatchedProfiles().then((data) => {
             setProfiles(data);
         })
-    }, [setMatchedProfiles]);
+    }, []);
 
     return (
         <ul className="flex flex-col gap-3">
