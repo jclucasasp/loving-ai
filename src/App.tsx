@@ -52,7 +52,7 @@ function App() {
       </nav>
       {currentScreen === 'profile' && <Profiles profile={currentProfile} nextProfile={setCurrentProfile} />}
       {currentScreen === 'match' && <Matches screen={setCurrentScreen} viewProfile={setCurrentProfile} currentConversation={setCurrentConversation} />}
-      {currentScreen === 'chat' && <ChatMessages chatmessages={currentConversation} selectedProfile={currentProfile} />}
+      {currentScreen === 'chat' && <ChatMessages currentConversation={currentConversation} selectedProfile={currentProfile} />}
     </div>
   );
 }

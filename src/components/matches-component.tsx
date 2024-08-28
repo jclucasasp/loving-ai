@@ -22,8 +22,8 @@ export default function Matches({ screen, viewProfile: setMatchedProfile, curren
         screen('chat');
     }
 
-    const handleDelete = async (id: string) => {
-        const res = await deleteMatchById(id);
+    const handleDelete = async (userId: string) => {
+        const res = await deleteMatchById(userId);
         if (res.ok) {
             window.alert('Match deleted successfully');
         } else {

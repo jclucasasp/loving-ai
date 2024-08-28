@@ -18,15 +18,14 @@ export interface MatchInterface {
 }
 
 export interface ConversationInterface {
-    id: string;
+    matchId: string;
     messages: MessageInterface[]
 }
 
 export interface MessageInterface {
     id?: string;
-    conversationId: string;
-    senderProfileId: string;
-    receiverProfileId: string;
+    senderProfileId?: string;
+    receiverProfileId?: string;
     sendDate?: string;
     messageText: string;
 }

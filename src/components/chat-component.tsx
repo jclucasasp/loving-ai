@@ -2,16 +2,16 @@ import { CreateMessage } from "../api/conversation";
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
 import { useState } from "react";
 
-export default function ChatMessages({ chatmessages, selectedProfile }: { chatmessages: ConversationInterface, selectedProfile: ProfileInterface | null }) {
+export default function ChatMessages({ currentConversation, selectedProfile }: { currentConversation: ConversationInterface, selectedProfile: ProfileInterface | null }) {
 
     const [message, setMessage] = useState<string>('');
-    const [conversation, setConversation] = useState<ConversationInterface>(chatmessages);
+    const [conversation, setConversation] = useState<ConversationInterface>(currentConversation);
 
-// 'MessageInterface': conversationId, senderProfileId, receiverProfileId
     const handleMessageSubmit = async () => {
         if (message.trim()) {
-            const conversation = await CreateMessage(chatmessages.id, { conversationId: chatmessages.id, senderProfileId: chatmessages.messages[0].senderProfileId, receiverProfileId: chatmessages.messages[0].receiverProfileId, messageText: message });
-            setConversation(conversation);
+            console.log("curent convo: ", conversation);
+            const newConversation = await CreateMessage(conversation.matchId, { messageText: message });
+            setConversation(newConversation);
         }
         setMessage('');
     }

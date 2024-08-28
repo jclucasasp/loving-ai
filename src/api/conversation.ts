@@ -6,7 +6,7 @@ export async function GetConversationFromTo(profileId: string, toProfileId: stri
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ fromProfileId: profileId, toProfileId })
+        body: JSON.stringify({ profileId, toProfileId })
     })
         .then((res) => {
             if (!res.ok) {
@@ -38,8 +38,8 @@ export async function GetConversationFromTo(profileId: string, toProfileId: stri
 //         });
 // }
 
-export async function CreateMessage(conversationId: string, message: MessageInterface): Promise<ConversationInterface> {
-    return await fetch('http://127.0.0.1:8080/conversation/add/' + conversationId, {
+export async function CreateMessage(matchId: string, message: MessageInterface): Promise<ConversationInterface> {
+    return await fetch('http://127.0.0.1:8080/conversation/add/' + matchId, {
         method: 'POST', headers: {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
