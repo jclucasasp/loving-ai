@@ -1,20 +1,30 @@
-import { Heart, X } from "lucide-react";
-import { useState, useContext } from "react";
-import { ProfileInterface } from "../lib/interfaces";
+import { MatchInterface, ProfileInterface } from "../lib/interfaces";
 import { CreateMatch } from "../api/matches";
-import LoggedInUserContext from "../context/logged-in-user-context";
+import { Heart, X } from "lucide-react";
+import React, { useState } from "react";
 
-type NextProfileProps = React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
 
-export default function Profiles({ profile, nextProfile }: { profile: ProfileInterface | null, nextProfile: NextProfileProps }) {
+type ProfileProps = { 
+    profile: ProfileInterface | null;
+    setNextProfile:React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
+    matchSate: MatchState;
+}
 
+type MatchState = {
+    setMatches:React.Dispatch<React.SetStateAction<MatchInterface[]>>;
+    matches: MatchInterface[]
+}
+
+export default function Profiles({ profile, setNextProfile, matchSate }: ProfileProps) {
 
     const [isMatched, setIsMatched] = useState(false);
-    const { loggedInUser: { userId } } = useContext(LoggedInUserContext);
+    const userId = localStorage.getItem('userId');
+    const { setMatches, matches } = matchSate;
     
     const createMatchHandler = async () => {
-        const match = await CreateMatch(userId, profile!.userId);
-        if (match.toProfileId.includes(profile!.userId)) {
+        const newMatch = await CreateMatch(userId!, profile!.userId);
+        setMatches([newMatch]);
+        if (newMatch.toProfileId.includes(profile!.userId)) {
             setIsMatched(true);
             window.alert('Match created successfully');
         }
@@ -34,7 +44,7 @@ export default function Profiles({ profile, nextProfile }: { profile: ProfileInt
             </div>
             <div className="flex justify-between w-full mt-6">
                 <button className="rounded-lg bg-red-500 text-white px-9 py-3 hover:shadow-lg hover:bg-red-700 hover:text-black">
-                    <X size={25} onClick={() => { nextProfile(null), setIsMatched(false) }} />
+                    <X size={25} onClick={() => { setNextProfile(null), setIsMatched(false) }} />
                 </button>
                 {!isMatched ? <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600">
                     <Heart size={25} onClick={createMatchHandler} />

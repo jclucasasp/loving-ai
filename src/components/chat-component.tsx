@@ -1,5 +1,5 @@
-import { CreateMessage } from "../api/conversation";
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
+import { CreateMessage } from "../api/conversation";
 import { useState } from "react";
 
 export default function ChatMessages({ currentConversation, selectedProfile }: { currentConversation: ConversationInterface, selectedProfile: ProfileInterface | null }) {

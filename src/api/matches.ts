@@ -1,11 +1,14 @@
 import { MatchInterface, ProfileInterface } from "../lib/interfaces";
 
-export async function GetMatches(): Promise<MatchInterface[]> {
+export async function GetMatches(userId: string): Promise<MatchInterface[]> {
     return await fetch('http://127.0.0.1:8080/matches/all', {
         headers: {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
-        }
+        },
+        method: 'POST',
+        body: JSON.stringify({ userId }),
+        
     })
         .then((res) => {
             if (!res.ok) {
@@ -20,9 +23,9 @@ export async function GetMatches(): Promise<MatchInterface[]> {
         });
 }
 
-export async function GetMatchesProfile(): Promise<ProfileInterface[]> {
+export async function GetMatchesProfile(userId: string): Promise<ProfileInterface[]> {
 
-    const data = await GetMatches();
+    const data = await GetMatches(userId);
 
     return await fetch('http://127.0.0.1:8080/match/profiles', {
         method: 'POST',
