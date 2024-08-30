@@ -10,17 +10,15 @@ interface LoginFormInterface {
 type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Dispatch<React.SetStateAction<StateTypes>> }) {
 
-  const [formObject, setformObject] = useState<LoginFormInterface>({} as LoginFormInterface);
+  const [formObject, setformObject] = useState<LoginFormInterface>({ email: "", password: "" });
 
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
-    e.preventDefault();
     setformObject({ ...formObject, [e.currentTarget.name]: e.currentTarget.value });
   }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.currentTarget.reset();
-    setformObject({} as LoginFormInterface);
     handleLogin();
     setCurrentScreen('profile');
   }
@@ -33,7 +31,6 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
       console.log('Failed to login');
       return;
     }
-    console.log("Log in succesfull, updating logged in user, \n" , data);
     updateLoggedInUser(data);
   }
 
@@ -45,9 +42,9 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
         </div>
         <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
-          <input type="email" name='email' id="email" onInput={handleChange} value={formObject.email} />
+          <input type="email" name='email' id="email" value={formObject.email} onChange={handleChange} />
           <label htmlFor="password">Password</label>
-          <input type="password" name='password' id="password" onInput={handleChange} value={formObject.password} />
+          <input type="password" name='password' id="password" value={formObject.password} onChange={handleChange} />
           <button type="submit" className='border rounded-full bg-blue-500 mt-6'>Login</button>
         </form>
       </section>

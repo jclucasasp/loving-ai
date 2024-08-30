@@ -8,7 +8,14 @@ export default function LoggedInUserProvider({ children }: { children: React.Rea
     const [loggedInUser, setLoggedInUser] = useState<ProfileInterface>({} as ProfileInterface);
 
     const updateLoggedInUser = (loggedInUser: ProfileInterface) => {
-        setLoggedInUser(loggedInUser);
+
+        if (loggedInUser && loggedInUser.userId.length > 0) {
+            localStorage.setItem('userId', loggedInUser.userId);
+            localStorage.setItem("firstName", loggedInUser.firstName);
+            localStorage.setItem("lastName", loggedInUser.lastName);
+            
+            setLoggedInUser(loggedInUser);
+          }
     }
 
     return (

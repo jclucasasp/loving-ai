@@ -12,11 +12,9 @@ import './App.css';
 function App() {
 
   type StateTypes = 'profile' | 'match' | 'chat' | 'login';
-  //TODO: See why localstorage is cleared when app is refreshed
+  
   const { loggedInUser } = setLoggedInUserProfile();
-  localStorage.setItem('userId', loggedInUser.userId);
-  localStorage.setItem("firstName", loggedInUser.firstName);
-  localStorage.setItem("lastName", loggedInUser.lastName);
+
 
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
@@ -42,11 +40,11 @@ function App() {
 
   useEffect(() => {
     currentProfileSelect();
-  }, []);
+  }, [loggedInUser]);
 
-  if (localStorage.getItem('userId')?.includes('null') || localStorage.getItem('userId')?.includes('undefined')) {
+  if (localStorage.length === 0) {
     console.log("User id from check: ", localStorage.getItem('userId'));
-    return <Login  setCurrentScreen={setCurrentScreen}/>;
+    return <Login setCurrentScreen={setCurrentScreen} />;
   }
 
   return (
@@ -54,13 +52,13 @@ function App() {
       <nav className='flex justify-between mb-6'>
 
         <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('profile')} />
-          <h3>{localStorage.getItem('firstName') + " " + localStorage.getItem('lastName')}</h3>
+        <h3>{localStorage.getItem('firstName') + " " + localStorage.getItem('lastName')}</h3>
         <div className='w-9 h-9' />
         <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
       </nav>
-      {currentScreen === 'profile' && <Profiles profile={currentProfile} setNextProfile={setCurrentProfile} matchSate={{matches,setMatches}} />}
-      {currentScreen === 'match' && <Matches screen={setCurrentScreen} setCurrentProfile={setCurrentProfile} 
-      setCurrentConversation={setCurrentConversation} matchState={{matches,setMatches}} />}
+      {currentScreen === 'profile' && <Profiles profile={currentProfile} setNextProfile={setCurrentProfile} matchSate={{ matches, setMatches }} />}
+      {currentScreen === 'match' && <Matches screen={setCurrentScreen} setCurrentProfile={setCurrentProfile}
+        setCurrentConversation={setCurrentConversation} matchState={{ matches, setMatches }} />}
       {currentScreen === 'chat' && <ChatMessages currentConversation={currentConversation} selectedProfile={currentProfile} />}
     </div>
   );
