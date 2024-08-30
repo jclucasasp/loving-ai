@@ -11,8 +11,8 @@ type ProfileProps = {
 }
 
 type MatchState = {
-    setMatches:React.Dispatch<React.SetStateAction<MatchInterface[]>>;
-    matches: MatchInterface[]
+    setMatches:React.Dispatch<React.SetStateAction<Set<MatchInterface>>>;
+    matches: Set<MatchInterface>
 }
 
 export default function Profiles({ profile, setNextProfile, matchSate }: ProfileProps) {
@@ -23,7 +23,7 @@ export default function Profiles({ profile, setNextProfile, matchSate }: Profile
     
     const createMatchHandler = async () => {
         const newMatch = await CreateMatch(userId!, profile!.userId);
-        setMatches([newMatch]);
+        setMatches(matches.add(newMatch));
         if (newMatch.toProfileId.includes(profile!.userId)) {
             setIsMatched(true);
             window.alert('Match created successfully');

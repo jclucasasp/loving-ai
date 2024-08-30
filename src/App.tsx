@@ -1,28 +1,26 @@
 import { ConversationInterface, MatchInterface, ProfileInterface } from './lib/interfaces';
 import { GetProfileById, GetRandomProfile } from './api/profiles';
-import setLoggedInUserProfile from './hooks/set-loggedin-user';
 import ChatMessages from './components/chat-component';
 import Profiles from './components/profile-component';
 import Matches from './components/matches-component';
-import { User, MessageCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { User, MessageCircle } from 'lucide-react';
+import { GetMatches } from './api/matches';
 import Login from './auth/login';
 import './App.css';
 
 function App() {
 
   type StateTypes = 'profile' | 'match' | 'chat' | 'login';
-  
-  const { loggedInUser } = setLoggedInUserProfile();
 
 
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
   const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
-  const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
+  const [matches, setMatches] = useState<Set<MatchInterface>>({} as Set<MatchInterface>);
 
-  const currentProfileSelect = async (id?: string) => {
-
+  const seedRandomProfile = async (id?: string) => {
+    console.log("Seed random profile called");
     let profileData = {} as Promise<ProfileInterface>;
     if (!id) {
       profileData = GetRandomProfile();
@@ -34,16 +32,21 @@ function App() {
     setCurrentProfile(profile);
   }
 
+  const seedMatches = async () => {
+    const foundMatches = await GetMatches(localStorage.getItem('userId') as string);
+    setMatches(new Set<MatchInterface>(foundMatches));
+  }
+
   if (!currentProfile) {
-    currentProfileSelect();
+    seedRandomProfile();
   }
 
   useEffect(() => {
-    currentProfileSelect();
-  }, [loggedInUser]);
+    seedRandomProfile();
+    seedMatches();
+  }, []);
 
   if (localStorage.length === 0) {
-    console.log("User id from check: ", localStorage.getItem('userId'));
     return <Login setCurrentScreen={setCurrentScreen} />;
   }
 

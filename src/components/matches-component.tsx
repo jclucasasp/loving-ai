@@ -14,15 +14,15 @@ type MachesProps = {
 }
 
 type MatchState = {
-    setMatches: React.Dispatch<React.SetStateAction<MatchInterface[]>>;
-    matches: MatchInterface[]
+    setMatches: React.Dispatch<React.SetStateAction<Set<MatchInterface>>>;
+    matches: Set<MatchInterface>
 }
 
 
 export default function Matches({ screen, setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
 
     const userId = localStorage.getItem('userId');
-    const { matches, setMatches } = matchState;
+    // const { matches, setMatches } = matchState;
 
     const viewConversations = async (profileId: string, toProfileId: string) => {
         const conversation = await GetConversationFromTo(profileId, toProfileId);
@@ -58,46 +58,29 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
         })
     }, []);
 
-    const ProfilesList = () => {
+    // TODO: Find a way to iterate over both the profiles and the matches
+    const MatchesList = () => {
         return (
             profiles.map((profile) => (
-                <li className="flex items-center justify-between" key={profile.userId}>
+                <li key={profile.userId} className="flex items-center justify-between">
                     <section className="flex gap-2 items-center">
                         <button onClick={() => { setCurrentProfile(profile); screen('profile') }}>
                             <img src={"http://localhost:8080/images/" + profile.imageUrl} width={50} height={50} className="rounded-full" />
                         </button>
+                        <h3>{profile.firstName} {profile.lastName}</h3>
                     </section>
                     <section className="flex gap-6">
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
                             onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</button>
                         <button onClick={() => { handleDelete(profile.userId) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
+
                     </section>
                 </li>
             ))
         );
-    }
-    // TODO: Refactor to send the Match object instead of the userId. Delete mapping can also just send the matchId.
-    const MatchesList = () => {
-        return (
-            matches.map((match) => (
-                profiles.map((profile) => (
-                    <li className="flex items-center justify-between" key={profile.userId}>
-                        <section className="flex gap-2 items-center">
-                            <button onClick={() => { setCurrentProfile(profile); screen('profile') }}>
-                                <img src={"http://localhost:8080/images/" + profile.imageUrl} width={50} height={50} className="rounded-full" />
-                            </button>
-                            <h3>{profile.firstName} {profile.lastName}</h3>
-                        </section>
-                        <section className="flex gap-6">
-                            <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                                onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</button>
-                            <button onClick={() => { handleDelete(profile.userId) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
-                        </section>
-                    </li>
-                ))
-            ))
-        );
-    }
+    };
+
+
 
     return (
         <ul className="flex flex-col gap-3">

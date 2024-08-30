@@ -1,4 +1,4 @@
-import setLoggedInUserProfile from '../hooks/set-loggedin-user';
+import useLoggedInUserState from '../hooks/use-loggedin-user-state';
 import { LoginAuth } from '../api/user-auth';
 import { FormEvent, useState } from 'react';
 
@@ -23,7 +23,7 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
     setCurrentScreen('profile');
   }
 
-  const { updateLoggedInUser } = setLoggedInUserProfile();
+  const { updateLoggedInUser } = useLoggedInUserState();
 
   const handleLogin = async () => {
     const data = await LoginAuth(formObject.email, formObject.password);
