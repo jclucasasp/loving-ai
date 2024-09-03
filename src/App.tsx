@@ -1,26 +1,25 @@
 import { ConversationInterface, MatchInterface, ProfileInterface } from './lib/interfaces';
 import { GetProfileById, GetRandomProfile } from './api/profiles';
+import useLoggedInUserState from './hooks/use-loggedin-user-state';
 import ChatMessages from './components/chat-component';
 import Profiles from './components/profile-component';
 import Matches from './components/matches-component';
 import { useEffect, useState } from 'react';
 import { User, MessageCircle } from 'lucide-react';
-import { GetMatches } from './api/matches';
 import Login from './auth/login';
 import './App.css';
 
 function App() {
 
   type StateTypes = 'profile' | 'match' | 'chat' | 'login';
-
+  const { loggedInUser } = useLoggedInUserState();
 
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
   const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
-  const [matches, setMatches] = useState<Set<MatchInterface>>({} as Set<MatchInterface>);
+  const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
 
   const seedRandomProfile = async (id?: string) => {
-    console.log("Seed random profile called");
     let profileData = {} as Promise<ProfileInterface>;
     if (!id) {
       profileData = GetRandomProfile();
@@ -32,19 +31,11 @@ function App() {
     setCurrentProfile(profile);
   }
 
-  const seedMatches = async () => {
-    const foundMatches = await GetMatches(localStorage.getItem('userId') as string);
-    setMatches(new Set<MatchInterface>(foundMatches));
-  }
-
-  if (!currentProfile) {
-    seedRandomProfile();
-  }
-
   useEffect(() => {
-    seedRandomProfile();
-    seedMatches();
-  }, []);
+    if (!currentProfile) {
+      seedRandomProfile();
+    }
+  }, [loggedInUser, currentProfile]);
 
   if (localStorage.length === 0) {
     return <Login setCurrentScreen={setCurrentScreen} />;

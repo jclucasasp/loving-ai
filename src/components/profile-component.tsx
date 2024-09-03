@@ -11,8 +11,8 @@ type ProfileProps = {
 }
 
 type MatchState = {
-    setMatches:React.Dispatch<React.SetStateAction<Set<MatchInterface>>>;
-    matches: Set<MatchInterface>
+    setMatches:React.Dispatch<React.SetStateAction<MatchInterface[]>>;
+    matches: MatchInterface[];
 }
 
 export default function Profiles({ profile, setNextProfile, matchSate }: ProfileProps) {
@@ -23,17 +23,18 @@ export default function Profiles({ profile, setNextProfile, matchSate }: Profile
     
     const createMatchHandler = async () => {
         const newMatch = await CreateMatch(userId!, profile!.userId);
-        setMatches(matches.add(newMatch));
-        if (newMatch.toProfileId.includes(profile!.userId)) {
+        
+        if (newMatch) {
             setIsMatched(true);
             window.alert('Match created successfully');
         }
+        setMatches([...matches, newMatch]);
     }
-
+      
     return (
         <div className="flex flex-col items-center rounded-lg shadow-lg bg-gray-100 overflow-hidden p-4">
             <div className="relative">
-                <img src={"http://localhost:8080/images/" + profile?.imageUrl} alt="profile image" className="rounded-lg" />
+                <img src={ profile?.imageUrl ? "http://localhost:8080/images/" + profile?.imageUrl : ""} alt="profile image" className="rounded-lg" />
                 <div className="absolute bottom-0 left-0 right-0 p-4 text-white bg-gradient-to-t from-black">
                     <h2 className="font-bold text-xl">{profile?.firstName} {profile?.lastName}</h2>
                     <p>{profile?.age}</p>

@@ -14,8 +14,8 @@ type MachesProps = {
 }
 
 type MatchState = {
-    setMatches: React.Dispatch<React.SetStateAction<Set<MatchInterface>>>;
-    matches: Set<MatchInterface>
+    setMatches: React.Dispatch<React.SetStateAction<MatchInterface[]>>;
+    matches: MatchInterface[];
 }
 
 
@@ -52,10 +52,11 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
         });
     };
 
+    //TODO: figure out why this is running twice
     useEffect(() => {
         setMatchedProfiles().then((data) => {
             setProfiles(data);
-        })
+        })    
     }, []);
 
     // TODO: Find a way to iterate over both the profiles and the matches
