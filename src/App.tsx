@@ -4,8 +4,8 @@ import useLoggedInUserState from './hooks/use-loggedin-user-state';
 import ChatMessages from './components/chat-component';
 import Profiles from './components/profile-component';
 import Matches from './components/matches-component';
-import { useEffect, useState } from 'react';
 import { User, MessageCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Login from './auth/login';
 import './App.css';
 
@@ -15,7 +15,7 @@ function App() {
   const { loggedInUser } = useLoggedInUserState();
 
   const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
-  const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>({} as ProfileInterface);
+  const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
   const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
   const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
 
@@ -32,6 +32,7 @@ function App() {
   }
 
   useEffect(() => {
+    console.log("useEffected run from App.tsx");
     if (!currentProfile) {
       seedRandomProfile();
     }

@@ -1,5 +1,5 @@
 import { ConversationInterface, MatchInterface, ProfileInterface } from "../lib/interfaces";
-import deleteMatchById, { GetMatchesProfile } from "../api/matches";
+import deleteMatchById, { GetMatchedProfiles } from "../api/matches";
 import { GetConversationFromTo } from "../api/conversation";
 import React, { useEffect, useState } from "react"
 import { XCircle } from "lucide-react";
@@ -36,10 +36,6 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
         await viewConversations(profileId, toProfileId);
     }
 
-    const setMatchedProfiles = async () => {
-        return await GetMatchesProfile(userId!);
-    };
-
     const handleDelete = async (userId: string) => {
         const res = await deleteMatchById(userId);
         if (res.ok) {
@@ -47,16 +43,21 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
         } else {
             window.alert('Unable to delete match');
         }
-        setMatchedProfiles().then((data) => {
-            setProfiles(data);
-        });
+        setMatchedProfiles();
     };
 
-    //TODO: figure out why this is running twice
+    const setMatchedProfiles = async () => {
+        const data = await GetMatchedProfiles(userId!);
+        setProfiles(data);
+    };
+
+    //TODO: Move the seeding to App.tsx to avoid re-rendering
     useEffect(() => {
-        setMatchedProfiles().then((data) => {
-            setProfiles(data);
-        })    
+        console.log("useEffect called from matches-component");
+        if (profiles.length == 0) {
+            console.log("setMatchedProfiles called from matches-component");
+            setMatchedProfiles();
+        }
     }, []);
 
     // TODO: Find a way to iterate over both the profiles and the matches

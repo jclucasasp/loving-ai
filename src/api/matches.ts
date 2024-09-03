@@ -9,8 +9,7 @@ export async function GetMatches(userId: string): Promise<MatchInterface[]> {
         method: 'POST',
         body: JSON.stringify({ userId }),
         
-    })
-        .then((res) => {
+    }).then((res) => {
             if (!res.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -23,7 +22,7 @@ export async function GetMatches(userId: string): Promise<MatchInterface[]> {
         });
 }
 
-export async function GetMatchesProfile(userId: string): Promise<ProfileInterface[]> {
+export async function GetMatchedProfiles(userId: string): Promise<ProfileInterface[]> {
 
     const data = await GetMatches(userId);
 
@@ -34,8 +33,7 @@ export async function GetMatchesProfile(userId: string): Promise<ProfileInterfac
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    })
-        .then((res) => {
+    }).then((res) => {
             if (!res.ok) {
                 throw new Error('Failed to fetch data');
             }

@@ -44,11 +44,13 @@ export default function Profiles({ profile, setNextProfile, matchSate }: Profile
                 <p className="text-gray-600">{profile?.bio}</p>
             </div>
             <div className="flex justify-between w-full mt-6">
-                <button className="rounded-lg bg-red-500 text-white px-9 py-3 hover:shadow-lg hover:bg-red-700 hover:text-black">
-                    <X size={25} onClick={() => { setNextProfile(null), setIsMatched(false) }} />
+                <button className="rounded-lg bg-red-500 text-white px-9 py-3 hover:shadow-lg hover:bg-red-700 hover:text-black" 
+                onClick={() => { setNextProfile(null), setIsMatched(false) }}>
+                    <X size={25} />
                 </button>
-                {!isMatched ? <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600">
-                    <Heart size={25} onClick={createMatchHandler} />
+                {!isMatched ? <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600"
+                 onClick={createMatchHandler} >
+                    <Heart size={25} />
                 </button>
                     : <button className="rounded-lg bg-blue-500 text-white px-9 py-3 hover:shadow-lg hover:bg-blue-700 hover:text-red-600">Matched</button>}
             </div>
