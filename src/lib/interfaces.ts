@@ -29,3 +29,10 @@ export interface MessageInterface {
     sendDate?: string;
     messageText: string;
 }
+
+export interface ResponseInterface {
+    messagePrompt: string;
+    name: string;
+    age: number;
+    bio: string;
+}

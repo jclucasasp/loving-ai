@@ -10,7 +10,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
     const handleMessageSubmit = async () => {
         if (message.trim()) {
             console.log("curent convo: ", conversation);
-            const newConversation = await CreateMessage(conversation.matchId, { messageText: message });
+            const newConversation = await CreateMessage(conversation.matchId, { messagePrompt: message, name: selectedProfile?.firstName + " " + selectedProfile?.lastName, age: selectedProfile!.age, bio: selectedProfile!.bio });
             setConversation(newConversation);
         }
         setMessage('');
@@ -20,7 +20,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
         <div>
             <h2 className="text-2xl font-bold mb-4 border-b-2 border-gray-300">Chat with {selectedProfile?.firstName + " " + selectedProfile?.lastName}</h2>
             <div className="h-[50vh] overflow-y-auto">
-                { !!conversation && conversation.messages.map((m, i) => {
+                {!!conversation && conversation.messages.map((m, i) => {
                     return (
                         <div key={i} className="text-sm text-gray-600 pointer-events-none">
                             <p>Date: {m.sendDate?.substring(0, 10)}</p>
