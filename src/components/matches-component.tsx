@@ -53,7 +53,6 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
 
     //TODO: Move the seeding to App.tsx to avoid re-rendering
     useEffect(() => {
-        console.log("useEffect called from matches-component");
         if (profiles.length == 0) {
             console.log("setMatchedProfiles called from matches-component");
             setMatchedProfiles();

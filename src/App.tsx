@@ -32,7 +32,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("useEffected run from App.tsx");
     if (!currentProfile) {
       seedRandomProfile();
     }
