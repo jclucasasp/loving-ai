@@ -37,7 +37,7 @@ function App() {
     }
   }, [loggedInUser, currentProfile]);
 
-  if (localStorage.length === 0) {
+  if (sessionStorage.length === 0) {
     return <Login setCurrentScreen={setCurrentScreen} />;
   }
 
@@ -45,7 +45,7 @@ function App() {
     <div className='max-w-lg mx-auto mt-3'>
       <nav className='flex justify-between mb-6'>
         <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('profile')} />
-        <h3>{localStorage.getItem('firstName') + " " + localStorage.getItem('lastName')}</h3>
+        <h3>{sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}</h3>
         <div className='w-9 h-9' />
         <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
       </nav>

@@ -23,7 +23,7 @@ type MatchState = {
 
 export default function Matches({ screen, setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
 
-    const userId = localStorage.getItem('userId');
+    const userId = sessionStorage.getItem('userId');
     // const { matches, setMatches } = matchState;
     const { toast } = useToast();
 

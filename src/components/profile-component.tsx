@@ -19,7 +19,7 @@ type MatchState = {
 export default function Profiles({ profile, setNextProfile, matchSate }: ProfileProps) {
 
     const [isMatched, setIsMatched] = useState(false);
-    const userId = localStorage.getItem('userId');
+    const userId = sessionStorage.getItem('userId');
     const { setMatches, matches } = matchSate;
 
     const { toast } = useToast();

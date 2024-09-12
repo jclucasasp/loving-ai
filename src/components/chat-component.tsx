@@ -12,7 +12,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
     const [loading, setLoading] = useState<boolean>(false);
 
     const conversationContainer = useRef<HTMLDivElement>(null);
-    const messageInput = useRef<HTMLInputElement>(null);
+    const messageInput = useRef<HTMLTextAreaElement>(null);
 
     const handleMessageSubmit = async () => {
         setLoading(true);
@@ -31,7 +31,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
         setLoading(false);
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter') {
             handleMessageSubmit();
         }
@@ -53,15 +53,14 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
                 </h3>
             </section>
 
-            <section className=" border rounded-lg border-gray-300 p-1">
-                <div ref={conversationContainer} className="h-[70vh] overflow-y-auto p-2">
+            <section className=" border rounded-lg border-gray-300 p-1"><div ref={conversationContainer} className="h-[60vh] overflow-y-auto p-2">
                     {
                         !!conversation && conversation.messages.map((m, i) => {
                             return (
                                 <div key={i} className="mb-3">
 
                                     <div className={cn("border rounded-lg p-3 bg-gray-100 flex flex-col gap-2 text-end items-end",
-                                        m.senderProfileId !== localStorage.getItem('userId') && "bg-green-500/10 text-start"
+                                        m.senderProfileId !== sessionStorage.getItem('userId') && "bg-green-500/10 text-start"
                                     )}>
                                         <p className="text-balance text-black">{m.messageText}</p>
                                         <div className="flex gap-2">
@@ -73,21 +72,17 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
                                 </div>
                             )
                         })}
-                        { loading &&<SkeletonCard />}
+                    {loading && <SkeletonCard />}
                 </div>
             </section>
             <div className="flex gap-2 align-center mt-3">
-                <input ref={messageInput} disabled={loading} onKeyDown={handleKeyDown}
-                    type="text"
-                    placeholder="Type a message..."
+                <textarea ref={messageInput} disabled={loading} onKeyDown={handleKeyDown}
+                    placeholder="Type a message and press enter when ready to send"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full p-2 mb-3 border border-gray-300 rounded-lg"
+                    className="block w-full px-3 py-2 mt-0 bg-white border rounded-md shadow-sm focus:border-green-500/10 focus:ring focus:ring-green-200 focus:outline-none resize-y"
+                    rows={4}
                 />
-                <button disabled={loading} onClick={handleMessageSubmit}
-                    className={cn("rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg", loading && "opacity-50")}>
-                    Send
-                </button>
             </div>
         </div>
     );

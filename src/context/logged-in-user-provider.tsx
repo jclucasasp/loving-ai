@@ -10,9 +10,9 @@ export default function LoggedInUserProvider({ children }: { children: React.Rea
     const updateLoggedInUser = (loggedInUser: ProfileInterface) => {
 
         if (loggedInUser && loggedInUser.userId.length > 0) {
-            localStorage.setItem('userId', loggedInUser.userId);
-            localStorage.setItem("firstName", loggedInUser.firstName);
-            localStorage.setItem("lastName", loggedInUser.lastName);
+            sessionStorage.setItem('userId', loggedInUser.userId);
+            sessionStorage.setItem("firstName", loggedInUser.firstName);
+            sessionStorage.setItem("lastName", loggedInUser.lastName);
             
             setLoggedInUser(loggedInUser);
           }
