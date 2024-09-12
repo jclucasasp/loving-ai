@@ -34,5 +34,7 @@ export interface ResponseInterface {
     messagePrompt: string;
     name: string;
     age: number;
+    ethnicity: string;
+    gender: string;
     bio: string;
 }

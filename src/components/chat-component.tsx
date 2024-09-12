@@ -1,6 +1,6 @@
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
-import { CreateMessage } from "../api/conversation";
 import { useEffect, useRef, useState } from "react";
+import { CreateMessage } from "../api/conversation";
 import { cn } from "../lib/utils";
 
 export default function ChatMessages({ currentConversation, selectedProfile }: { currentConversation: ConversationInterface, selectedProfile: ProfileInterface | null }) {
@@ -10,11 +10,19 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
     const [loading, setLoading] = useState<boolean>(false);
 
     const conversationContainer = useRef<HTMLDivElement>(null);
+    const messageInput = useRef<HTMLInputElement>(null);
 
     const handleMessageSubmit = async () => {
         setLoading(true);
         if (message.trim()) {
-            const newConversation = await CreateMessage(conversation.matchId, { messagePrompt: message, name: selectedProfile?.firstName + " " + selectedProfile?.lastName, age: selectedProfile!.age, bio: selectedProfile!.bio });
+            const newConversation = await CreateMessage(conversation.matchId, { 
+                messagePrompt: message, 
+                name: selectedProfile?.firstName + " " + selectedProfile?.lastName, 
+                age: selectedProfile!.age, 
+                ethnicity: selectedProfile!.ethnicity,
+                gender: selectedProfile!.gender,
+                bio: selectedProfile!.bio 
+            });
             setConversation(newConversation);
         }
         setMessage('');
@@ -30,6 +38,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
     useEffect(() => {
         if (conversationContainer.current) {
             conversationContainer.current.scrollTop = conversationContainer.current.scrollHeight;
+            messageInput.current?.focus();
         }
     }, [conversation]);
 
@@ -64,7 +73,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
                 </div>
             </section>
             <div className="flex gap-2 align-center mt-3">
-                <input disabled={loading} onKeyDown={handleKeyDown}
+                <input ref={messageInput} disabled={loading} autoFocus onKeyDown={handleKeyDown}
                     type="text"
                     placeholder="Type a message..."
                     value={message}
