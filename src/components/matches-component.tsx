@@ -2,7 +2,9 @@ import { ConversationInterface, MatchInterface, ProfileInterface } from "../lib/
 import deleteMatchById, { GetMatchedProfiles } from "../api/matches";
 import { GetConversationFromTo } from "../api/conversation";
 import React, { useEffect, useState } from "react"
+import { useToast } from "@/hooks/use-toast";
 import { XCircle } from "lucide-react";
+import { ToastAction } from "./ui/toast";
 
 type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 
@@ -23,6 +25,7 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
 
     const userId = localStorage.getItem('userId');
     // const { matches, setMatches } = matchState;
+    const { toast } = useToast();
 
     const viewConversations = async (profileId: string, toProfileId: string) => {
         const conversation = await GetConversationFromTo(profileId, toProfileId);
@@ -37,16 +40,30 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
     }
 
     const handleDelete = async (userId: string) => {
-        const res = await deleteMatchById(userId);
-        if (res.ok) {
-            window.alert('Match deleted successfully');
-        } else {
-            window.alert('Unable to delete match');
-        }
-        setMatchedProfiles();
+
+        toast({
+            title: 'Deleting match',
+            description: 'Are you sure you want to do that?',
+            action: <ToastAction altText="Delete" onClick={async () => {
+                const res = await deleteMatchById(userId);
+                if (res.ok) {
+                    toast({
+                        description: 'Match deleted successfully',
+                        action: <ToastAction altText="Okay" >Okay</ToastAction>
+                    });
+                    setMatchedProfiles();
+                } else {
+                    toast({
+                        variant: 'destructive',
+                        description: 'Something went wrong',
+                    });
+                }
+            }}>Delete</ToastAction>
+        });
     };
 
     const setMatchedProfiles = async () => {
+        console.log("SetMatchedProfiles called from matches-component");
         const data = await GetMatchedProfiles(userId!);
         setProfiles(data);
     };
@@ -74,7 +91,6 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
                         <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
                             onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</button>
                         <button onClick={() => { handleDelete(profile.userId) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
-
                     </section>
                 </li>
             ))

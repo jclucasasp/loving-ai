@@ -44,7 +44,6 @@ function App() {
   return (
     <div className='max-w-lg mx-auto mt-3'>
       <nav className='flex justify-between mb-6'>
-
         <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('profile')} />
         <h3>{localStorage.getItem('firstName') + " " + localStorage.getItem('lastName')}</h3>
         <div className='w-9 h-9' />
