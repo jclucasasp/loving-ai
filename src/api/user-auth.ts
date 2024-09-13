@@ -10,7 +10,7 @@ export async function LoginAuth(email: string, password: string) {
         body: JSON.stringify({email, password})
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('Failed to fetch data with error: \n'+ res.statusText);
+            return null;
         }
         return res.json();
     }).then((data: ProfileInterface) => {
@@ -31,7 +31,7 @@ export async function LogoutAuth(id: string) {
         body: JSON.stringify({ id })
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('Failed to fetch data');
+            return null;
         }
         return res.json();
     }).then((data: string) => {

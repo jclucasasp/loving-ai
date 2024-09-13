@@ -9,7 +9,7 @@ export async function GetRandomProfile(): Promise<ProfileInterface> {
     })
         .then((res) => {
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                return null;
             }
             return res.json();
         }).then((data) => {
@@ -30,7 +30,7 @@ export async function GetProfileById(userId: string): Promise<ProfileInterface> 
         body: JSON.stringify({ userId })
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('Failed to fetch data');
+            return null;
         }
         console.log(res.json());
         return res.json();

@@ -11,7 +11,7 @@ export async function GetMatches(userId: string): Promise<MatchInterface[]> {
         
     }).then((res) => {
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                return null;
             }
             return res.json();
         }).then((data) => {
@@ -35,7 +35,7 @@ export async function GetMatchedProfiles(userId: string): Promise<ProfileInterfa
         body: JSON.stringify(data)
     }).then((res) => {
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                return null;
             }
             return res.json();
         }).then((data) => {
@@ -62,7 +62,7 @@ export async function CreateMatch(profileId: string, toProfileId: string): Promi
         body: JSON.stringify({ profileId, toProfileId })
     }).then((res) => {
         if (!res.ok) {
-            throw new Error('Failed to fetch data');
+            return null;
         }
         return res.json();
     }).then((data) => {

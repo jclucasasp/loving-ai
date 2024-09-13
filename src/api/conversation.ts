@@ -10,7 +10,7 @@ export async function GetConversationFromTo(profileId: string, toProfileId: stri
     })
         .then((res) => {
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                return null;
             }
             return res.json();
         }).then((data) => {
@@ -48,7 +48,7 @@ export async function CreateMessage(matchId: string, response: ResponseInterface
     })
         .then((res) => {
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                return null;
             }
             return res.json();
         }).then((data) => {

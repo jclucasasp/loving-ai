@@ -1,3 +1,4 @@
+import { TooltipProvider, TooltipContent, TooltipTrigger, Tooltip } from './components/ui/tooltip';
 import { ConversationInterface, MatchInterface, ProfileInterface } from './lib/interfaces';
 import { GetProfileById, GetRandomProfile } from './api/profiles';
 import useLoggedInUserState from './hooks/use-loggedin-user-state';
@@ -18,6 +19,7 @@ function App() {
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
   const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
   const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
+  const [isMatched, setIsMatched] = useState(false);
 
   const seedRandomProfile = async (id?: string) => {
     let profileData = {} as Promise<ProfileInterface>;
@@ -44,15 +46,37 @@ function App() {
   return (
     <div className='max-w-lg mx-auto mt-3'>
       <nav className='flex justify-between mb-6'>
-        <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('profile')} />
-        <h3>{sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}</h3>
-        <div className='w-9 h-9' />
-        <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger >
+              <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('profile')} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Profiles</p>
+            </TooltipContent>
+          </Tooltip>
+          <h3>{sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}</h3>
+          <div className='w-9 h-9' />
+          <Tooltip>
+            <TooltipTrigger>
+              <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Matches</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </nav>
-      {currentScreen === 'profile' && <Profiles profile={currentProfile} setNextProfile={setCurrentProfile} matchSate={{ matches, setMatches }} />}
-      {currentScreen === 'match' && <Matches screen={setCurrentScreen} setCurrentProfile={setCurrentProfile}
-        setCurrentConversation={setCurrentConversation} matchState={{ matches, setMatches }} />}
-      {currentScreen === 'chat' && <ChatMessages currentConversation={currentConversation} selectedProfile={currentProfile} />}
+      {currentScreen === 'profile' && <Profiles profile={currentProfile}
+        setNextProfile={setCurrentProfile}
+        isMatchedState={{ isMatched, setIsMatched }}
+        matchSate={{ matches, setMatches }} />}
+      {currentScreen === 'match' && <Matches screen={setCurrentScreen}
+        setCurrentProfile={setCurrentProfile}
+        setCurrentConversation={setCurrentConversation}
+        matchState={{ matches, setMatches }} />}
+      {currentScreen === 'chat' && <ChatMessages currentConversation={currentConversation}
+        selectedProfile={currentProfile} />}
     </div>
   );
 }

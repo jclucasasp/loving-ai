@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react"
 import { useToast } from "@/hooks/use-toast";
 import { XCircle } from "lucide-react";
 import { ToastAction } from "./ui/toast";
+import { Button } from "./ui/button";
 
 type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 
@@ -83,14 +84,17 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
                 <li key={profile.userId} className="flex items-center justify-between">
                     <section className="flex gap-2 items-center">
                         <button onClick={() => { setCurrentProfile(profile); screen('profile') }}>
-                            <img src={"http://localhost:8080/images/" + profile.imageUrl} width={50} height={50} className="rounded-full" />
+                            <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
                         </button>
                         <h3>{profile.firstName} {profile.lastName}</h3>
                     </section>
                     <section className="flex gap-6">
-                        <button className="rounded-lg bg-green-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"
-                            onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</button>
-                        <button onClick={() => { handleDelete(profile.userId) }} className="rounded-lg bg-red-500 text-white p-2 h-11 hover:shadow-lg flex gap-2 items-center"><XCircle />Del</button>
+                        <Button variant={"secondary"} size={'lg'} className="gap-2"
+                            onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
+                        <Button variant={"destructive"} size={'lg'}
+                            onClick={() => { handleDelete(profile.userId) }}
+                            className="bg-red-500 gap-2">
+                            <XCircle />Del</Button>
                     </section>
                 </li>
             ))
