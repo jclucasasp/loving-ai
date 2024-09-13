@@ -6,6 +6,8 @@ import { useToast } from "@/hooks/use-toast";
 import { XCircle } from "lucide-react";
 import { ToastAction } from "./ui/toast";
 import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import SkeletonMatches from "./skeleton-matches";
 
 type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 
@@ -34,7 +36,9 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
         screen('chat');
     }
 
+    // TODO: profiles state need to be in App to prefent lost state
     const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
+    const [loading, setLoading] = useState(false);
 
     const handleChat = async (profileId: string, toProfileId: string) => {
         await viewConversations(profileId, toProfileId);
@@ -47,32 +51,28 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
             description: 'Are you sure you want to do that?',
             action: <ToastAction altText="Delete" onClick={async () => {
                 const res = await deleteMatchById(userId);
-                if (res.ok) {
-                    toast({
-                        description: 'Match deleted successfully',
-                        action: <ToastAction altText="Okay" >Okay</ToastAction>
-                    });
-                    setMatchedProfiles();
-                } else {
+                if (!res.ok) {
                     toast({
                         variant: 'destructive',
                         description: 'Something went wrong',
                     });
+                } else {
+                    setMatchedProfiles();
                 }
             }}>Delete</ToastAction>
         });
     };
 
     const setMatchedProfiles = async () => {
-        console.log("SetMatchedProfiles called from matches-component");
+        setLoading(true);
         const data = await GetMatchedProfiles(userId!);
         setProfiles(data);
+        setLoading(false);
     };
 
-    //TODO: Move the seeding to App.tsx to avoid re-rendering
+    //TODO: matchedProfiles state is lost when navigating to another page
     useEffect(() => {
-        if (profiles.length == 0) {
-            console.log("setMatchedProfiles called from matches-component");
+        if (!!profiles) {
             setMatchedProfiles();
         }
     }, []);
@@ -80,24 +80,31 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
     // TODO: Find a way to iterate over both the profiles and the matches
     const MatchesList = () => {
         return (
-            profiles.map((profile) => (
-                <li key={profile.userId} className="flex items-center justify-between">
-                    <section className="flex gap-2 items-center">
-                        <button onClick={() => { setCurrentProfile(profile); screen('profile') }}>
-                            <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
-                        </button>
-                        <h3>{profile.firstName} {profile.lastName}</h3>
-                    </section>
-                    <section className="flex gap-6">
-                        <Button variant={"secondary"} size={'lg'} className="gap-2"
-                            onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
-                        <Button variant={"destructive"} size={'lg'}
-                            onClick={() => { handleDelete(profile.userId) }}
-                            className="bg-red-500 gap-2">
-                            <XCircle />Del</Button>
-                    </section>
-                </li>
-            ))
+            <Card className="p-2">
+                <ul className="flex h-[80vh] flex-col gap-3 overflow-y-scroll p-2">
+                    {loading && <SkeletonMatches />}
+                    {
+                        profiles.map((profile) => (
+                            <li key={profile.userId} className="flex items-center justify-between">
+                                <section className="flex gap-3 items-center">
+                                    <button onClick={() => { setCurrentProfile(profile); screen('profile') }}>
+                                        <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
+                                    </button>
+                                    <h3>{profile.firstName} {profile.lastName}</h3>
+                                </section>
+                                <section className="flex gap-6">
+                                    <Button variant={"secondary"} size={'default'} className="gap-2"
+                                        onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
+                                    <Button variant={"destructive"} size={'default'}
+                                        onClick={() => { handleDelete(profile.userId) }}
+                                        className="bg-red-500 gap-2">
+                                        <XCircle />Del</Button>
+                                </section>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </Card>
         );
     };
 
