@@ -23,7 +23,6 @@ export async function GetMatches(userId: string): Promise<MatchInterface[]> {
 }
 
 export async function GetMatchedProfiles(userId: string): Promise<ProfileInterface[]> {
-
     const data = await GetMatches(userId);
 
     return await fetch('http://127.0.0.1:8080/match/profiles', {

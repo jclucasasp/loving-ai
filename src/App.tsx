@@ -37,7 +37,8 @@ function App() {
     if (!currentProfile) {
       seedRandomProfile();
     }
-  }, [loggedInUser, currentProfile]);
+
+  }, [loggedInUser, currentProfile, matches, isMatched]);
 
   if (sessionStorage.length === 0) {
     return <Login setCurrentScreen={setCurrentScreen} />;
@@ -71,7 +72,8 @@ function App() {
         setNextProfile={setCurrentProfile}
         isMatchedState={{ isMatched, setIsMatched }}
         matchSate={{ matches, setMatches }} />}
-      {currentScreen === 'match' && <Matches screen={setCurrentScreen}
+      {currentScreen === 'match' && <Matches setScreen={setCurrentScreen}
+      
         setCurrentProfile={setCurrentProfile}
         setCurrentConversation={setCurrentConversation}
         matchState={{ matches, setMatches }} />}

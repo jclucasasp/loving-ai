@@ -2,17 +2,17 @@ import { ConversationInterface, MatchInterface, ProfileInterface } from "../lib/
 import deleteMatchById, { GetMatchedProfiles } from "../api/matches";
 import { GetConversationFromTo } from "../api/conversation";
 import React, { useEffect, useState } from "react"
+import SkeletonMatches from "./skeleton-matches";
 import { useToast } from "@/hooks/use-toast";
 import { XCircle } from "lucide-react";
 import { ToastAction } from "./ui/toast";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
-import SkeletonMatches from "./skeleton-matches";
 
 type StateTypes = 'profile' | 'match' | 'chat' | 'login';
 
 type MachesProps = {
-    screen: React.Dispatch<React.SetStateAction<StateTypes>>;
+    setScreen: React.Dispatch<React.SetStateAction<StateTypes>>;
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
     setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationInterface>>;
     matchState: MatchState;
@@ -23,26 +23,22 @@ type MatchState = {
     matches: MatchInterface[];
 }
 
-
-export default function Matches({ screen, setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
+export default function Matches({ setScreen, setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
 
     const userId = sessionStorage.getItem('userId');
     // const { matches, setMatches } = matchState;
+    const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
     const { toast } = useToast();
 
-    const viewConversations = async (profileId: string, toProfileId: string) => {
-        const conversation = await GetConversationFromTo(profileId, toProfileId);
-        setCurrentConversation(conversation);
-        screen('chat');
-    }
 
-    // TODO: profiles state need to be in App to prefent lost state
-    const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
     const [loading, setLoading] = useState(false);
 
+    // TODO: This is causing a rerender and make unnecessary api calls for pictures
     const handleChat = async (profileId: string, toProfileId: string) => {
-        await viewConversations(profileId, toProfileId);
-    }
+        const conversation = await GetConversationFromTo(profileId, toProfileId);
+        setCurrentConversation(conversation);
+        setScreen('chat');
+    };
 
     const handleDelete = async (userId: string) => {
 
@@ -70,9 +66,9 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
         setLoading(false);
     };
 
-    //TODO: matchedProfiles state is lost when navigating to another page
     useEffect(() => {
-        if (!!profiles) {
+        if (profiles.length == 0) {
+            console.log("setMatchedProfiles called from useEffect")
             setMatchedProfiles();
         }
     }, []);
@@ -87,7 +83,7 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
                         profiles.map((profile) => (
                             <li key={profile.userId} className="flex items-center justify-between">
                                 <section className="flex gap-3 items-center">
-                                    <button onClick={() => { setCurrentProfile(profile); screen('profile') }}>
+                                    <button onClick={() => { setCurrentProfile(profile); setScreen('profile') }}>
                                         <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
                                     </button>
                                     <h3>{profile.firstName} {profile.lastName}</h3>
@@ -107,8 +103,6 @@ export default function Matches({ screen, setCurrentProfile, setCurrentConversat
             </Card>
         );
     };
-
-
 
     return (
         <ul className="flex flex-col gap-3">
