@@ -50,7 +50,10 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
     <section className='flex flex-col justify-center items-center h-screen'>
       <Card className='max-w-sm'>
         <CardHeader className='text-center text-2xl'>
-          <CardTitle>Are you ready to meet the Cuties?</CardTitle>
+          <div className='flex justify-center mb-3'>
+            <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
+          </div>
+          <CardTitle>Rizz loading...</CardTitle>
         </CardHeader>
         <CardContent>
           <form className='flex flex-col gap-2' onSubmit={handleSubmit}>

@@ -62,6 +62,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-color: #f2f2fe;
+    background-image: url('./assets/Cupid.jpg');
+    background-color: #f6edff;
+    background-blend-mode: lighten;
   }
 }

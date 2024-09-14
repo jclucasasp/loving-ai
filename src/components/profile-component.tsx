@@ -5,6 +5,7 @@ import { Heart, X } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import React from "react";
+import { ToastAction } from "./ui/toast";
 
 
 type ProfileProps = {
@@ -40,6 +41,7 @@ export default function Profiles({ profile, setNextProfile, matchSate, isMatched
             toast({
                 title: 'Match created successfully',
                 description: 'May this be the beginning of something great!',
+                action: <ToastAction altText="Okay" >Okay</ToastAction>
             });
             setMatches([...matches, newMatch]);
         }
@@ -59,18 +61,21 @@ export default function Profiles({ profile, setNextProfile, matchSate, isMatched
                     <div className="p-4">
                         <p className="text-gray-600">{profile?.bio}</p>
                     </div>
-                    <div className="flex justify-between w-full mt-6">
-                        <Button variant={"destructive"} size={"xl"} className="hover:text-black"
+                    <div className="flex justify-around mt-6">
+                        <div className="cursor-pointer flex flex-col items-center"
                             onClick={() => { setNextProfile(null), setIsMatched(false) }}>
-                            <X size={25} />
-                        </Button>
-                        {!isMatched ? <Button variant={"secondary"} size={"xl"}
-                            className=" bg-blue-500 thover:shadow-lg hover:bg-blue-700 hover:text-red-600"
-                            onClick={createMatchHandler} >
-                            <Heart size={25} />
-                        </Button>
-                            : <Button variant={"secondary"} size={"xl"} disabled
-                            className="bg-blue-500 text-white px-9 py-3 hover:text-red-600">Matched</Button>}
+                            <img src="/thinking.png" alt="thinking emoji" height={70} width={70} />
+                            Next ...
+                        </div>
+                        {!isMatched ? <div className="cursor-pointer flex flex-col items-center"onClick={createMatchHandler} >
+                            <img src="/heartFace.png" alt="face with hearts emoji" height={75} width={75} />
+                            Like
+                        </div>
+                            : <div className="cursor-not-allowed">
+                                <img src="/kissyFace.png" alt="kissy face emoji" height={70} width={70} />
+                                Matched
+                                </div>
+                                }
                     </div>
                 </CardContent>
             </Card>

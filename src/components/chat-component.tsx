@@ -49,7 +49,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
         <div>
             <section className="flex gap-4 items-center justify-center mb-3">
                 <img src={"http://localhost:8080/images/" + selectedProfile?.imageUrl} width={70} height={70} className="rounded-full" />
-                <h3 className="text-2xl text-green-500/55 italic">
+                <h3 className="text-2xl text-indigo-500 italic">
                     {selectedProfile?.firstName + " " + selectedProfile?.lastName}
                 </h3>
             </section>
