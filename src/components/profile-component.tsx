@@ -1,11 +1,9 @@
 import { MatchInterface, ProfileInterface } from "../lib/interfaces";
+import { Card, CardContent } from "./ui/card";
 import { CreateMatch } from "../api/matches";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, X } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
-import { Button } from "./ui/button";
-import React from "react";
 import { ToastAction } from "./ui/toast";
+import React from "react";
 
 
 type ProfileProps = {
@@ -61,7 +59,7 @@ export default function Profiles({ profile, setNextProfile, matchSate, isMatched
                     <div className="p-4">
                         <p className="text-gray-600">{profile?.bio}</p>
                     </div>
-                    <div className="flex justify-around mt-6">
+                    <div className="flex justify-around mt-6 text-gray-500">
                         <div className="cursor-pointer flex flex-col items-center"
                             onClick={() => { setNextProfile(null), setIsMatched(false) }}>
                             <img src="/thinking.png" alt="thinking emoji" height={70} width={70} />

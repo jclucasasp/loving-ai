@@ -10,6 +10,20 @@ export interface ProfileInterface {
     myersBriggsPersonalityType: string;
 }
 
+export interface NewUserProfileInterface {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    age: number;
+    ethnicity: string;
+    gender: string;
+    bio: string;
+    imageUrl: string;
+    myersBriggsPersonalityType: string;
+}
+
 export interface MatchInterface {
     id: string;
     matchedDate: string;
@@ -38,3 +52,6 @@ export interface ResponseInterface {
     gender: string;
     bio: string;
 }
+
+
+export type StateScreenTypes = 'profile' | 'match' | 'chat' | 'login' | 'userProfile' | 'signUp';

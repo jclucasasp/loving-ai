@@ -1,4 +1,4 @@
-import { ConversationInterface, MatchInterface, ProfileInterface } from "../lib/interfaces";
+import { ConversationInterface, MatchInterface, ProfileInterface, StateScreenTypes } from "../lib/interfaces";
 import deleteMatchById, { GetMatchedProfiles } from "../api/matches";
 import { GetConversationFromTo } from "../api/conversation";
 import React, { useEffect, useState } from "react"
@@ -9,10 +9,8 @@ import { ToastAction } from "./ui/toast";
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 
-type StateTypes = 'profile' | 'match' | 'chat' | 'login';
-
 type MachesProps = {
-    setScreen: React.Dispatch<React.SetStateAction<StateTypes>>;
+    setScreen: React.Dispatch<React.SetStateAction<StateScreenTypes>>;
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
     setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationInterface>>;
     matchState: MatchState;

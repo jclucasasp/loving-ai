@@ -1,21 +1,24 @@
+import { ConversationInterface, MatchInterface, ProfileInterface, StateScreenTypes } from './lib/interfaces';
 import { TooltipProvider, TooltipContent, TooltipTrigger, Tooltip } from './components/ui/tooltip';
-import { ConversationInterface, MatchInterface, ProfileInterface } from './lib/interfaces';
-import { GetProfileById, GetRandomProfile } from './api/profiles';
 import useLoggedInUserState from './hooks/use-loggedin-user-state';
+import { GetProfileById, GetRandomProfile } from './api/profiles';
 import ChatMessages from './components/chat-component';
 import Profiles from './components/profile-component';
 import Matches from './components/matches-component';
+import UserProfile from './components/user-profile';
 import { User, MessageCircle } from 'lucide-react';
+import { Button } from './components/ui/button';
 import { useEffect, useState } from 'react';
+import SignUp from './auth/sign-up';
 import Login from './auth/login';
 import './App.css';
 
 function App() {
 
-  type StateTypes = 'profile' | 'match' | 'chat' | 'login';
+
   const { loggedInUser } = useLoggedInUserState();
 
-  const [currentScreen, setCurrentScreen] = useState<StateTypes>('profile');
+  const [currentScreen, setCurrentScreen] = useState<StateScreenTypes>('profile');
   const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
   const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
   const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
@@ -38,10 +41,11 @@ function App() {
       seedRandomProfile();
     }
 
-  }, [loggedInUser, currentProfile, matches, isMatched]);
+  }, [loggedInUser, currentProfile, currentScreen]);
 
   if (sessionStorage.length === 0) {
     return <Login setCurrentScreen={setCurrentScreen} />;
+    // return <SignUp setScreen={setCurrentScreen} />
   }
 
   return (
@@ -56,7 +60,13 @@ function App() {
               <p>Profiles</p>
             </TooltipContent>
           </Tooltip>
-          <h3>{sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}</h3>
+
+          <Button variant={"link"} className='text-purple-400'
+            onClick={() => setCurrentScreen('userProfile')}>
+            <p className='font-bold'>Rizz Master: </p>
+            {sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}
+          </Button>
+
           <div className='w-9 h-9' />
           <Tooltip>
             <TooltipTrigger>
@@ -73,12 +83,14 @@ function App() {
         isMatchedState={{ isMatched, setIsMatched }}
         matchSate={{ matches, setMatches }} />}
       {currentScreen === 'match' && <Matches setScreen={setCurrentScreen}
-      
         setCurrentProfile={setCurrentProfile}
         setCurrentConversation={setCurrentConversation}
         matchState={{ matches, setMatches }} />}
       {currentScreen === 'chat' && <ChatMessages currentConversation={currentConversation}
         selectedProfile={currentProfile} />}
+      {currentScreen === 'userProfile' && <UserProfile
+        userProfile={loggedInUser} setScreen={setCurrentScreen} />}
+        {currentScreen === 'signUp' && <SignUp setScreen={setCurrentScreen} />}
     </div>
   );
 }

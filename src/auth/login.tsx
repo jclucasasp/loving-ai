@@ -1,21 +1,20 @@
-import useLoggedInUserState from '../hooks/use-loggedin-user-state';
-import { LoginAuth } from '../api/user-auth';
-import { FormEvent, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import useLoggedInUserState from '../hooks/use-loggedin-user-state';
+import { ToastAction } from '@/components/ui/toast';
+import { StateScreenTypes } from '@/lib/interfaces';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { LoginAuth } from '../api/user-auth';
 import { useToast } from '@/hooks/use-toast';
-import { ToastAction } from '@/components/ui/toast';
-import { Link } from 'lucide-react';
+import { FormEvent, useState } from 'react';
 
 interface LoginFormInterface {
   email: string;
   password: string;
 }
 
-type StateTypes = 'profile' | 'match' | 'chat' | 'login';
-export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Dispatch<React.SetStateAction<StateTypes>> }) {
+export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Dispatch<React.SetStateAction<StateScreenTypes>> }) {
 
   const [formObject, setformObject] = useState<LoginFormInterface>({ email: "", password: "" });
   const { toast } = useToast();
@@ -71,6 +70,7 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
             </Button>
           </form>
         </CardContent>
+        <Button variant='link' onClick={() => setCurrentScreen('signUp')} className='text-slate-400'>Don't have an account? Sign up</Button>
         <CardFooter>
         </CardFooter>
       </Card>

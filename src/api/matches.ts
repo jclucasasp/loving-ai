@@ -8,6 +8,7 @@ export async function GetMatches(userId: string): Promise<MatchInterface[]> {
         },
         method: 'POST',
         body: JSON.stringify({ userId }),
+        cache: 'force-cache',
         
     }).then((res) => {
             if (!res.ok) {
@@ -31,7 +32,9 @@ export async function GetMatchedProfiles(userId: string): Promise<ProfileInterfa
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        cache: 'force-cache',
+
     }).then((res) => {
             if (!res.ok) {
                 return null;
@@ -58,7 +61,9 @@ export async function CreateMatch(profileId: string, toProfileId: string): Promi
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ profileId, toProfileId })
+        body: JSON.stringify({ profileId, toProfileId }),
+        cache: 'force-cache',
+
     }).then((res) => {
         if (!res.ok) {
             return null;
@@ -79,7 +84,9 @@ export default async function deleteMatchById(userId: string) {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userId })
+        body: JSON.stringify({ userId }),
+        cache: 'force-cache',
+        
     }).catch((err) => {
         console.log(err);
         throw new Error(`Failed to deleteMatchById: [${userId}] \n` + err);
