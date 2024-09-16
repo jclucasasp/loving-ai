@@ -17,7 +17,7 @@ export default function UserProfile({userProfile}: UserProfileProps) {
     const handleLogout = async () => {
         sessionStorage.clear();
         await LogoutAuth(userProfile?.userId!);
-        navigate('login');
+        navigate('/');
     };
 
     const getUserProfile = async () => {

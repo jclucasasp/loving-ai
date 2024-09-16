@@ -38,6 +38,7 @@ export default function Matches({ setCurrentProfile, setCurrentConversation, mat
         navigate('/chat');
     };
 
+    // TODO: this is causing a double rerender
     const handleDelete = async (userId: string) => {
 
         toast({

@@ -1,6 +1,6 @@
 import { ConversationInterface, MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
-import { Navigate, Routes, Route, useNavigate } from "react-router-dom";
+import { Navigate, Routes, Route, useNavigate, redirect } from "react-router-dom";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import { GetRandomProfile, GetProfileById } from "@/api/profiles";
 import ChatMessages from "@/components/chat-component";
@@ -43,6 +43,11 @@ export default function Navigation() {
 
         window.addEventListener('beforeunload', autoLogoutOnClose);
 
+          
+    if (!sessionStorage.getItem('userId')) {
+        navigate('/');
+    }
+
         if (!currentProfile) {
             seedRandomProfile();
         }
@@ -52,16 +57,9 @@ export default function Navigation() {
         }
     }, [loggedInUser, currentProfile]);
 
-    const authRoute = (isAuthenticated: boolean) => {
-        if (isAuthenticated) {
-            return <Navigate to="/profile" replace />;
-        } else {
-            return <Login />;
-        }
-    }
-
     return (
         <div className='max-w-lg mx-auto mt-3'>
+            {sessionStorage.userId && 
             <nav className='flex justify-between mb-6'>
                 <TooltipProvider>
                     <Tooltip>
@@ -90,10 +88,11 @@ export default function Navigation() {
                     </Tooltip>
                 </TooltipProvider>
             </nav>
+            }
 
             <Routes>
-                <Route path="/" element={authRoute(sessionStorage.length !== 0)} />
-                <Route path="/login" element={<Login />} />
+                
+                <Route path="/" element={<Login />} />
                 <Route path="/signUp" element={<SignUp />} />
 
                 <Route path="/profile" element={<Profiles
