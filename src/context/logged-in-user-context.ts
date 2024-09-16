@@ -1,5 +1,5 @@
+import { ProfileInterface } from "@/lib/interfaces";
 import { createContext } from "react";
-import { ProfileInterface } from "../lib/interfaces";
 
 interface LoggedInUserContextProps {
     loggedInUser: ProfileInterface;

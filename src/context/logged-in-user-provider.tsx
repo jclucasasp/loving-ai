@@ -1,6 +1,6 @@
+import LoggedInUserContext from "@/context/logged-in-user-context";
+import { ProfileInterface } from "@/lib/interfaces";
 import { useState } from "react";
-import LoggedInUserContext from "./logged-in-user-context";
-import { ProfileInterface } from "../lib/interfaces";
 
 
 export default function LoggedInUserProvider({ children }: { children: React.ReactNode }) {

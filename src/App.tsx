@@ -1,118 +1,122 @@
-import { ConversationInterface, MatchInterface, ProfileInterface, StateScreenTypes } from './lib/interfaces';
-import { TooltipProvider, TooltipContent, TooltipTrigger, Tooltip } from './components/ui/tooltip';
-import useLoggedInUserState from './hooks/use-loggedin-user-state';
-import { GetProfileById, GetRandomProfile } from './api/profiles';
-import ChatMessages from './components/chat-component';
-import Profiles from './components/profile-component';
-import Matches from './components/matches-component';
-import UserProfile from './components/user-profile';
-import { User, MessageCircle } from 'lucide-react';
-import { Button } from './components/ui/button';
-import { useEffect, useState } from 'react';
-import SignUp from './auth/sign-up';
-import Login from './auth/login';
-import './App.css';
-import { LogoutAuth } from './api/user-auth';
+import { ConversationInterface, MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
+import { Navigate, Routes, Route, useNavigate } from "react-router-dom";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import { GetRandomProfile, GetProfileById } from "@/api/profiles";
+import ChatMessages from "@/components/chat-component";
+import Profiles from "@/components/profile-component";
+import Matches from "@/components/matches-component";
+import UserProfile from "@/components/user-profile";
+import { User, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { LogoutAuth } from "@/api/user-auth";
+import { useEffect, useState } from "react";
+import SignUp from "@/auth/sign-up";
+import Login from "@/auth/login";
 
-function App() {
+export default function Navigation() {
+    const [isMatched, setIsMatched] = useState(false);
+    const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
+    const [currentConversation, setCurrentConversation] = useState<ConversationInterface | null>(null);
+    const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
 
+    const { loggedInUser } = useLoggedInUserState();
+    const navigate = useNavigate();
 
-  const { loggedInUser } = useLoggedInUserState();
+    const seedRandomProfile = async (id?: string) => {
+        let profileData = {} as Promise<ProfileInterface>;
+        if (!id) {
+            profileData = GetRandomProfile();
+        } else {
+            profileData = GetProfileById(id);
+        }
 
-  const [currentScreen, setCurrentScreen] = useState<StateScreenTypes>('profile');
-  const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
-  const [currentConversation, setCurrentConversation] = useState<ConversationInterface>({} as ConversationInterface);
-  const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
-  const [isMatched, setIsMatched] = useState(false);
-
-  const seedRandomProfile = async (id?: string) => {
-    let profileData = {} as Promise<ProfileInterface>;
-    if (!id) {
-      profileData = GetRandomProfile();
-    } else {
-      profileData = GetProfileById(id);
+        const [profile] = await Promise.all([profileData]);
+        setCurrentProfile(profile);
     }
 
-    const [profile] = await Promise.all([profileData]);
-    setCurrentProfile(profile);
-  }
+    useEffect(() => {
+        const autoLogoutOnClose = async (event: BeforeUnloadEvent) => {
+            console.log("Auto logout on close");
+            await LogoutAuth(loggedInUser?.userId!);
+        }
 
-  useEffect(() => {
-    const autoLogoutOnClose = async (event: BeforeUnloadEvent) => {
-      console.log("Auto logout on close");
-      await LogoutAuth(loggedInUser?.userId!);
+        window.addEventListener('beforeunload', autoLogoutOnClose);
+
+        if (!currentProfile) {
+            seedRandomProfile();
+        }
+
+        return () => {
+            window.removeEventListener('beforeunload', autoLogoutOnClose);
+        }
+    }, [loggedInUser, currentProfile]);
+
+    const authRoute = (isAuthenticated: boolean) => {
+        if (isAuthenticated) {
+            return <Navigate to="/profile" replace />;
+        } else {
+            return <Login />;
+        }
     }
 
-    window.addEventListener('beforeunload', autoLogoutOnClose);
+    return (
+        <div className='max-w-lg mx-auto mt-3'>
+            <nav className='flex justify-between mb-6'>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger >
+                            <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => navigate('/profile')} />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Profiles</p>
+                        </TooltipContent>
+                    </Tooltip>
 
-    if (!currentProfile) {
-      seedRandomProfile();
-    }
+                    <Button variant={"link"} className='text-purple-400'
+                        onClick={() => navigate('userProfile')}>
+                        <p className='font-bold'>Rizz Master: </p>
+                        {sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}
+                    </Button>
 
-    return () => {
-      window.removeEventListener('beforeunload', autoLogoutOnClose);
-    }
+                    <div className='w-9 h-9' />
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => navigate('/match')} />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Matches</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            </nav>
 
-  }, [loggedInUser, currentProfile, currentScreen]);
+            <Routes>
+                <Route path="/" element={authRoute(sessionStorage.length !== 0)} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signUp" element={<SignUp />} />
 
-  if (sessionStorage.length === 0) {
-    return <Login setCurrentScreen={setCurrentScreen} />
-  }
+                <Route path="/profile" element={<Profiles
+                    profile={currentProfile}
+                    setNextProfile={setCurrentProfile}
+                    isMatchedState={{ isMatched, setIsMatched }}
+                    matchSate={{ matches, setMatches }} />}
+                />
 
-  return (
-    <div className='max-w-lg mx-auto mt-3'>
-      <nav className='flex justify-between mb-6'>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger >
-              <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('profile')} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Profiles</p>
-            </TooltipContent>
-          </Tooltip>
+                <Route path="/match" element={<Matches
+                    setCurrentProfile={setCurrentProfile}
+                    setCurrentConversation={setCurrentConversation}
+                    matchState={{ matches, setMatches }} />}
+                />
 
-          <Button variant={"link"} className='text-purple-400'
-            onClick={() => setCurrentScreen('userProfile')}>
-            <p className='font-bold'>Rizz Master: </p>
-            {sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}
-          </Button>
+                <Route path="/chat" element={<ChatMessages currentConversation={currentConversation}
+                    selectedProfile={currentProfile} />}
+                />
 
-          <div className='w-9 h-9' />
-          <Tooltip>
-            <TooltipTrigger>
-              <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => setCurrentScreen('match')} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Matches</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </nav>
-
-      {currentScreen === 'signUp' && <SignUp setScreen={setCurrentScreen} />}
-
-      {currentScreen === 'userProfile' && <UserProfile
-        userProfile={loggedInUser} setScreen={setCurrentScreen} />}
-
-      {currentScreen === 'profile' &&
-        <Profiles profile={currentProfile}
-          setNextProfile={setCurrentProfile}
-          isMatchedState={{ isMatched, setIsMatched }}
-          matchSate={{ matches, setMatches }} />}
-
-      {currentScreen === 'match' &&
-        <Matches setScreen={setCurrentScreen}
-          setCurrentProfile={setCurrentProfile}
-          setCurrentConversation={setCurrentConversation}
-          matchState={{ matches, setMatches }} />}
-
-      {currentScreen === 'chat' &&
-        <ChatMessages currentConversation={currentConversation}
-          selectedProfile={currentProfile} />}
-
-    </div>
-  );
+                <Route path="/userProfile" element={<UserProfile
+                    userProfile={loggedInUser} />}
+                />
+            </Routes>
+        </div>
+    );
 }
-
-export default App

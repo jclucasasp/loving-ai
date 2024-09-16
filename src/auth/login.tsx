@@ -1,23 +1,25 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import useLoggedInUserState from '../hooks/use-loggedin-user-state';
 import { ToastAction } from '@/components/ui/toast';
-import { StateScreenTypes } from '@/lib/interfaces';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LoginAuth } from '../api/user-auth';
 import { useToast } from '@/hooks/use-toast';
 import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormInterface {
   email: string;
   password: string;
 }
 
-export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Dispatch<React.SetStateAction<StateScreenTypes>> }) {
+export default function Login() {
 
   const [formObject, setformObject] = useState<LoginFormInterface>({ email: "", password: "" });
   const { toast } = useToast();
+
+  const naviage = useNavigate();
 
   const handleChange = (e: FormEvent<HTMLInputElement>) => {
     setformObject({ ...formObject, [e.currentTarget.name]: e.currentTarget.value });
@@ -27,7 +29,7 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
     e.preventDefault();
     e.currentTarget.reset();
     handleLogin();
-    setCurrentScreen('profile');
+    naviage('/profile');
   }
 
   const { updateLoggedInUser } = useLoggedInUserState();
@@ -40,7 +42,7 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
         variant: 'destructive',
         action: <ToastAction altText="Okay" >Okay</ToastAction>
       })
-      return;
+      naviage('/login');
     }
     updateLoggedInUser(data);
   }
@@ -71,7 +73,7 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
           </form>
         </CardContent>
         <CardFooter>
-        <Button variant='link' onClick={() => { setCurrentScreen('signUp'); console.log('SigUp clicked') }} className='text-slate-400'>Don't have an account? Sign up</Button>
+        <Button variant='link' onClick={() => naviage('/signup')} className='text-slate-400'>Don't have an account? Sign up</Button>
         </CardFooter>
       </Card>
     </section>

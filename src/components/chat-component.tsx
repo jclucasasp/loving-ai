@@ -1,15 +1,15 @@
 import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
 import { useEffect, useRef, useState } from "react";
-import { CreateMessage } from "../api/conversation";
-import SkeletonCard from "./skeleton-card";
-import { Textarea } from "./ui/textarea";
-import { cn } from "../lib/utils";
-import { Card } from "./ui/card";
+import SkeletonCard from "@/components/skeleton-card";
+import { Textarea } from "@/components/ui/textarea";
+import { CreateMessage } from "@/api/conversation";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
-export default function ChatMessages({ currentConversation, selectedProfile }: { currentConversation: ConversationInterface, selectedProfile: ProfileInterface | null }) {
+export default function ChatMessages({ currentConversation, selectedProfile }: { currentConversation: ConversationInterface | null, selectedProfile: ProfileInterface | null }) {
 
     const [message, setMessage] = useState<string>('');
-    const [conversation, setConversation] = useState<ConversationInterface>(currentConversation);
+    const [conversation, setConversation] = useState<ConversationInterface | null>(currentConversation);
     const [loading, setLoading] = useState<boolean>(false);
 
     const conversationContainer = useRef<HTMLDivElement>(null);
@@ -18,7 +18,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
     const handleMessageSubmit = async () => {
         setLoading(true);
         if (message.trim()) {
-            const newConversation = await CreateMessage(conversation.matchId, {
+            const newConversation = await CreateMessage(conversation!.matchId, {
                 messagePrompt: message,
                 name: selectedProfile?.firstName + " " + selectedProfile?.lastName,
                 age: selectedProfile!.age,

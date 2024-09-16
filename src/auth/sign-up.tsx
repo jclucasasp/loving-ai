@@ -1,14 +1,15 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { NewUserProfileInterface, StateScreenTypes } from "@/lib/interfaces";
+import { NewUserProfileInterface } from "@/lib/interfaces";
 import { CreateNewUserProfile } from "@/api/profiles";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { redirect } from "react-router-dom";
 import { useState } from "react";
-import { ToastAction } from "@/components/ui/toast";
 
-export default function SignUp({ setScreen }: { setScreen: React.Dispatch<React.SetStateAction<StateScreenTypes>> }) {
+export default function SignUp() {
 
   const [formObject, setformObject] = useState<NewUserProfileInterface>({
     id: "", age: 0, bio: "", firstName: "", lastName: "", gender: "",
@@ -28,7 +29,7 @@ export default function SignUp({ setScreen }: { setScreen: React.Dispatch<React.
         })
       }
     });
-    setScreen('login');
+    redirect('/login');
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

@@ -1,18 +1,18 @@
-import { ConversationInterface, MatchInterface, ProfileInterface, StateScreenTypes } from "../lib/interfaces";
-import deleteMatchById, { GetMatchedProfiles } from "../api/matches";
-import { GetConversationFromTo } from "../api/conversation";
+import { ConversationInterface, MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import deleteMatchById, { GetMatchedProfiles } from "@/api/matches";
+import { GetConversationFromTo } from "@/api/conversation";
 import React, { useEffect, useState } from "react"
-import SkeletonMatches from "./skeleton-matches";
+import SkeletonMatches from "@/components/skeleton-matches";
+import { ToastAction } from "@/components/ui/toast";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { XCircle } from "lucide-react";
-import { ToastAction } from "./ui/toast";
-import { Button } from "./ui/button";
-import { Card } from "./ui/card";
 
 type MachesProps = {
-    setScreen: React.Dispatch<React.SetStateAction<StateScreenTypes>>;
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
-    setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationInterface>>;
+    setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationInterface | null>>;
     matchState: MatchState;
 }
 
@@ -21,13 +21,13 @@ type MatchState = {
     matches: MatchInterface[];
 }
 
-export default function Matches({ setScreen, setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
+export default function Matches({ setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
 
     const userId = sessionStorage.getItem('userId');
     // const { matches, setMatches } = matchState;
     const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
     const { toast } = useToast();
-
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
@@ -35,7 +35,7 @@ export default function Matches({ setScreen, setCurrentProfile, setCurrentConver
     const handleChat = async (profileId: string, toProfileId: string) => {
         const conversation = await GetConversationFromTo(profileId, toProfileId);
         setCurrentConversation(conversation);
-        setScreen('chat');
+        navigate('/chat');
     };
 
     const handleDelete = async (userId: string) => {
@@ -81,10 +81,12 @@ export default function Matches({ setScreen, setCurrentProfile, setCurrentConver
                         profiles.map((profile) => (
                             <li key={profile.userId} className="flex items-center justify-between">
                                 <section className="flex gap-3 items-center">
-                                    <button onClick={() => { setCurrentProfile(profile); setScreen('profile') }}>
+                                    <Button variant={"link"} 
+                                    onClick={() => { setCurrentProfile(profile); navigate('/profile') }} 
+                                    className="mb-2 flex gap-4">
                                         <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
-                                    </button>
                                     <h3>{profile.firstName} {profile.lastName}</h3>
+                                    </Button>
                                 </section>
                                 <section className="flex gap-6">
                                     <Button variant={"secondary"} size={'default'} className="gap-2"

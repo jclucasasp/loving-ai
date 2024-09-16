@@ -1,21 +1,34 @@
-import { ProfileInterface, StateScreenTypes } from "@/lib/interfaces";
+import { ProfileInterface } from "@/lib/interfaces";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { LogoutAuth } from "@/api/user-auth";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { GetProfileById } from "@/api/profiles";
 
 
 type UserProfileProps = {
     userProfile: ProfileInterface | null
-    setScreen: React.Dispatch<React.SetStateAction<StateScreenTypes>>;
 }
 
-export default function UserProfile({userProfile, setScreen}: UserProfileProps) {
+export default function UserProfile({userProfile}: UserProfileProps) {
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         sessionStorage.clear();
         await LogoutAuth(userProfile?.userId!);
-        setScreen('login');
+        navigate('login');
     };
+
+    const getUserProfile = async () => {
+        userProfile = await GetProfileById(sessionStorage.getItem('userId')!);
+    }
+
+    useEffect(() => {
+        if (!userProfile?.userId) {
+            getUserProfile();
+        }
+    }, []);
 
     return (
         <Card>

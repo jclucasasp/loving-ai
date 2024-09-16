@@ -1,8 +1,8 @@
 import { MatchInterface, ProfileInterface } from "../lib/interfaces";
-import { Card, CardContent } from "./ui/card";
-import { CreateMatch } from "../api/matches";
+import { Card, CardContent } from "@/components/ui/card";
+import { ToastAction } from "@/components/ui/toast";
+import { CreateMatch } from "@/api/matches";
 import { useToast } from "@/hooks/use-toast";
-import { ToastAction } from "./ui/toast";
 import React from "react";
 
 
