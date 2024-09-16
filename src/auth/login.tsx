@@ -60,7 +60,7 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
             <Input type="email" name='email' id="email" value={formObject.email} onChange={handleChange} />
             <div className='flex justify-between items-center'>
             <Label htmlFor="password">Password</Label>
-            <Button variant='link' onClick={() => setCurrentScreen('login')} className='text-slate-400'>Forgot Password?</Button>
+            <a href="/matches" className='text-slate-400 text-sm'>Forgot Password?</a>
             </div>
             <Input type="password" name='password' id="password" value={formObject.password} onChange={handleChange} />
             <Button type='submit' variant='default'
@@ -70,8 +70,8 @@ export default function Login({ setCurrentScreen }: { setCurrentScreen: React.Di
             </Button>
           </form>
         </CardContent>
-        <Button variant='link' onClick={() => setCurrentScreen('signUp')} className='text-slate-400'>Don't have an account? Sign up</Button>
         <CardFooter>
+        <Button variant='link' onClick={() => { setCurrentScreen('signUp'); console.log('SigUp clicked') }} className='text-slate-400'>Don't have an account? Sign up</Button>
         </CardFooter>
       </Card>
     </section>

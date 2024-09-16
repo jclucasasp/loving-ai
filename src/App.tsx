@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import SignUp from './auth/sign-up';
 import Login from './auth/login';
 import './App.css';
+import { LogoutAuth } from './api/user-auth';
 
 function App() {
 
@@ -37,15 +38,25 @@ function App() {
   }
 
   useEffect(() => {
+    const autoLogoutOnClose = async (event: BeforeUnloadEvent) => {
+      console.log("Auto logout on close");
+      await LogoutAuth(loggedInUser?.userId!);
+    }
+
+    window.addEventListener('beforeunload', autoLogoutOnClose);
+
     if (!currentProfile) {
       seedRandomProfile();
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', autoLogoutOnClose);
     }
 
   }, [loggedInUser, currentProfile, currentScreen]);
 
   if (sessionStorage.length === 0) {
-    return <Login setCurrentScreen={setCurrentScreen} />;
-    // return <SignUp setScreen={setCurrentScreen} />
+    return <Login setCurrentScreen={setCurrentScreen} />
   }
 
   return (
@@ -78,19 +89,28 @@ function App() {
           </Tooltip>
         </TooltipProvider>
       </nav>
-      {currentScreen === 'profile' && <Profiles profile={currentProfile}
-        setNextProfile={setCurrentProfile}
-        isMatchedState={{ isMatched, setIsMatched }}
-        matchSate={{ matches, setMatches }} />}
-      {currentScreen === 'match' && <Matches setScreen={setCurrentScreen}
-        setCurrentProfile={setCurrentProfile}
-        setCurrentConversation={setCurrentConversation}
-        matchState={{ matches, setMatches }} />}
-      {currentScreen === 'chat' && <ChatMessages currentConversation={currentConversation}
-        selectedProfile={currentProfile} />}
+
+      {currentScreen === 'signUp' && <SignUp setScreen={setCurrentScreen} />}
+
       {currentScreen === 'userProfile' && <UserProfile
         userProfile={loggedInUser} setScreen={setCurrentScreen} />}
-        {currentScreen === 'signUp' && <SignUp setScreen={setCurrentScreen} />}
+
+      {currentScreen === 'profile' &&
+        <Profiles profile={currentProfile}
+          setNextProfile={setCurrentProfile}
+          isMatchedState={{ isMatched, setIsMatched }}
+          matchSate={{ matches, setMatches }} />}
+
+      {currentScreen === 'match' &&
+        <Matches setScreen={setCurrentScreen}
+          setCurrentProfile={setCurrentProfile}
+          setCurrentConversation={setCurrentConversation}
+          matchState={{ matches, setMatches }} />}
+
+      {currentScreen === 'chat' &&
+        <ChatMessages currentConversation={currentConversation}
+          selectedProfile={currentProfile} />}
+
     </div>
   );
 }
