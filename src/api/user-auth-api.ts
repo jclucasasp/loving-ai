@@ -1,4 +1,4 @@
-import { ProfileInterface } from "../lib/interfaces";
+import { ProfileInterface } from "@/lib/interfaces";
 
 export async function LoginAuth(email: string, password: string) {
     return await fetch('http://127.0.0.1:8080/user/login', {

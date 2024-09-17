@@ -1,19 +1,22 @@
-import { ConversationInterface, ProfileInterface } from "../lib/interfaces";
-import { useEffect, useRef, useState } from "react";
+import { ConversationInterface, ProfileInterface } from "@/lib/interfaces";
+import { CreateMessage } from "@/api/conversation-api";
 import SkeletonCard from "@/components/skeleton-card";
 import { Textarea } from "@/components/ui/textarea";
-import { CreateMessage } from "@/api/conversation";
+import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-export default function ChatMessages({ currentConversation, selectedProfile }: { currentConversation: ConversationInterface | null, selectedProfile: ProfileInterface | null }) {
+export default function ChatMessages({ selectedProfile }: { selectedProfile: ProfileInterface | null }) {
+    
+    const { conversationData, loggedInUser } = useLocation().state;
 
-    const [message, setMessage] = useState<string>('');
-    const [conversation, setConversation] = useState<ConversationInterface | null>(currentConversation);
+    const [conversation, setConversation] = useState<ConversationInterface | null>(conversationData);
     const [loading, setLoading] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
 
+    const messageInputContainer = useRef<HTMLTextAreaElement>(null);
     const conversationContainer = useRef<HTMLDivElement>(null);
-    const messageInput = useRef<HTMLTextAreaElement>(null);
 
     const handleMessageSubmit = async () => {
         setLoading(true);
@@ -41,7 +44,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
     useEffect(() => {
         if (conversationContainer.current) {
             conversationContainer.current.scrollTop = conversationContainer.current.scrollHeight;
-            messageInput.current?.focus();
+            messageInputContainer.current?.focus();
         }
     }, [conversation, loading]);
 
@@ -61,7 +64,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
                             <div key={i} className="mb-3">
 
                                 <div className={cn("border rounded-lg p-3 bg-gray-100 flex flex-col gap-2 text-end items-end",
-                                    m.senderProfileId !== sessionStorage.getItem('userId') && "bg-green-500/10 text-start"
+                                    m.senderProfileId !== loggedInUser.userId && "bg-green-500/10 text-start"
                                 )}>
                                     <p className="text-balance text-black">{m.messageText}</p>
                                     <div className="flex gap-2">
@@ -77,7 +80,7 @@ export default function ChatMessages({ currentConversation, selectedProfile }: {
                 </article>
             </Card>
             <div className="flex gap-2 align-center mt-3">
-                <Textarea ref={messageInput} disabled={loading} onKeyDown={handleKeyDown}
+                <Textarea ref={messageInputContainer} disabled={loading} onKeyDown={handleKeyDown}
                     placeholder="Type a message and press enter when ready to send"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}/>

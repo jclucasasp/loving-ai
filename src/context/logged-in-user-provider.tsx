@@ -5,16 +5,18 @@ import { useState } from "react";
 
 export default function LoggedInUserProvider({ children }: { children: React.ReactNode }) {
 
-    const [loggedInUser, setLoggedInUser] = useState<ProfileInterface>({} as ProfileInterface);
+    const [loggedInUser, setLoggedInUser] = useState<ProfileInterface | null>(null);
 
-    const updateLoggedInUser = (loggedInUser: ProfileInterface) => {
+    const updateLoggedInUser = (loggedInUser: ProfileInterface | null) => {
 
         if (loggedInUser && loggedInUser.userId.length > 0) {
-            sessionStorage.setItem('userId', loggedInUser.userId);
-            sessionStorage.setItem("firstName", loggedInUser.firstName);
-            sessionStorage.setItem("lastName", loggedInUser.lastName);
+            sessionStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
             
             setLoggedInUser(loggedInUser);
+          }
+
+          if (sessionStorage.loggedInUser && sessionStorage.loggedInUser.length > 0) {
+            setLoggedInUser(JSON.parse(sessionStorage.loggedInUser));
           }
     }
 

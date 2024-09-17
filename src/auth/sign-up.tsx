@@ -1,6 +1,6 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { NewUserProfileInterface } from "@/lib/interfaces";
-import { CreateNewUserProfile } from "@/api/profiles";
+import { CreateNewUserProfile } from "@/api/profiles-api";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";

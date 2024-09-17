@@ -1,4 +1,4 @@
-import { NewUserProfileInterface, ProfileInterface } from "../lib/interfaces";
+import { NewUserProfileInterface, ProfileInterface } from "@/lib/interfaces";
 
 export async function GetRandomProfile(): Promise<ProfileInterface> {
     return await fetch('http://127.0.0.1:8080/profile/random', {
@@ -28,15 +28,15 @@ export async function GetProfileById(userId: string): Promise<ProfileInterface> 
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ userId }),
-        cache: 'force-cache',
 
     }).then((res) => {
         if (!res.ok) {
             return null;
         }
-        console.log(res.json());
         return res.json();
 
+    }).then((data) => {
+        return data;
     }).catch((err) => {
         console.log(err);
         throw new Error('Failed to GetProfileById: [' + userId + ']' + err);

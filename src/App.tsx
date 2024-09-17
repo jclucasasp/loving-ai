@@ -1,15 +1,12 @@
-import { ConversationInterface, MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
-import { Navigate, Routes, Route, useNavigate, redirect } from "react-router-dom";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
-import { GetRandomProfile, GetProfileById } from "@/api/profiles";
+import { Routes, Route, useNavigate, useBeforeUnload, redirect } from "react-router-dom";
+import { GetRandomProfile, GetProfileById } from "@/api/profiles-api";
+import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import ChatMessages from "@/components/chat-component";
 import Profiles from "@/components/profile-component";
 import Matches from "@/components/matches-component";
 import UserProfile from "@/components/user-profile";
-import { User, MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { LogoutAuth } from "@/api/user-auth";
+import { LogoutAuth } from "@/api/user-auth-api";
+import Nav from "@/components/nav-component";
 import { useEffect, useState } from "react";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
@@ -17,14 +14,18 @@ import Login from "@/auth/login";
 export default function Navigation() {
     const [isMatched, setIsMatched] = useState(false);
     const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
-    const [currentConversation, setCurrentConversation] = useState<ConversationInterface | null>(null);
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
 
-    const { loggedInUser } = useLoggedInUserState();
     const navigate = useNavigate();
 
+    useBeforeUnload(async () => {
+        console.log("Auto logout on close");
+        await LogoutAuth(sessionStorage.loggedInUser?.userId!);
+        redirect('/');
+    });
+
     const seedRandomProfile = async (id?: string) => {
-        let profileData = {} as Promise<ProfileInterface>;
+        let profileData: Promise<ProfileInterface | null>;
         if (!id) {
             profileData = GetRandomProfile();
         } else {
@@ -36,85 +37,49 @@ export default function Navigation() {
     }
 
     useEffect(() => {
-        const autoLogoutOnClose = async (event: BeforeUnloadEvent) => {
-            console.log("Auto logout on close");
-            await LogoutAuth(loggedInUser?.userId!);
+
+        if (!sessionStorage.loggedInUser) {
+            navigate('/');
         }
-
-        window.addEventListener('beforeunload', autoLogoutOnClose);
-
-          
-    if (!sessionStorage.getItem('userId')) {
-        navigate('/');
-    }
 
         if (!currentProfile) {
             seedRandomProfile();
         }
 
-        return () => {
-            window.removeEventListener('beforeunload', autoLogoutOnClose);
-        }
-    }, [loggedInUser, currentProfile]);
+    }, [currentProfile, sessionStorage.loggedInUser]);
 
     return (
         <div className='max-w-lg mx-auto mt-3'>
-            {sessionStorage.userId && 
-            <nav className='flex justify-between mb-6'>
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger >
-                            <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => navigate('/profile')} />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>Profiles</p>
-                        </TooltipContent>
-                    </Tooltip>
-
-                    <Button variant={"link"} className='text-purple-400'
-                        onClick={() => navigate('userProfile')}>
-                        <p className='font-bold'>Rizz Master: </p>
-                        {sessionStorage.getItem('firstName') + " " + sessionStorage.getItem('lastName')}
-                    </Button>
-
-                    <div className='w-9 h-9' />
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => navigate('/match')} />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>Matches</p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-            </nav>
-            }
+            {sessionStorage.loggedInUser && <Nav />}
 
             <Routes>
-                
-                <Route path="/" element={<Login />} />
-                <Route path="/signUp" element={<SignUp />} />
+                {sessionStorage.loggedInUser ? (
+                    <>
+                        <Route path="/profile" errorElement={<div>Error</div>} element={<Profiles
+                            profile={currentProfile}
+                            setNextProfile={setCurrentProfile}
+                            isMatchedState={{ isMatched, setIsMatched }}
+                            matchSate={{ matches, setMatches }} />}
+                        />
 
-                <Route path="/profile" element={<Profiles
-                    profile={currentProfile}
-                    setNextProfile={setCurrentProfile}
-                    isMatchedState={{ isMatched, setIsMatched }}
-                    matchSate={{ matches, setMatches }} />}
-                />
+                        <Route path="/match" element={<Matches
+                            setCurrentProfile={setCurrentProfile}
+                            matchState={{ matches, setMatches }} />}
+                        />
 
-                <Route path="/match" element={<Matches
-                    setCurrentProfile={setCurrentProfile}
-                    setCurrentConversation={setCurrentConversation}
-                    matchState={{ matches, setMatches }} />}
-                />
+                        <Route path="/chat" element={<ChatMessages
+                            selectedProfile={currentProfile} />}
+                        />
 
-                <Route path="/chat" element={<ChatMessages currentConversation={currentConversation}
-                    selectedProfile={currentProfile} />}
-                />
-
-                <Route path="/userProfile" element={<UserProfile
-                    userProfile={loggedInUser} />}
-                />
+                        <Route path="/userProfile" element={<UserProfile />} />
+                    </>
+                ) : (
+                    <>
+                        <Route path="/" element={<Login />} errorElement={<div>Error</div>} />
+                        <Route path="/signUp" element={<SignUp />} />
+                    </>
+                )
+                }
             </Routes>
         </div>
     );

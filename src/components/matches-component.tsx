@@ -1,18 +1,17 @@
-import { ConversationInterface, MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import deleteMatchById, { GetMatchedProfiles } from "@/api/matches";
-import { GetConversationFromTo } from "@/api/conversation";
-import React, { useEffect, useState } from "react"
+import deleteMatchById, { GetMatchedProfiles } from "@/api/matches-api";
+import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import { GetConversationFromTo } from "@/api/conversation-api";
+import React, { useCallback, useEffect, useState } from "react"
 import SkeletonMatches from "@/components/skeleton-matches";
 import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { Card } from "@/components/ui/card";
 import { XCircle } from "lucide-react";
 
 type MachesProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
-    setCurrentConversation: React.Dispatch<React.SetStateAction<ConversationInterface | null>>;
     matchState: MatchState;
 }
 
@@ -21,26 +20,22 @@ type MatchState = {
     matches: MatchInterface[];
 }
 
-export default function Matches({ setCurrentProfile, setCurrentConversation, matchState }: MachesProps) {
+export default function Matches({ setCurrentProfile }: MachesProps) {
 
-    const userId = sessionStorage.getItem('userId');
-    // const { matches, setMatches } = matchState;
+    const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
+
     const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
     const { toast } = useToast();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
 
-    // TODO: This is causing a rerender and make unnecessary api calls for pictures
     const handleChat = async (profileId: string, toProfileId: string) => {
-        const conversation = await GetConversationFromTo(profileId, toProfileId);
-        setCurrentConversation(conversation);
-        navigate('/chat');
+        const conversationData = await GetConversationFromTo(profileId, toProfileId);
+        navigate('/chat', { state: { conversationData, loggedInUser } });
     };
 
-    // TODO: this is causing a double rerender
-    const handleDelete = async (userId: string) => {
-
+    const handleDelete = useCallback(async (userId: string) => {
         toast({
             title: 'Deleting match',
             description: 'Are you sure you want to do that?',
@@ -52,27 +47,22 @@ export default function Matches({ setCurrentProfile, setCurrentConversation, mat
                         description: 'Something went wrong',
                     });
                 } else {
-                    setMatchedProfiles();
+                    setProfiles(prevState => prevState.filter(profile => profile.userId !== userId));
                 }
             }}>Delete</ToastAction>
         });
-    };
-
-    const setMatchedProfiles = async () => {
-        setLoading(true);
-        const data = await GetMatchedProfiles(userId!);
-        setProfiles(data);
-        setLoading(false);
-    };
-
-    useEffect(() => {
-        if (profiles.length == 0) {
-            console.log("setMatchedProfiles called from useEffect")
-            setMatchedProfiles();
-        }
     }, []);
 
-    // TODO: Find a way to iterate over both the profiles and the matches
+    useEffect(() => {
+        async function fectData() {
+            setLoading(true);
+            const data = await GetMatchedProfiles(loggedInUser.userId);
+            setProfiles(data);
+            setLoading(false);
+        }
+        fectData();
+    }, []);
+
     const MatchesList = () => {
         return (
             <Card className="p-2">
@@ -82,16 +72,16 @@ export default function Matches({ setCurrentProfile, setCurrentConversation, mat
                         profiles.map((profile) => (
                             <li key={profile.userId} className="flex items-center justify-between">
                                 <section className="flex gap-3 items-center">
-                                    <Button variant={"link"} 
-                                    onClick={() => { setCurrentProfile(profile); navigate('/profile') }} 
-                                    className="mb-2 flex gap-4">
+                                    <Button variant={"link"}
+                                        onClick={() => { setCurrentProfile(profile); navigate('/profile') }}
+                                        className="mb-2 flex gap-4">
                                         <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
-                                    <h3>{profile.firstName} {profile.lastName}</h3>
+                                        <h3>{profile.firstName} {profile.lastName}</h3>
                                     </Button>
                                 </section>
                                 <section className="flex gap-6">
                                     <Button variant={"secondary"} size={'default'} className="gap-2"
-                                        onClick={() => { handleChat(userId!, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
+                                        onClick={() => { handleChat(loggedInUser.userId, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
                                     <Button variant={"destructive"} size={'default'}
                                         onClick={() => { handleDelete(profile.userId) }}
                                         className="bg-red-500 gap-2">
@@ -111,4 +101,4 @@ export default function Matches({ setCurrentProfile, setCurrentConversation, mat
             <MatchesList />
         </ul>
     );
-}
+};

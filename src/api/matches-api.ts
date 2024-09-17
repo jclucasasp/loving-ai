@@ -1,4 +1,4 @@
-import { MatchInterface, ProfileInterface } from "../lib/interfaces";
+import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 
 export async function GetMatches(userId: string): Promise<MatchInterface[]> {
     return await fetch('http://127.0.0.1:8080/matches/all', {

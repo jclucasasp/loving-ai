@@ -1,7 +1,7 @@
-import { MatchInterface, ProfileInterface } from "../lib/interfaces";
+import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
-import { CreateMatch } from "@/api/matches";
+import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import React from "react";
 
@@ -26,13 +26,14 @@ type isMatchedState = {
 export default function Profiles({ profile, setNextProfile, matchSate, isMatchedState }: ProfileProps) {
 
     const { isMatched, setIsMatched } = isMatchedState;
-    const userId = sessionStorage.getItem('userId');
+    const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
+
     const { setMatches, matches } = matchSate;
 
     const { toast } = useToast();
 
     const createMatchHandler = async () => {
-        const newMatch = await CreateMatch(userId!, profile!.userId);
+        const newMatch = await CreateMatch(loggedInUser.userId, profile!.userId);
 
         if (newMatch) {
             setIsMatched(true);
@@ -65,15 +66,15 @@ export default function Profiles({ profile, setNextProfile, matchSate, isMatched
                             <img src="/thinking.png" alt="thinking emoji" height={70} width={70} />
                             Next ...
                         </div>
-                        {!isMatched ? <div className="cursor-pointer flex flex-col items-center"onClick={createMatchHandler} >
+                        {!isMatched ? <div className="cursor-pointer flex flex-col items-center" onClick={createMatchHandler} >
                             <img src="/heartFace.png" alt="face with hearts emoji" height={75} width={75} />
                             Like
                         </div>
                             : <div className="cursor-not-allowed">
                                 <img src="/kissyFace.png" alt="kissy face emoji" height={70} width={70} />
                                 Matched
-                                </div>
-                                }
+                            </div>
+                        }
                     </div>
                 </CardContent>
             </Card>
