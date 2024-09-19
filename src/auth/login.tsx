@@ -1,9 +1,9 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import useLoggedInUserState from '@/hooks/use-loggedin-user-state';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { NewUserProfileInterface } from '@/lib/interfaces';
 import { ToastAction } from '@/components/ui/toast';
 import { Button } from '@/components/ui/button';
 import { LoginAuth } from '@/api/user-auth-api';
-import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
@@ -16,8 +16,11 @@ interface LoginFormInterface {
 
 export default function Login() {
 
-  const [formData, setformData] = useState<LoginFormInterface>({ email: "", password: "" });
+  const newUser = useLocation().state as NewUserProfileInterface;
+
+  const [formData, setformData] = useState<LoginFormInterface>({ email: newUser?.email || "", password: newUser?.password || "" });
   const { toast } = useToast();
+
 
   const naviage = useNavigate();
 
@@ -31,8 +34,6 @@ export default function Login() {
     handleLogin();
   }
 
-  const { updateLoggedInUser } = useLoggedInUserState();
-
   const handleLogin = async () => {
     const data = await LoginAuth(formData.email, formData.password);
     if (!data) {
@@ -40,43 +41,42 @@ export default function Login() {
         title: 'Login Failed',
         variant: 'destructive',
         action: <ToastAction altText="Okay" >Okay</ToastAction>
-      })
-      naviage('/');
-    } else {
-      updateLoggedInUser(data);
-      naviage('/profile');
+      });
+      return;
     }
+    sessionStorage.setItem('loggedInUser', JSON.stringify(data));
+    naviage('/profile');
   }
 
-  return (
-    <section className='flex flex-col justify-center items-center h-screen'>
-      <Card className='max-w-sm'>
-        <CardHeader className='text-center text-2xl'>
-          <div className='flex justify-center mb-3'>
-            <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
+return (
+  <section className='flex flex-col justify-center items-center h-screen'>
+    <Card className='max-w-sm'>
+      <CardHeader className='text-center text-2xl'>
+        <div className='flex justify-center mb-3'>
+          <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
+        </div>
+        <CardTitle>Rizz loading...</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
+          <Label htmlFor="email">Email</Label>
+          <Input type="email" name='email' id="email" value={formData.email} onChange={handleChange} />
+          <div className='flex justify-between items-center'>
+            <Label htmlFor="password">Password</Label>
+            <a href="/matches" className='text-slate-400 text-sm'>Forgot Password?</a>
           </div>
-          <CardTitle>Rizz loading...</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form className='flex flex-col gap-2' onSubmit={handleSubmit}>
-            <Label htmlFor="email">Email</Label>
-            <Input type="email" name='email' id="email" value={formData.email} onChange={handleChange} />
-            <div className='flex justify-between items-center'>
-              <Label htmlFor="password">Password</Label>
-              <a href="/matches" className='text-slate-400 text-sm'>Forgot Password?</a>
-            </div>
-            <Input type="password" name='password' id="password" value={formData.password} onChange={handleChange} />
-            <Button type='submit' variant='default'
-              disabled={!formData.email || !formData.password}
-              className='border w-full rounded-full mt-6 p-2'>
-              Login
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter>
-          <Button variant='link' onClick={() => naviage('/signup')} className='text-slate-400'>Don't have an account? Sign up</Button>
-        </CardFooter>
-      </Card>
-    </section>
-  )
+          <Input type="password" name='password' id="password" value={formData.password} onChange={handleChange} />
+          <Button type='submit' variant='default'
+            disabled={!formData.email || !formData.password}
+            className='border w-full rounded-full mt-6 p-2'>
+            Login
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter>
+        <Button variant='link' onClick={() => naviage('/signup')} className='text-slate-400'>Don't have an account? Sign up</Button>
+      </CardFooter>
+    </Card>
+  </section>
+)
 }

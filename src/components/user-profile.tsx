@@ -1,38 +1,70 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import { LogoutAuth } from "@/api/user-auth-api";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ProfileInterface } from "@/lib/interfaces";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { NewUserProfileInterface } from "@/lib/interfaces";
+import { CreateNewUserProfile } from "@/api/profiles-api";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function UserProfile() {
+
+    const loggedInUser = useLoggedInUserState();
     const navigate = useNavigate();
-    const loggedInUser: ProfileInterface = JSON.parse(sessionStorage.loggedInUser);
+
+    const [formData, setformData] = useState<NewUserProfileInterface>(loggedInUser);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        event.currentTarget.reset();
+        await CreateNewUserProfile({ ...formData, [event.currentTarget.name]: event.currentTarget.value });
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setformData({ ...formData, [event.target.id]: event.target.value });
+        console.log(formData);
+    }
 
     const handleLogout = async () => {
         sessionStorage.clear();
-        await LogoutAuth(loggedInUser?.userId!);
+        await LogoutAuth(loggedInUser.userId);
         navigate('/');
     };
 
     return (
         <Card>
             <CardHeader>
-                <h2 className="text-2xl text-center border-b-2 p-4">User Profile for {loggedInUser?.firstName}</h2>
+                <h2 className="text-2xl text-center border-b-2 p-4">User Profile for {loggedInUser.firstName}</h2>
             </CardHeader>
             <CardContent>
-                <p>Name: {loggedInUser?.firstName} {loggedInUser?.lastName}</p>
-                <p>Age: {loggedInUser?.age}</p>
-                <p>Ethnicity: {loggedInUser?.ethnicity}</p>
-                <p>Gender: {loggedInUser?.gender}</p>
-                <p>Bio: {loggedInUser?.bio}</p>
-                <p>Myers-Briggs Personality Type: {loggedInUser?.myersBriggsPersonalityType}</p>
-                <p>Image URL: {loggedInUser?.imageUrl}</p>
+                <form method="post" onSubmit={handleSubmit}>
+                    <Input type="hidden" name="userId" value={loggedInUser.userId} onChange={handleChange} />
+                    <Input name="firstName" value={loggedInUser.firstName} onChange={handleChange} />
+                    <Input name="lastName" value={loggedInUser.lastName} onChange={handleChange} />
+                    <Input name="age" value={loggedInUser.age} onChange={handleChange} />
+                    <Input name="ethnicity" value={loggedInUser.ethnicity} onChange={handleChange} />
+                    <Select>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Choose your gender" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="MALE">Male</SelectItem>
+                            <SelectItem value="FEMALE">Female</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <Input name="bio" value={loggedInUser.bio} onChange={handleChange} />
+                    <Input name="imageUrl" value={loggedInUser.imageUrl} onChange={handleChange} />
+                    <p>Myers-Briggs Personality Type: {loggedInUser.myersBriggsPersonalityType}</p>
+                    <Button type="submit">Update Profile</Button>
+                </form>
             </CardContent>
             <CardFooter>
                 <Button variant={"destructive"}
-                onClick={() => handleLogout()}>
+                    onClick={() => handleLogout()}>
                     Log Out
-                    </Button>
+                </Button>
             </CardFooter>
         </Card>
     );

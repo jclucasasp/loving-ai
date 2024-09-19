@@ -1,6 +1,4 @@
-import LoggedInUserContext from "@/context/logged-in-user-context";
-import { useContext } from "react";
 
 export default function useLoggedInUserState() {
-    return useContext(LoggedInUserContext);
+    return sessionStorage.getItem("loggedInUser") ? JSON.parse(sessionStorage.loggedInUser) : null;
 }

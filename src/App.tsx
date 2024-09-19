@@ -10,13 +10,16 @@ import Nav from "@/components/nav-component";
 import { useEffect, useState } from "react";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
+import useLoggedInUserState from "./hooks/use-loggedin-user-state";
 
 export default function Navigation() {
+
     const [isMatched, setIsMatched] = useState(false);
     const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
 
     const navigate = useNavigate();
+    const loggedInUser = useLoggedInUserState();
 
     useBeforeUnload(async () => {
         console.log("Auto logout on close");
@@ -38,28 +41,29 @@ export default function Navigation() {
 
     useEffect(() => {
 
-        if (!sessionStorage.loggedInUser) {
+        if (!loggedInUser) {
             navigate('/');
         }
 
-        if (!currentProfile) {
+        if (loggedInUser && !currentProfile) {
             seedRandomProfile();
         }
 
-    }, [currentProfile, sessionStorage.loggedInUser]);
+    }, [currentProfile, loggedInUser]);
 
     return (
         <div className='max-w-lg mx-auto mt-3'>
-            {sessionStorage.loggedInUser && <Nav />}
+            {loggedInUser && <Nav />}
 
             <Routes>
-                {sessionStorage.loggedInUser ? (
+                {loggedInUser ? (
                     <>
-                        <Route path="/profile" errorElement={<div>Error</div>} element={<Profiles
-                            profile={currentProfile}
-                            setNextProfile={setCurrentProfile}
-                            isMatchedState={{ isMatched, setIsMatched }}
-                            matchSate={{ matches, setMatches }} />}
+                        <Route path="/profile" errorElement={<div>Error</div>}
+                            element={<Profiles
+                                profile={currentProfile}
+                                setNextProfile={setCurrentProfile}
+                                isMatchedState={{ isMatched, setIsMatched }}
+                                matchSate={{ matches, setMatches }} />}
                         />
 
                         <Route path="/match" element={<Matches
