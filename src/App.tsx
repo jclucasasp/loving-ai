@@ -1,6 +1,7 @@
 import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import Personality from "@/components/personality-component";
 import ChatMessages from "@/components/chat-component";
 import Profiles from "@/components/profile-component";
 import Matches from "@/components/matches-component";
@@ -21,7 +22,7 @@ export default function Navigation() {
     const loggedInUser = useLoggedInUserState();
 
     useBeforeUnload(async () => {
-        if(loggedInUser?.userId){
+        if (loggedInUser?.userId) {
             await LogoutAuth(loggedInUser?.userId!);
         }
     });
@@ -29,14 +30,14 @@ export default function Navigation() {
     useEffect(() => {
 
         if (!loggedInUser) {
-            navigate('/');
+            navigate('/login');
         }
 
     }, [loggedInUser]);
 
     return (
         <div className='max-w-lg mx-auto mt-3'>
-            {loggedInUser && <Nav currentProfile={currentProfile} setCurrentProfile={setCurrentProfile}/>}
+            {loggedInUser && <Nav currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />}
 
             <Routes>
                 {loggedInUser ? (
@@ -62,11 +63,13 @@ export default function Navigation() {
                     </>
                 ) : (
                     <>
-                        <Route path="/" element={<Login />} errorElement={<div>Error</div>} />
+                        <Route path="/login" element={<Login />} errorElement={<div>Error</div>} />
+                        <Route path="/personality" element={<Personality />} errorElement={<div>Error</div>} />
                         <Route path="/signUp" element={<SignUp />} />
                     </>
                 )
                 }
+
             </Routes>
         </div>
     );

@@ -74,7 +74,7 @@ return (
         </form>
       </CardContent>
       <CardFooter>
-        <Button variant='link' onClick={() => naviage('/signup')} className='text-slate-400'>Don't have an account? Sign up</Button>
+        <Button variant='link' onClick={() => naviage('/personality')} className='text-slate-400'>Don't have an account? Sign up</Button>
       </CardFooter>
     </Card>
   </section>

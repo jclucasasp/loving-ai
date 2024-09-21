@@ -1,12 +1,13 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
-import { ProfileInterface } from "@/lib/interfaces";
+import { PersonalityTypeInterface, ProfileInterface } from "@/lib/interfaces";
 import { LogoutAuth } from "@/api/user-auth-api";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GetPersonalityTypes } from "@/api/personality-api";
 
 export default function UserProfile() {
 
@@ -14,6 +15,11 @@ export default function UserProfile() {
     const navigate = useNavigate();
 
     const [formData, setformData] = useState<ProfileInterface | null>(loggedInUser);
+    const [personalityTypes, setPersonalityTypes] = useState<PersonalityTypeInterface[]>([]);
+
+    const getPersonalities = async () => {
+        return await GetPersonalityTypes();
+    };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -28,8 +34,14 @@ export default function UserProfile() {
     const handleLogout = async () => {
         sessionStorage.clear();
         await LogoutAuth(loggedInUser!.userId);
-        navigate('/');
+        navigate('/login');
     };
+
+    useEffect(() => {
+        getPersonalities().then((data) => {
+            setPersonalityTypes(data);
+        });
+    }, []);
 
     return (
         <Card>
@@ -54,13 +66,23 @@ export default function UserProfile() {
                     </Select>
                     <Input name="bio" value={loggedInUser?.bio} onChange={handleChange} />
                     <Input name="imageUrl" value={loggedInUser?.imageUrl} onChange={handleChange} />
-                    <p>Myers-Briggs Personality Type: {loggedInUser?.myersBriggsPersonalityType}</p>
+                    <Select>
+                        <SelectTrigger className="w-full">
+                            <SelectValue>{personalityTypes.find((p) => p.id === loggedInUser?.myersBriggsPersonalityType)?.type}</SelectValue>
+                        </SelectTrigger>
+                        <SelectContent>
+                            {personalityTypes.map((p) => (
+                                <SelectItem key={p.id} value={p.type}>
+                                    {p.type}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                     <Button type="submit">Update Profile</Button>
                 </form>
             </CardContent>
             <CardFooter>
-                <Button variant={"destructive"}
-                    onClick={() => handleLogout()}>
+                <Button variant={"destructive"} onClick={() => handleLogout()}>
                     Log Out
                 </Button>
             </CardFooter>

@@ -1,18 +1,20 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { NewUserProfileInterface } from "@/lib/interfaces";
+import { NewUserProfileInterface, PersonalityTypeInterface } from "@/lib/interfaces";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CreateNewUserProfile } from "@/api/profiles-api";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function SignUp() {
 
   const navigate = useNavigate();
+
+  const { personalityTypes }: { personalityTypes: PersonalityTypeInterface[] } = useLocation().state;
 
   const [formObject, setformObject] = useState<NewUserProfileInterface>({
     id: "", age: 0, bio: "", firstName: "", lastName: "", gender: "",
@@ -81,12 +83,14 @@ export default function SignUp() {
 
             <Select required>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Myers Briggs Personality Type" />
+                <SelectValue placeholder="Select Personality Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="SIGMA">Sigma</SelectItem>
-                <SelectItem value="ALFA">Alfa</SelectItem>
-                <SelectItem value="BETA">Beta</SelectItem>
+                {personalityTypes.map((type) => (
+                  <SelectItem key={type.id} value={type.type}>
+                    {type.type}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 

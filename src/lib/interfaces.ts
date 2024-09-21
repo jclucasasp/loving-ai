@@ -53,5 +53,15 @@ export interface ResponseInterface {
     bio: string;
 }
 
+export interface PersonalityTypeInterface {
+    id: string;
+    type: string;
+}
+
+export interface PersonalityDescriptionInterface {
+    id: string;
+    description: string;
+}
+
 
 export type StateScreenTypes = 'profile' | 'match' | 'chat' | 'login' | 'userProfile' | 'signUp';
