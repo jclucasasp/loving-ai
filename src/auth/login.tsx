@@ -2,8 +2,8 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NewUserProfileInterface } from '@/lib/interfaces';
 import { ToastAction } from '@/components/ui/toast';
-import { Button } from '@/components/ui/button';
 import { LoginAuth } from '@/api/user-auth-api';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';

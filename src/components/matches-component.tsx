@@ -1,9 +1,9 @@
 import deleteMatchById, { GetMatchedProfiles } from "@/api/matches-api";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import { GetConversationFromTo } from "@/api/conversation-api";
-import React, { useCallback, useEffect, useState } from "react"
 import SkeletonMatches from "@/components/skeleton-matches";
 import { ToastAction } from "@/components/ui/toast";
+import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
@@ -24,18 +24,18 @@ export default function Matches({ setCurrentProfile }: MachesProps) {
 
     const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
 
-    const [profiles, setProfiles] = useState<ProfileInterface[]>([]);
+    const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>([]);
+    const [loading, setLoading] = useState<boolean>(false);
+
     const { toast } = useToast();
     const navigate = useNavigate();
-
-    const [loading, setLoading] = useState(false);
 
     const handleChat = async (profileId: string, toProfileId: string) => {
         const conversationData = await GetConversationFromTo(profileId, toProfileId);
         navigate('/chat', { state: { conversationData, loggedInUser } });
     };
 
-    const handleDelete = useCallback(async (userId: string) => {
+    const handleDelete = async (userId: string) => {
         toast({
             title: 'Deleting match',
             description: 'Are you sure you want to do that?',
@@ -47,20 +47,23 @@ export default function Matches({ setCurrentProfile }: MachesProps) {
                         description: 'Something went wrong',
                     });
                 } else {
-                    setProfiles(prevState => prevState.filter(profile => profile.userId !== userId));
+                    setProfiles(prevState => prevState?.filter(profile => profile.userId !== userId));
                 }
             }}>Delete</ToastAction>
         });
-    }, []);
+    };
 
     useEffect(() => {
-        async function fectData() {
+        const fetchMatchedProfiles = async () => {
             setLoading(true);
-            const data = await GetMatchedProfiles(loggedInUser.userId);
-            setProfiles(data);
+            const res = await GetMatchedProfiles(loggedInUser.userId);
+            setProfiles(res);
             setLoading(false);
         }
-        fectData();
+
+        if (!!profiles) {
+            fetchMatchedProfiles();
+        }
     }, []);
 
     const MatchesList = () => {
@@ -68,28 +71,26 @@ export default function Matches({ setCurrentProfile }: MachesProps) {
             <Card className="p-2">
                 <ul className="flex h-[80vh] flex-col gap-3 overflow-y-scroll p-2">
                     {loading && <SkeletonMatches />}
-                    {
-                        profiles.map((profile) => (
-                            <li key={profile.userId} className="flex items-center justify-between">
-                                <section className="flex gap-3 items-center">
-                                    <Button variant={"link"}
-                                        onClick={() => { setCurrentProfile(profile); navigate('/profile') }}
-                                        className="mb-2 flex gap-4">
-                                        <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
-                                        <h3>{profile.firstName} {profile.lastName}</h3>
-                                    </Button>
-                                </section>
-                                <section className="flex gap-6">
-                                    <Button variant={"secondary"} size={'default'} className="gap-2"
-                                        onClick={() => { handleChat(loggedInUser.userId, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
-                                    <Button variant={"destructive"} size={'default'}
-                                        onClick={() => { handleDelete(profile.userId) }}
-                                        className="bg-red-500 gap-2">
-                                        <XCircle />Del</Button>
-                                </section>
-                            </li>
-                        ))
-                    }
+                    {profiles?.map((profile) => (
+                        <li key={profile.userId} className="flex items-center justify-between">
+                            <section className="flex gap-3 items-center">
+                                <Button variant={"link"}
+                                    onClick={() => { setCurrentProfile(profile); navigate('/profile') }}
+                                    className="mb-2 flex gap-4">
+                                    <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
+                                    <h3>{profile.firstName} {profile.lastName}</h3>
+                                </Button>
+                            </section>
+                            <section className="flex gap-6">
+                                <Button variant={"secondary"} size={'default'} className="gap-2"
+                                    onClick={() => { handleChat(loggedInUser.userId, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
+                                <Button variant={"destructive"} size={'default'}
+                                    onClick={() => { handleDelete(profile.userId) }}
+                                    className="bg-red-500 gap-2">
+                                    <XCircle />Del</Button>
+                            </section>
+                        </li>
+                    ))}
                 </ul>
             </Card>
         );

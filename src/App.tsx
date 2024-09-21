@@ -1,16 +1,15 @@
-import { Routes, Route, useNavigate, useBeforeUnload, redirect } from "react-router-dom";
-import { GetRandomProfile, GetProfileById } from "@/api/profiles-api";
+import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import ChatMessages from "@/components/chat-component";
 import Profiles from "@/components/profile-component";
 import Matches from "@/components/matches-component";
 import UserProfile from "@/components/user-profile";
 import { LogoutAuth } from "@/api/user-auth-api";
-import Nav from "@/components/nav-component";
 import { useEffect, useState } from "react";
+import Nav from "@/components/nav-component";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
-import useLoggedInUserState from "./hooks/use-loggedin-user-state";
 
 export default function Navigation() {
 
@@ -22,22 +21,10 @@ export default function Navigation() {
     const loggedInUser = useLoggedInUserState();
 
     useBeforeUnload(async () => {
-        console.log("Auto logout on close");
-        await LogoutAuth(sessionStorage.loggedInUser?.userId!);
-        redirect('/');
-    });
-
-    const seedRandomProfile = async (id?: string) => {
-        let profileData: Promise<ProfileInterface | null>;
-        if (!id) {
-            profileData = GetRandomProfile();
-        } else {
-            profileData = GetProfileById(id);
+        if(loggedInUser?.userId){
+            await LogoutAuth(loggedInUser?.userId!);
         }
-
-        const [profile] = await Promise.all([profileData]);
-        setCurrentProfile(profile);
-    }
+    });
 
     useEffect(() => {
 
@@ -45,15 +32,11 @@ export default function Navigation() {
             navigate('/');
         }
 
-        if (loggedInUser && !currentProfile) {
-            seedRandomProfile();
-        }
-
-    }, [currentProfile, loggedInUser]);
+    }, [loggedInUser]);
 
     return (
         <div className='max-w-lg mx-auto mt-3'>
-            {loggedInUser && <Nav />}
+            {loggedInUser && <Nav currentProfile={currentProfile} setCurrentProfile={setCurrentProfile}/>}
 
             <Routes>
                 {loggedInUser ? (

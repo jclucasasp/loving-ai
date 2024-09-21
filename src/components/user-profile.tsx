@@ -1,50 +1,48 @@
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import { ProfileInterface } from "@/lib/interfaces";
 import { LogoutAuth } from "@/api/user-auth-api";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { NewUserProfileInterface } from "@/lib/interfaces";
-import { CreateNewUserProfile } from "@/api/profiles-api";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function UserProfile() {
 
     const loggedInUser = useLoggedInUserState();
     const navigate = useNavigate();
 
-    const [formData, setformData] = useState<NewUserProfileInterface>(loggedInUser);
+    const [formData, setformData] = useState<ProfileInterface | null>(loggedInUser);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         event.currentTarget.reset();
-        await CreateNewUserProfile({ ...formData, [event.currentTarget.name]: event.currentTarget.value });
+        // await CreateNewUserProfile({ ...formData, [event.currentTarget.name]: event.currentTarget.value });
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setformData({ ...formData, [event.target.id]: event.target.value });
-        console.log(formData);
+        setformData({ ...formData!, [event.target.id]: event.target.value });
     }
 
     const handleLogout = async () => {
         sessionStorage.clear();
-        await LogoutAuth(loggedInUser.userId);
+        await LogoutAuth(loggedInUser!.userId);
         navigate('/');
     };
 
     return (
         <Card>
             <CardHeader>
-                <h2 className="text-2xl text-center border-b-2 p-4">User Profile for {loggedInUser.firstName}</h2>
+                <h2 className="text-2xl text-center border-b-2 p-4">User Profile for {loggedInUser?.firstName}</h2>
             </CardHeader>
             <CardContent>
-                <form method="post" onSubmit={handleSubmit}>
-                    <Input type="hidden" name="userId" value={loggedInUser.userId} onChange={handleChange} />
-                    <Input name="firstName" value={loggedInUser.firstName} onChange={handleChange} />
-                    <Input name="lastName" value={loggedInUser.lastName} onChange={handleChange} />
-                    <Input name="age" value={loggedInUser.age} onChange={handleChange} />
-                    <Input name="ethnicity" value={loggedInUser.ethnicity} onChange={handleChange} />
+                <form className="flex flex-col gap-2 text-gray-500" method="post" onSubmit={handleSubmit}>
+                    <Input type="hidden" name="userId" value={loggedInUser?.userId} onChange={handleChange} />
+                    <Input name="firstName" value={loggedInUser?.firstName} onChange={handleChange} />
+                    <Input name="lastName" value={loggedInUser?.lastName} onChange={handleChange} />
+                    <Input name="age" value={loggedInUser?.age} onChange={handleChange} />
+                    <Input name="ethnicity" value={loggedInUser?.ethnicity} onChange={handleChange} />
                     <Select>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Choose your gender" />
@@ -54,9 +52,9 @@ export default function UserProfile() {
                             <SelectItem value="FEMALE">Female</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Input name="bio" value={loggedInUser.bio} onChange={handleChange} />
-                    <Input name="imageUrl" value={loggedInUser.imageUrl} onChange={handleChange} />
-                    <p>Myers-Briggs Personality Type: {loggedInUser.myersBriggsPersonalityType}</p>
+                    <Input name="bio" value={loggedInUser?.bio} onChange={handleChange} />
+                    <Input name="imageUrl" value={loggedInUser?.imageUrl} onChange={handleChange} />
+                    <p>Myers-Briggs Personality Type: {loggedInUser?.myersBriggsPersonalityType}</p>
                     <Button type="submit">Update Profile</Button>
                 </form>
             </CardContent>
