@@ -8,7 +8,7 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export default function ChatMessages({ selectedProfile }: { selectedProfile: ProfileInterface | null }) {
-    
+
     const { conversationData, loggedInUser } = useLocation().state;
 
     const [conversation, setConversation] = useState<ConversationInterface | null>(conversationData);
@@ -27,7 +27,8 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
                 age: selectedProfile!.age,
                 ethnicity: selectedProfile!.ethnicity,
                 gender: selectedProfile!.gender,
-                bio: selectedProfile!.bio
+                bio: selectedProfile!.bio,
+                personality: selectedProfile!.myersBriggsPersonalityType,
             });
             setConversation(newConversation);
         }
@@ -81,9 +82,10 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
             </Card>
             <div className="flex gap-2 align-center mt-3">
                 <Textarea ref={messageInputContainer} disabled={loading} onKeyDown={handleKeyDown}
+                    rows={4}
                     placeholder="Type a message and press enter when ready to send"
                     value={message}
-                    onChange={(e) => setMessage(e.target.value)}/>
+                    onChange={(e) => setMessage(e.target.value)} />
             </div>
         </div>
     );

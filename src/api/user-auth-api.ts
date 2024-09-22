@@ -29,13 +29,6 @@ export async function LogoutAuth(id: string) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })
-    }).then((res) => {
-        if (!res.ok) {
-            return null;
-        }
-        return res.json();
-    }).then((data: string) => {
-        return data;
     }).catch((err) => {
         console.log(err);
         throw new Error('Failed to LogoutAuth: \n' + err);

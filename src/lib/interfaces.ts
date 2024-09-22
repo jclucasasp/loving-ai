@@ -51,6 +51,7 @@ export interface ResponseInterface {
     ethnicity: string;
     gender: string;
     bio: string;
+    personality: string;
 }
 
 export interface PersonalityTypeInterface {
