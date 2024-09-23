@@ -21,6 +21,7 @@ export default function Navigation() {
     const navigate = useNavigate();
     const loggedInUser = useLoggedInUserState();
 
+    // This triggers on every refresh, change it
     useBeforeUnload(async () => {
         if (loggedInUser?.userId) {
             await LogoutAuth(loggedInUser?.userId!);
