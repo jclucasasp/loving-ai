@@ -11,7 +11,7 @@ export interface ProfileInterface {
 }
 
 export interface NewUserProfileInterface {
-    id: string;
+    id?: string;
     firstName: string;
     lastName: string;
     email: string;

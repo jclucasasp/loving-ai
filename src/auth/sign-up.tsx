@@ -1,14 +1,17 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Form, FormField, FormItem, FormControl, FormMessage, FormLabel } from "@/components/ui/form";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { NewUserProfileInterface, PersonalityTypeInterface } from "@/lib/interfaces";
 import { useLocation, useNavigate } from "react-router-dom";
+import { PersonalityTypeInterface } from "@/lib/interfaces";
 import { CreateNewUserProfile } from "@/api/profiles-api";
+import { NewUserForm, NewUserSchema } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function SignUp() {
 
@@ -16,16 +19,40 @@ export default function SignUp() {
 
   const { personalityTypes }: { personalityTypes: PersonalityTypeInterface[] } = useLocation().state;
 
-  const [formObject, setformObject] = useState<NewUserProfileInterface>({
-    id: "", age: 0, bio: "", firstName: "", lastName: "", gender: "",
-    ethnicity: "", myersBriggsPersonalityType: "", imageUrl: "", email: "", password: ""
-  });
   const { toast } = useToast();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    event.currentTarget.reset();
-    await CreateNewUserProfile(formObject).then((res) => {
+  const form = useForm<NewUserForm>({
+    resolver: zodResolver(NewUserSchema),
+    defaultValues: {
+      firstName: "", 
+      lastName: "", 
+      email: "", 
+      password: "",
+      confirm: "",
+      age: 0, 
+      ethnicity: "", 
+      bio: "", 
+      imageUrl: "", 
+      gender: "",
+      myersBriggsPersonalityType: "", 
+    },
+  });
+
+
+  const onSubmit = async (data: NewUserForm) => {
+
+    const result = NewUserSchema.safeParse(data);
+
+    if (!result.success) {
+      toast({
+        title: "Validation failed.",
+        description: result.error.message, variant: "destructive",
+        action: <ToastAction altText="Retry">Retry</ToastAction>
+      });
+      return;
+    }
+
+    await CreateNewUserProfile(result.data).then((res) => {
       console.log(res)
       if (!res) {
         toast({
@@ -35,13 +62,9 @@ export default function SignUp() {
         });
         return;
       }
-      navigate('/', { state: formObject });
+      navigate('/login', { state: { email: result.data.email, password: result.data.password } });
     });
   }
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setformObject({ ...formObject, [event.target.id]: event.target.value });
-  };
 
   return (
     <section className='flex flex-col justify-center items-center h-screen'>
@@ -53,53 +76,141 @@ export default function SignUp() {
           <CardTitle>Lets Get Started</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className='flex flex-col gap-2 text-gray-500' onSubmit={handleSubmit} >
 
-            <Input type="text" name='firstName' id="firstName" placeholder="First Name" value={formObject.firstName} onChange={handleChange} required />
+          <Form {...form}>
+            <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField control={form.control} name="firstName" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder={"John"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Input type="text" name='lastName' id="lastName" placeholder="Last Name" value={formObject.lastName} onChange={handleChange} required />
+              <FormField control={form.control} name="lastName" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder={"Doe"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Input type="email" name='email' id="email" placeholder="Email" value={formObject.email} onChange={handleChange} required />
+              <FormField control={form.control} name="email" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="nonAlien@defHuman.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Input type="password" name='password' id="password" placeholder="Password" value={formObject.password} onChange={handleChange} required />
+              <FormField control={form.control} name="password" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Input type="number" name='age' id="age" placeholder="Age" value={formObject.age} onChange={handleChange} required />
+              <FormField control={form.control} name="confirm" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Input type="text" name='ethnicity' id="ethnicity" placeholder="Ethnicity" value={formObject.ethnicity} onChange={handleChange} required />
+              <FormField control={form.control} name="age" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Age</FormLabel>
+                  <FormControl>
+                    <Input type={"number"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Select required>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choose your gender" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="MALE">Male</SelectItem>
-                <SelectItem value="FEMALE">Female</SelectItem>
-              </SelectContent>
-            </Select>
+              <FormField control={form.control} name="ethnicity" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Ethnicity</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder={"Hopefully not alien"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Textarea name='bio' id="bio" placeholder="Bio" value={formObject.bio} onChange={handleChange} required />
+              <FormField control={form.control} name="bio" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bio</FormLabel>
+                  <FormControl>
+                    <Textarea rows={5} placeholder={"I am definitely not an alien"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Input type="text" name='imageUrl' placeholder="Image Url" id="imageUrl" value={formObject.imageUrl} onChange={handleChange} required />
+              <FormField control={form.control} name="imageUrl" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image Url</FormLabel>
+                  <FormControl>
+                    <Input type="text" placeholder={"image url"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
 
-            <Select required>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select Personality Type" />
-              </SelectTrigger>
-              <SelectContent>
-                {personalityTypes.map((type) => (
-                  <SelectItem key={type.id} value={type.type}>
-                    {type.type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <FormField control={form.control} name="gender" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Gender</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"..."} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="MALE">MALE</SelectItem>
+                      <SelectItem value="FEMALE">FEMALE</SelectItem>
+                    </SelectContent>
+                    <FormMessage />
+                  </Select>
+                </FormItem>
+              )}></FormField>
 
-            <Button type='submit' variant='default'
-              disabled={!formObject.email || !formObject.password}
-              className='border w-full rounded-full mt-6 p-2'>
-              Login
-            </Button>
-          </form>
+              <FormField control={form.control} name="myersBriggsPersonalityType" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Myers Briggs Personality Type</FormLabel>
+                  <Select onValueChange={field.onChange} >
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder={"..."} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {personalityTypes.map((p) => (
+                        <SelectItem key={p.id} value={p.id}>
+                          {p.type}
+                        </SelectItem>
+                      )
+                      )}  </SelectContent>
+                    <FormMessage />
+                  </Select>
+                </FormItem>
+              )}></FormField>
+              <Button type="submit" className="mt-3">Submit</Button>
+            </form>
+          </Form>
+
         </CardContent>
         <CardFooter>
         </CardFooter>

@@ -92,8 +92,6 @@ export default function UserProfile() {
         });
     }, []);
 
-    // TODO: change according to shadcn documentation and use Zod to falidate. Also need to change on the auth component.
-
     return (
         <Card>
             <CardHeader>

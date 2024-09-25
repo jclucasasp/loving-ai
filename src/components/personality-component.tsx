@@ -48,7 +48,7 @@ export default function Personality() {
                     </div>
                 ))}
             </CardContent>
-            <CardFooter className="gap-6">
+            <CardFooter className="justify-between gap-2 flex-col sm:flex-row">
                 <Button variant={"default"} className="w-full rounded-full" onClick={() => { window.open('https://www.16personalities.com/free-personality-test', '_blank') }}>Free Personality Test</Button>
                 <Button variant={"secondary"} className="w-full rounded-full" onClick={() => { navigate('/signUp', { state: { personalityTypes } }) }}>Create account</Button>
             </CardFooter>
