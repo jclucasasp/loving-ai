@@ -1,8 +1,8 @@
 import { ConversationInterface, ProfileInterface } from "@/lib/interfaces";
 import { CreateMessage } from "@/api/conversation-api";
 import SkeletonCard from "@/components/skeleton-card";
-import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useRef, useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
 import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -19,21 +19,21 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
     const conversationContainer = useRef<HTMLDivElement>(null);
 
     const handleMessageSubmit = async () => {
-        setLoading(true);
         if (message.trim()) {
+            setLoading(true);
             const newConversation = await CreateMessage(conversation!.matchId, {
                 messagePrompt: message,
                 name: selectedProfile?.firstName + " " + selectedProfile?.lastName,
-                age: selectedProfile!.age,
-                ethnicity: selectedProfile!.ethnicity,
-                gender: selectedProfile!.gender,
-                bio: selectedProfile!.bio,
-                personality: selectedProfile!.myersBriggsPersonalityType,
-            });
+                age: selectedProfile?.age || 0,
+                ethnicity: selectedProfile?.ethnicity || "",
+                gender: selectedProfile?.gender || "",
+                bio: selectedProfile?.bio || "",
+                personality: selectedProfile?.myersBriggsPersonalityType || "",
+            })
             setConversation(newConversation);
+            setLoading(false);
         }
         setMessage('');
-        setLoading(false);
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -67,7 +67,7 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
                                 <div className={cn("border rounded-lg p-3 bg-gray-100 flex flex-col gap-2 text-end items-end",
                                     m.senderProfileId !== loggedInUser.userId && "bg-green-500/10 text-start"
                                 )}>
-                                    <p className="text-balance text-black">{m.messageText}</p>
+                                    <p className="text-balance text-black whitespace-pre">{m.messageText}</p>
                                     <div className="flex gap-2">
                                         {new Date().toISOString().split('T')[0] !== (m.sendDate!.substring(0, 10)) &&
                                             <p className="text-xs text-gray-300 pointer-events-none">Date: {m.sendDate?.substring(0, 10)}</p>}

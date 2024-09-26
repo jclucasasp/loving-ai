@@ -12,15 +12,12 @@ import { XCircle } from "lucide-react";
 
 type MachesProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
-    matchState: MatchState;
+    setIsMatched: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-type MatchState = {
-    setMatches: React.Dispatch<React.SetStateAction<MatchInterface[]>>;
-    matches: MatchInterface[];
-}
 
-export default function Matches({ setCurrentProfile }: MachesProps) {
+
+export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps) {
 
     const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
 
@@ -75,7 +72,7 @@ export default function Matches({ setCurrentProfile }: MachesProps) {
                         <li key={profile.userId} className="flex items-center justify-between">
                             <section className="flex gap-3 items-center">
                                 <Button variant={"link"}
-                                    onClick={() => { setCurrentProfile(profile); navigate('/profile') }}
+                                    onClick={() => { setCurrentProfile(profile); setIsMatched(true); navigate('/profile') }}
                                     className="mb-2 flex gap-4">
                                     <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
                                     <h3>{profile.firstName} {profile.lastName}</h3>

@@ -7,11 +7,12 @@ import Profiles from "@/components/profile-component";
 import Matches from "@/components/matches-component";
 import UserProfile from "@/components/user-profile";
 import { LogoutAuth } from "@/api/user-auth-api";
-import { useEffect, useState } from "react";
 import Nav from "@/components/nav-component";
+import { useEffect, useState } from "react";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
 
+//TODO: Handle fetch errors when the backend is down and redirect accordingly
 export default function Navigation() {
 
     const [isMatched, setIsMatched] = useState(false);
@@ -21,7 +22,7 @@ export default function Navigation() {
     const navigate = useNavigate();
     const loggedInUser = useLoggedInUserState();
 
-    // This triggers on every refresh, change it
+    //TODO: This triggers on every refresh, change it
     useBeforeUnload(async () => {
         if (loggedInUser?.userId) {
             await LogoutAuth(loggedInUser?.userId!);
@@ -53,7 +54,7 @@ export default function Navigation() {
 
                         <Route path="/match" element={<Matches
                             setCurrentProfile={setCurrentProfile}
-                            matchState={{ matches, setMatches }} />}
+                            setIsMatched={setIsMatched} />}
                         />
 
                         <Route path="/chat" element={<ChatMessages

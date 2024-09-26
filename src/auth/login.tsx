@@ -11,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 
-// TODO: Add validation using Zod, etc
 export default function Login() {
 
   const { email, password } = useLocation().state as { email: string, password: string } || {"email": "", "password": ""};

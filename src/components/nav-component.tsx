@@ -11,7 +11,7 @@ type NavProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>
 }
 
-export default function Nav({currentProfile, setCurrentProfile}: NavProps) {
+export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
 
     const navigate = useNavigate();
 
@@ -33,37 +33,28 @@ export default function Nav({currentProfile, setCurrentProfile}: NavProps) {
         if (loggedInUser && !currentProfile) {
             seedRandomProfile();
         }
-    },[currentProfile])
+    }, [currentProfile])
 
     return (
-        <nav className='flex justify-between mb-6'>
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger >
-                        <User className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => navigate('/profile')} />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>Profiles</p>
-                    </TooltipContent>
-                </Tooltip>
-
-                <Button variant={"link"} className='text-purple-400'
-                    onClick={() => navigate('/userProfile')}>
-                    <p className='font-bold'>
-                        {"Rizz Master : " + loggedInUser?.firstName + " " + loggedInUser?.lastName}
-                    </p>
-                </Button>
-
-                <div className='w-9 h-9' />
-                <Tooltip>
-                    <TooltipTrigger>
-                        <MessageCircle className='cursor-pointer w-8 h-8 hover:w-9 hover:h-9' onClick={() => navigate('/match')} />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>Matches</p>
-                    </TooltipContent>
-                </Tooltip>
-            </TooltipProvider>
-        </nav>
+        <nav className="flex mb-6 justify-between">
+            <div className="flex flex-col items-center cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic" onClick={() => navigate('/profile')}>
+                <User className="w-11 h-11" />
+                <h2 className="text-gray-500">Profiles</h2>
+            </div>
+            
+            <div className="flex items-center">
+            <Button variant={"link"} className="text-purple-400 hover:scale-105 hover:italic"
+                onClick={() => navigate('/userProfile')}>
+                <p className="text-gray-500" >
+                    {"Rizz Master : " + loggedInUser?.firstName + " " + loggedInUser?.lastName}
+                </p>
+            </Button>
+            </div>
+            
+            <div className="flex flex-col items-center cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic" onClick={() => navigate('/match')}>
+            <MessageCircle className="cursor-pointer w-10 h-10" />
+            <h2 className="text-gray-500">Matches</h2>
+            </div>
+        </nav >
     );
 }

@@ -97,6 +97,7 @@ export default function UserProfile() {
             <CardHeader>
                 <h2 className="text-2xl text-center border-b-2 p-4">User Profile for {loggedInUser?.firstName}</h2>
             </CardHeader>
+            
             <CardContent>
 
                 <Form {...form}>
