@@ -97,7 +97,7 @@ export default function Login() {
                 </FormItem>
               )}></FormField>
 
-              <Button type='submit' variant='default'
+              <Button type='submit' variant='secondary'
                 disabled={!form.formState.isValid}
                 className='border w-full rounded-full mt-6 p-2'>
                 Login

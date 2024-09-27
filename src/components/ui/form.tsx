@@ -1,6 +1,6 @@
-import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
+import * as LabelPrimitive from "@radix-ui/react-label";
+import { Label } from "@/components/ui/label";
+import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
   ControllerProps,
@@ -8,11 +8,13 @@ import {
   FieldValues,
   FormProvider,
   useFormContext,
-} from "react-hook-form"
+} from "react-hook-form";
 
-import { cn } from "@/lib/utils"
-import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils";
+import * as React from "react";
 
+
+// TODO: change the buttons and form inputs to be rounded-full
 const Form = FormProvider
 
 type FormFieldContextValue<

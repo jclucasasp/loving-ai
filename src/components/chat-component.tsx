@@ -37,8 +37,15 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !e.shiftKey) {
             handleMessageSubmit();
+        }
+
+        if (e.key === 'Enter' && e.shiftKey) {
+            if (e.type = 'keydown') {
+                return 13; // 13 is enter
+            }
+            e.preventDefault();
         }
     }
 
@@ -53,7 +60,7 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
         <div>
             <section className="flex gap-4 items-center justify-center mb-3">
                 <img src={"http://localhost:8080/images/" + selectedProfile?.imageUrl} width={70} height={70} className="rounded-full" />
-                <h3 className="text-2xl text-indigo-500 italic">
+                <h3 className="text-2xl text-fuchsia-500 italic">
                     {selectedProfile?.firstName + " " + selectedProfile?.lastName}
                 </h3>
             </section>
@@ -83,7 +90,7 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
             <div className="flex gap-2 align-center mt-3">
                 <Textarea ref={messageInputContainer} disabled={loading} onKeyDown={handleKeyDown}
                     rows={4}
-                    placeholder="Type a message and press enter when ready to send"
+                    placeholder={"Press Shift and Enter at the same time to go to next line.\nHit Enter to send."} 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)} />
             </div>

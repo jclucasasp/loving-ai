@@ -50,28 +50,28 @@ export default function Profiles({ profile, setNextProfile, matchSate, isMatched
         <section className="flex items-center justify-center">
             <Card>
                 <CardContent>
-                    <div className="relative mt-6">
-                        <img src={profile?.imageUrl ? "http://localhost:8080/images/" + profile?.imageUrl : ""} alt="profile image" className="rounded-lg" />
-                        <div className="absolute bottom-0 left-0 right-0 p-4 text-white bg-gradient-to-t from-black">
-                            <h2 className="font-bold text-xl">{profile?.firstName} {profile?.lastName}</h2>
+                    <div className="relative flex justify-center mt-6">
+                        <img src={profile?.imageUrl ? "http://localhost:8080/images/" + profile?.imageUrl : ""} alt="profile image" className="rounded-xl" />
+                        <div className="absolute bottom-0 left-1 p-2 text-slate-100 text-lg bg-black/5 rounded-lg">
+                            <h2>{profile?.firstName} {profile?.lastName}</h2>
                             <p>{profile?.age}</p>
                         </div>
                     </div>
                     <div className="p-4">
                         <p className="text-gray-600">{profile?.bio}</p>
                     </div>
-                    <div className="flex justify-around mt-6 text-gray-500">
+                    <div className="flex justify-around mt-4 text-gray-500">
                         <div className="cursor-pointer flex flex-col items-center"
                             onClick={() => { setNextProfile(null), setIsMatched(false) }}>
-                            <img src="/thinking.png" alt="thinking emoji" height={70} width={70} />
+                            <img src="/thinking.png" alt="thinking emoji" height={65} width={65} />
                             Next ...
                         </div>
                         {!isMatched ? <div className="cursor-pointer flex flex-col items-center" onClick={createMatchHandler} >
-                            <img src="/heartFace.png" alt="face with hearts emoji" height={75} width={75} />
+                            <img src="/heartFace.png" alt="face with hearts emoji" height={67} width={67} />
                             Like
                         </div>
                             : <div className="cursor-not-allowed">
-                                <img src="/kissyFace.png" alt="kissy face emoji" height={70} width={70} />
+                                <img src="/kissyFace.png" alt="kissy face emoji" height={60} width={65} />
                                 Matched
                             </div>
                         }

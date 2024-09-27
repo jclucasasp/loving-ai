@@ -1,5 +1,5 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import { PersonalityTypeInterface } from "@/lib/interfaces";
@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
+import { Section } from "lucide-react";
 
 export default function UserProfile() {
 
@@ -93,149 +94,150 @@ export default function UserProfile() {
     }, []);
 
     return (
-        <Card>
-            <CardHeader>
-                <h2 className="text-2xl text-center border-b-2 p-4">User Profile for {loggedInUser?.firstName}</h2>
-            </CardHeader>
-            
-            <CardContent>
+        <>
 
-                <Form {...form}>
-                    <form className="flex flex-col gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+            <h2 className="text-2xl font-bold italic text-center text-fuchsia-500 mb-4">User Profile</h2>
 
-                        <FormField control={form.control} name="userId" render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input type="hidden" placeholder={loggedInUser?.userId} {...field} />
-                                </FormControl>
-                            </FormItem>
-                        )}></FormField>
+            <Card>
+                <CardContent>
 
-                        <FormField control={form.control} name="firstName" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your first name
-                                </FormDescription>
-                                <FormControl>
-                                    <Input type="text" placeholder={loggedInUser?.firstName} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}></FormField>
+                    <Form {...form}>
+                        <form className="flex flex-col gap-2" onSubmit={form.handleSubmit(onSubmit)}>
 
-                        <FormField control={form.control} name="lastName" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your last name
-                                </FormDescription>
-                                <FormControl>
-                                    <Input type="text" placeholder={loggedInUser?.lastName} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}></FormField>
-
-                        <FormField control={form.control} name="age" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your age
-                                </FormDescription>
-                                <FormControl>
-                                    <Input type={"number"} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}></FormField>
-
-                        <FormField control={form.control} name="ethnicity" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your ethnicity
-                                </FormDescription>
-                                <FormControl>
-                                    <Input type="text" placeholder={loggedInUser?.ethnicity} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}></FormField>
-
-                        <FormField control={form.control} name="bio" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your bio
-                                </FormDescription>
-                                <FormControl>
-                                    <Textarea rows={5} placeholder={loggedInUser?.bio} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}></FormField>
-
-                        <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your image url
-                                </FormDescription>
-                                <FormControl>
-                                    <Input type="text" placeholder={loggedInUser?.imageUrl} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}></FormField>
-
-                        <FormField control={form.control} name="gender" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your Gender
-                                </FormDescription>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormField control={form.control} name="userId" render={({ field }) => (
+                                <FormItem>
                                     <FormControl>
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue  />
-                                        </SelectTrigger>
+                                        <Input type="hidden" placeholder={loggedInUser?.userId} {...field} />
                                     </FormControl>
-                                    <SelectContent>
-                                        <SelectItem value="MALE">MALE</SelectItem>
-                                        <SelectItem value="FEMALE">FEMALE</SelectItem>
-                                    </SelectContent>
-                                    <FormMessage />
-                                </Select>
-                            </FormItem>
-                        )}></FormField>
+                                </FormItem>
+                            )}></FormField>
 
-                        <FormField control={form.control} name="myersBriggsPersonalityType" render={({ field }) => (
-                            <FormItem>
-                                <FormDescription>
-                                    Your Myers Briggs Personality Type
-                                </FormDescription>
-                                <Select onValueChange={field.onChange} >
+                            <FormField control={form.control} name="firstName" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your first name
+                                    </FormDescription>
                                     <FormControl>
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder={personalityTypes.find((p) => p.id === loggedInUser?.myersBriggsPersonalityType)?.type} />
-                                        </SelectTrigger>
+                                        <Input type="text" placeholder={loggedInUser?.firstName} {...field} />
                                     </FormControl>
-                                    <SelectContent>
-                                        {personalityTypes.map((p) => (
-                                            <SelectItem key={p.id} value={p.id}>
-                                                {p.type}
-                                            </SelectItem>
-                                        )
-                                        )}  </SelectContent>
                                     <FormMessage />
-                                </Select>
-                            </FormItem>
-                        )}></FormField>
+                                </FormItem>
+                            )}></FormField>
 
-                        <Button type="submit" className="mt-3">Update Profile</Button>
-                    </form>
-                </Form>
+                            <FormField control={form.control} name="lastName" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your last name
+                                    </FormDescription>
+                                    <FormControl>
+                                        <Input type="text" placeholder={loggedInUser?.lastName} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
 
-            </CardContent>
-            <CardFooter>
-                <Button variant={"destructive"} className="w-full" onClick={() => handleLogout()}>
-                    Log Out
-                </Button>
-            </CardFooter>
-        </Card>
+                            <FormField control={form.control} name="age" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your age
+                                    </FormDescription>
+                                    <FormControl>
+                                        <Input type={"number"} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField control={form.control} name="ethnicity" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your ethnicity
+                                    </FormDescription>
+                                    <FormControl>
+                                        <Input type="text" placeholder={loggedInUser?.ethnicity} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField control={form.control} name="bio" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your bio
+                                    </FormDescription>
+                                    <FormControl>
+                                        <Textarea rows={5} placeholder={loggedInUser?.bio} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField control={form.control} name="imageUrl" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your image url
+                                    </FormDescription>
+                                    <FormControl>
+                                        <Input type="text" placeholder={loggedInUser?.imageUrl} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField control={form.control} name="gender" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your Gender
+                                    </FormDescription>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="MALE">MALE</SelectItem>
+                                            <SelectItem value="FEMALE">FEMALE</SelectItem>
+                                        </SelectContent>
+                                        <FormMessage />
+                                    </Select>
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField control={form.control} name="myersBriggsPersonalityType" render={({ field }) => (
+                                <FormItem>
+                                    <FormDescription>
+                                        Your Myers Briggs Personality Type
+                                    </FormDescription>
+                                    <Select onValueChange={field.onChange} >
+                                        <FormControl>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder={personalityTypes.find((p) => p.id === loggedInUser?.myersBriggsPersonalityType)?.type} />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {personalityTypes.map((p) => (
+                                                <SelectItem key={p.id} value={p.id}>
+                                                    {p.type}
+                                                </SelectItem>
+                                            )
+                                            )}  </SelectContent>
+                                        <FormMessage />
+                                    </Select>
+                                </FormItem>
+                            )}></FormField>
+
+                            <Button variant={"secondary"} type="submit" className="mt-3">Update Profile</Button>
+                        </form>
+                    </Form>
+
+                </CardContent>
+                <CardFooter>
+                    <Button variant={"destructive"} className="w-full" onClick={() => handleLogout()}>
+                        Log Out
+                    </Button>
+                </CardFooter>
+            </Card>
+        </>
     );
 }

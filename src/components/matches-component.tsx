@@ -1,7 +1,7 @@
 import deleteMatchById, { GetMatchedProfiles } from "@/api/matches-api";
-import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import { GetConversationFromTo } from "@/api/conversation-api";
 import SkeletonMatches from "@/components/skeleton-matches";
+import { ProfileInterface } from "@/lib/interfaces";
 import { ToastAction } from "@/components/ui/toast";
 import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button";
@@ -94,8 +94,8 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps
     };
 
     return (
-        <ul className="flex flex-col gap-3">
-            <h2 className="text-2xl font-bold border-b-2 border-gray-300">Current Matches</h2>
+        <ul className="flex flex-col gap-3 text-center">
+            <h2 className="text-2xl font-bold italic text-fuchsia-500">Current Matches</h2>
             <MatchesList />
         </ul>
     );

@@ -207,7 +207,7 @@ export default function SignUp() {
                   </Select>
                 </FormItem>
               )}></FormField>
-              <Button type="submit" className="mt-3">Submit</Button>
+              <Button variant={"secondary"} type="submit" className="mt-3">Submit</Button>
             </form>
           </Form>
 
