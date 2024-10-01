@@ -53,7 +53,6 @@ export default function SignUp() {
     }
 
     await CreateNewUserProfile(result.data).then((res) => {
-      console.log(res)
       if (!res) {
         toast({
           variant: 'destructive',

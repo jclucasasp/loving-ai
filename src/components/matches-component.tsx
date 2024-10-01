@@ -15,17 +15,24 @@ type MachesProps = {
     setIsMatched: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-
-
 export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps) {
 
     const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
 
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>([]);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const { toast } = useToast();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchMatchedProfiles = async () => {
+            const res = await GetMatchedProfiles(loggedInUser.userId);
+            setProfiles(res);
+            setLoading(false);
+        }
+        fetchMatchedProfiles();
+    }, []);
 
     const handleChat = async (profileId: string, toProfileId: string) => {
         const conversationData = await GetConversationFromTo(profileId, toProfileId);
@@ -49,20 +56,6 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps
             }}>Delete</ToastAction>
         });
     };
-
-    useEffect(() => {
-        const fetchMatchedProfiles = async () => {
-            setLoading(true);
-            const res = await GetMatchedProfiles(loggedInUser.userId);
-            setProfiles(res);
-            setLoading(false);
-        }
-
-        if (!!profiles) {
-            fetchMatchedProfiles();
-        }
-    }, []);
-
     const MatchesList = () => {
         return (
             <Card className="p-2">

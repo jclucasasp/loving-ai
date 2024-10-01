@@ -4,6 +4,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import React from "react";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 
 
 type ProfileProps = {
@@ -26,14 +27,14 @@ type isMatchedState = {
 export default function Profiles({ profile, setNextProfile, matchSate, isMatchedState }: ProfileProps) {
 
     const { isMatched, setIsMatched } = isMatchedState;
-    const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
+    const loggedInUser = useLoggedInUserState();
 
     const { setMatches, matches } = matchSate;
 
     const { toast } = useToast();
 
     const createMatchHandler = async () => {
-        const newMatch = await CreateMatch(loggedInUser.userId, profile!.userId);
+        const newMatch = await CreateMatch(loggedInUser!.userId, profile!.userId);
 
         if (newMatch) {
             setIsMatched(true);

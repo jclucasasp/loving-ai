@@ -12,7 +12,7 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
     const { conversationData, loggedInUser } = useLocation().state;
 
     const [conversation, setConversation] = useState<ConversationInterface | null>(conversationData);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [message, setMessage] = useState<string>('');
 
     const messageInputContainer = useRef<HTMLTextAreaElement>(null);
@@ -20,7 +20,6 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
 
     const handleMessageSubmit = async () => {
         if (message.trim()) {
-            setLoading(true);
             const newConversation = await CreateMessage(conversation!.matchId, {
                 messagePrompt: message,
                 name: selectedProfile?.firstName + " " + selectedProfile?.lastName,
@@ -75,10 +74,10 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
                                     m.senderProfileId !== loggedInUser.userId && "bg-green-500/10 text-start"
                                 )}>
                                     <p className="text-balance text-black whitespace-pre">{m.messageText}</p>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 text-xs text-gray-300 pointer-events-none">
                                         {new Date().toISOString().split('T')[0] !== (m.sendDate!.substring(0, 10)) &&
-                                            <p className="text-xs text-gray-300 pointer-events-none">Date: {m.sendDate?.substring(0, 10)}</p>}
-                                        <p className="text-xs text-gray-300 pointer-events-none">{m.sendDate?.substring(11, 19)}</p>
+                                            <p>Date: {m.sendDate?.substring(0, 10)}</p>}
+                                        <p>@ {m.sendDate?.substring(11, 19)}</p>
                                     </div>
                                 </div>
                             </div>

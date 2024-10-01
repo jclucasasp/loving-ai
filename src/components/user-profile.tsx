@@ -1,6 +1,6 @@
 import { Form, FormControl, FormDescription, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import { PersonalityTypeInterface } from "@/lib/interfaces";
 import { GetPersonalityTypes } from "@/api/personality-api";
@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
-import { Section } from "lucide-react";
 
 export default function UserProfile() {
 
@@ -95,7 +94,6 @@ export default function UserProfile() {
 
     return (
         <>
-
             <h2 className="text-2xl font-bold italic text-center text-fuchsia-500 mb-4">User Profile</h2>
 
             <Card>

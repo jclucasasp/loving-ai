@@ -1,4 +1,3 @@
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
 import { GetRandomProfile, GetProfileById } from "@/api/profiles-api";
 import { ProfileInterface } from "@/lib/interfaces";
 import { User, MessageCircle } from "lucide-react";
