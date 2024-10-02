@@ -1,10 +1,10 @@
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import React from "react";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 
 
 type ProfileProps = {
@@ -41,7 +41,8 @@ export default function Profiles({ profile, setNextProfile, matchSate, isMatched
             toast({
                 title: 'Match created successfully',
                 description: 'May this be the beginning of something great!',
-                action: <ToastAction altText="Okay" >Okay</ToastAction>
+                action: <ToastAction altText="Okay" >Okay</ToastAction>,
+                duration: 4000
             });
             setMatches([...matches, newMatch]);
         }

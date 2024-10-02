@@ -1,8 +1,8 @@
 import { GetRandomProfile, GetProfileById } from "@/api/profiles-api";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ProfileInterface } from "@/lib/interfaces";
 import { User, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 type NavProps = {
@@ -13,6 +13,7 @@ type NavProps = {
 export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
 
@@ -29,10 +30,10 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
     }
 
     useEffect(() => {
-        if (loggedInUser && !currentProfile) {
+        if (loggedInUser && !currentProfile && location.pathname == "/profile") {
             seedRandomProfile();
         }
-    }, [currentProfile])
+    }, [currentProfile, location.pathname])
 
     return (
         <nav className="flex mb-2 justify-between">

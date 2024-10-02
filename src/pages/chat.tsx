@@ -1,4 +1,4 @@
-import { ConversationInterface, ProfileInterface } from "@/lib/interfaces";
+import { ConversationInterface } from "@/lib/interfaces";
 import { CreateMessage } from "@/api/conversation-api";
 import SkeletonCard from "@/components/skeleton-card";
 import { useEffect, useRef, useState } from "react";
@@ -7,12 +7,12 @@ import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
-export default function ChatMessages({ selectedProfile }: { selectedProfile: ProfileInterface | null }) {
+export default function ChatMessages() {
 
-    const { conversationData, loggedInUser } = useLocation().state;
+    const { conversationData,toProfile , loggedInUser } = useLocation().state;
 
     const [conversation, setConversation] = useState<ConversationInterface | null>(conversationData);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
 
     const messageInputContainer = useRef<HTMLTextAreaElement>(null);
@@ -20,14 +20,15 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
 
     const handleMessageSubmit = async () => {
         if (message.trim()) {
+            setLoading(true);
             const newConversation = await CreateMessage(conversation!.matchId, {
                 messagePrompt: message,
-                name: selectedProfile?.firstName + " " + selectedProfile?.lastName,
-                age: selectedProfile?.age || 0,
-                ethnicity: selectedProfile?.ethnicity || "",
-                gender: selectedProfile?.gender || "",
-                bio: selectedProfile?.bio || "",
-                personality: selectedProfile?.myersBriggsPersonalityType || "",
+                name: toProfile?.firstName + " " + toProfile?.lastName,
+                age: toProfile?.age || 0,
+                ethnicity: toProfile?.ethnicity || "",
+                gender: toProfile?.gender || "",
+                bio: toProfile?.bio || "",
+                personality: toProfile?.myersBriggsPersonalityType || "",
             })
             setConversation(newConversation);
             setLoading(false);
@@ -58,9 +59,9 @@ export default function ChatMessages({ selectedProfile }: { selectedProfile: Pro
     return (
         <div>
             <section className="flex gap-4 items-center justify-center mb-3">
-                <img src={"http://localhost:8080/images/" + selectedProfile?.imageUrl} width={70} height={70} className="rounded-full" />
+                <img src={"http://localhost:8080/images/" + toProfile?.imageUrl} width={70} height={70} className="rounded-full" />
                 <h3 className="text-2xl text-fuchsia-500 italic">
-                    {selectedProfile?.firstName + " " + selectedProfile?.lastName}
+                    {toProfile?.firstName + " " + toProfile?.lastName}
                 </h3>
             </section>
 

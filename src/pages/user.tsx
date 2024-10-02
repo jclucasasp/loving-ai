@@ -83,7 +83,7 @@ export default function UserProfile() {
     const handleLogout = async () => {
         sessionStorage.clear();
         await LogoutAuth(loggedInUser!.userId);
-        navigate('/login');
+        navigate('/');
     };
 
     useEffect(() => {

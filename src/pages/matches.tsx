@@ -34,21 +34,25 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps
         fetchMatchedProfiles();
     }, []);
 
-    const handleChat = async (profileId: string, toProfileId: string) => {
-        const conversationData = await GetConversationFromTo(profileId, toProfileId);
-        navigate('/chat', { state: { conversationData, loggedInUser } });
+    const handleChat = async (profileId: string, toProfile: ProfileInterface) => {
+        const conversationData = await GetConversationFromTo(profileId, toProfile.userId);
+        setCurrentProfile(toProfile);
+        navigate('/chat', { state: { conversationData, loggedInUser, toProfile } });
     };
 
     const handleDelete = async (userId: string) => {
         toast({
             title: 'Deleting match',
             description: 'Are you sure you want to do that?',
+            variant: 'destructive',
+            duration: 4000,
             action: <ToastAction altText="Delete" onClick={async () => {
                 const res = await deleteMatchById(userId);
                 if (!res.ok) {
                     toast({
                         variant: 'destructive',
                         description: 'Something went wrong',
+                        duration: 3000
                     });
                 } else {
                     setProfiles(prevState => prevState?.filter(profile => profile.userId !== userId));
@@ -73,7 +77,7 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps
                             </section>
                             <section className="flex gap-6">
                                 <Button variant={"secondary"} size={'default'} className="gap-2"
-                                    onClick={() => { handleChat(loggedInUser.userId, profile.userId); setCurrentProfile(profile) }}><XCircle />Chat</Button>
+                                    onClick={() => { handleChat(loggedInUser.userId, profile); }}><XCircle />Chat</Button>
                                 <Button variant={"destructive"} size={'default'}
                                     onClick={() => { handleDelete(profile.userId) }}
                                     className="bg-red-500 gap-2">

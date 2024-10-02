@@ -3,12 +3,12 @@ import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import Personality from "@/components/personality-component";
 import { useCallback, useEffect, useState } from "react";
-import ChatMessages from "@/components/chat-component";
-import Profiles from "@/components/profile-component";
-import Matches from "@/components/matches-component";
-import UserProfile from "@/components/user-profile";
 import { LogoutAuth } from "@/api/user-auth-api";
 import Nav from "@/components/nav-component";
+import ChatMessages from "@/pages/chat";
+import UserProfile from "@/pages/user";
+import Profiles from "@/pages/profile";
+import Matches from "@/pages/matches";
 import {
     AlertDialog, AlertDialogAction,
     AlertDialogCancel, AlertDialogContent,
@@ -21,14 +21,14 @@ import Login from "@/auth/login";
 //TODO: Handle fetch errors when the backend is down and redirect accordingly
 export default function Navigation() {
 
-    const [isMatched, setIsMatched] = useState(false);
-    const [open, setOpen] = useState(false);
     const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
+    const [isMatched, setIsMatched] = useState(false);
+    const [open, setOpen] = useState(false);
 
+    const loggedInUser = useLoggedInUserState();
     const navigate = useNavigate();
     const location = useLocation();
-    const loggedInUser = useLoggedInUserState();
 
     useBeforeUnload(useCallback(async () => {
         if (loggedInUser?.userId) {
@@ -39,26 +39,26 @@ export default function Navigation() {
     const logOutUser = async () => {
         await LogoutAuth(loggedInUser?.userId!);
         sessionStorage.clear();
+        clearTimeout(timer);
         navigate('/');
     };
 
-    //TODO: Move this to the navigation component. It needs to be cancelled somehow after once continue browsing gets clicked.
+    let timer: NodeJS.Timeout;
+    // Log user out after 10 seconds if no option is chosen from model.
     const alertDialogAction = () => {
-        setTimeout(() => {
+        timer = setTimeout(() => {
             logOutUser();
             setOpen(false);
         }, (1000 * 10));
     }
 
     useEffect(() => {
-
-        let timer: NodeJS.Timeout;
-
+        // After inactivity of 15 minutes, prompt user to log out or continue browsing
         if (loggedInUser) {
             timer = setTimeout(() => {
                 setOpen(true);
                 alertDialogAction();
-            }, (1000 * 10));
+            }, (1000 * 60) * 15);
         }
 
         // if (!loggedInUser) {
@@ -84,11 +84,11 @@ export default function Navigation() {
                             <AlertDialogHeader>
                                 <AlertDialogTitle>No Activity Detected</AlertDialogTitle>
                                 <AlertDialogDescription >
-                                    You will be automatically logged out after 30 seconds. To continue browsing, please click on <span className="font-bold">Contiunue Browsing</span> or to log out click on <span className="font-bold">Log Out</span>.
+                                    You will be automatically logged out after 30 seconds. To continue browsing, please click on <span className="font-bold">Continue Browsing</span> or to log out click on <span className="font-bold">Log Out</span>.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel onClick={() => setOpen(false)}>Continue Browsing</AlertDialogCancel>
+                                <AlertDialogCancel onClick={() => { clearTimeout(timer); setOpen(false); }}>Continue Browsing</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => logOutUser()}>Log out</AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
@@ -112,8 +112,7 @@ export default function Navigation() {
                             setIsMatched={setIsMatched} />}
                         />
 
-                        <Route path="/chat" element={<ChatMessages
-                            selectedProfile={currentProfile} />}
+                        <Route path="/chat" element={<ChatMessages/>}
                         />
 
                         <Route path="/userProfile" element={<UserProfile />} />
