@@ -44,7 +44,7 @@ export default function Navigation() {
     };
 
     let timer: NodeJS.Timeout;
-    // Log user out after 10 seconds if no option is chosen from model.
+    // Log user out after 10 seconds if no option is chosen from model. Change this to look for typing and mouse movements.
     const alertDialogAction = () => {
         timer = setTimeout(() => {
             logOutUser();

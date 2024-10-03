@@ -23,6 +23,7 @@ export default function ChatMessages() {
             setLoading(true);
             const newConversation = await CreateMessage(conversation!.matchId, {
                 messagePrompt: message,
+                userId: loggedInUser?.userId,
                 name: toProfile?.firstName + " " + toProfile?.lastName,
                 age: toProfile?.age || 0,
                 ethnicity: toProfile?.ethnicity || "",
