@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
+import PasswordReset from "./auth/password-reset";
 
 //TODO: Handle fetch errors when the backend is down and redirect accordingly
 export default function Navigation() {
@@ -45,6 +46,7 @@ export default function Navigation() {
 
     let timer: NodeJS.Timeout;
     // Log user out after 10 seconds if no option is chosen from model. Change this to look for typing and mouse movements.
+    //TODO: Need to change to detect mouse movement and typing
     const alertDialogAction = () => {
         timer = setTimeout(() => {
             logOutUser();
@@ -122,6 +124,7 @@ export default function Navigation() {
                         <Route path="/" element={<Login />} errorElement={<div>Error</div>} />
                         <Route path="/personality" element={<Personality />} errorElement={<div>Error</div>} />
                         <Route path="/signUp" element={<SignUp />} />
+                        <Route path="/reset" element={<PasswordReset />} />
                     </>
                 )
                 }

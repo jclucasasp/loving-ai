@@ -1,3 +1,14 @@
+# Dependancies
+
+- [React Router](https://react.email/)
+- [Tailwind Merge](https://react.email/)
+- [clsx and react-clsx](https://react.email/)
+- [Shadcn UI](https://react.email/)
+- [Resend: API for sending email](https://resend.com/docs/introduction)
+- [React EAmil](https://react.email/)
+- [EmailJS](https://www.emailjs.com/docs/rest-api/send/)
+- [Zod: Schema validation](https://www.emailjs.com/docs/rest-api/send/)
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -48,4 +59,4 @@ export default tseslint.config({
   },
 })
 ```
-# tinder-ai-frontend
+# loving-ai-frontend

@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 export default function Login() {
 
@@ -32,11 +33,6 @@ export default function Login() {
     const result = LoginFormSchema.safeParse(data);
 
     if (!result.success) {
-      toast({
-        title: "Validation failed.",
-        description: result.error.message, variant: "destructive",
-        action: <ToastAction altText="Retry">Retry</ToastAction>
-      });
       return;
     }
 
@@ -58,6 +54,26 @@ export default function Login() {
 
     sessionStorage.setItem('loggedInUser', JSON.stringify(data));
     naviage('/profile');
+  }
+
+  const handleReset = async (data: LoginForm) => {
+    
+    const emailSchema = z.string({ required_error: "Email is required" }).email({ message: "Must be a valid email" });
+    
+    const res = emailSchema.safeParse(data.email);
+    
+    if (!res.success) {
+      toast({
+        title: "Please enter a valid email.",
+        variant: "destructive",
+        action: <ToastAction altText="Retry">Retry</ToastAction>,
+        duration: 3000
+      });
+      return;
+    }
+
+    console.log(res.data);
+
   }
 
   return (
@@ -88,7 +104,8 @@ export default function Login() {
                 <FormItem>
                   <div className='flex justify-between items-center'>
                     <Label htmlFor="password">Password</Label>
-                    <a href="/matches" className='text-slate-400 text-sm'>Forgot Password?</a>
+                  <span className='text-slate-400 cursor-pointer text-sm select-none'
+                  onClick={() => handleReset(form.getValues())}>Forgot Password?</span>
                   </div>
                   <FormControl>
                     <Input {...field} id="password" type="password" />
@@ -98,7 +115,7 @@ export default function Login() {
               )}></FormField>
 
               <Button type='submit' variant='secondary'
-                disabled={!form.formState.isValid}
+                
                 className='border w-full rounded-full mt-6 p-2'>
                 Login
               </Button>
