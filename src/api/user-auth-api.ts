@@ -7,7 +7,7 @@ export async function LoginAuth(email: string, password: string) {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({email, password})
+        body: JSON.stringify({ email, password })
     }).then((res) => {
         if (!res.ok) {
             return null;
@@ -29,8 +29,13 @@ export async function LogoutAuth(id: string) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })
-    }).catch((err) => {
-        console.log(err);
-        throw new Error('Failed to LogoutAuth: \n' + err);
-    });
+    }).then((res) => {
+        if (res.ok) {
+            sessionStorage.clear();
+        }
+    })
+        .catch((err) => {
+            console.log(err);
+            throw new Error('Failed to LogoutAuth: \n' + err);
+        });
 }

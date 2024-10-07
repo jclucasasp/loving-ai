@@ -1,8 +1,9 @@
-import { Routes, Route, useNavigate, useBeforeUnload, useLocation } from "react-router-dom";
+import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import Personality from "@/components/personality-component";
 import { useCallback, useEffect, useState } from "react";
+import PasswordReset from "@/auth/password-reset";
 import { LogoutAuth } from "@/api/user-auth-api";
 import Nav from "@/components/nav-component";
 import ChatMessages from "@/pages/chat";
@@ -17,63 +18,75 @@ import {
 } from "@/components/ui/alert-dialog";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
-import PasswordReset from "./auth/password-reset";
 
 //TODO: Handle fetch errors when the backend is down and redirect accordingly
 export default function Navigation() {
 
-    const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
+    const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
     const [isMatched, setIsMatched] = useState(false);
-    const [open, setOpen] = useState(false);
+
+    const [lastActivityTime, setLastActivityTime] = useState(new Date().getTime());
+    const [openAlert, setOpenAlert] = useState(false);
 
     const loggedInUser = useLoggedInUserState();
     const navigate = useNavigate();
-    const location = useLocation();
 
     useBeforeUnload(useCallback(async () => {
         if (loggedInUser?.userId) {
             await LogoutAuth(loggedInUser?.userId!);
         }
+
     }, []));
 
-    const logOutUser = async () => {
-        await LogoutAuth(loggedInUser?.userId!);
-        sessionStorage.clear();
+    const removeEventListeners = () => {
+        document.removeEventListener('mousemove', () => console.log('mouse move event handler removed'));
+        document.removeEventListener('touchmove', () => console.log('touch move event handler removed'));
+        document.removeEventListener('keydown', () => console.log('key down event handler removed'));
         clearTimeout(timer);
-        navigate('/');
+    }
+
+    const logOutUser = async () => {
+        if (loggedInUser?.userId) {
+            removeEventListeners();
+            await LogoutAuth(loggedInUser?.userId!);
+            navigate('/');
+        }
     };
 
     let timer: NodeJS.Timeout;
-    // Log user out after 10 seconds if no option is chosen from model. Change this to look for typing and mouse movements.
-    //TODO: Need to change to detect mouse movement and typing
-    const alertDialogAction = () => {
-        timer = setTimeout(() => {
-            logOutUser();
-            setOpen(false);
-        }, (1000 * 10));
+
+    const checkIdle = () => {
+        if (!loggedInUser || !lastActivityTime) return;
+
+        console.log(`Last activity time: ${lastActivityTime}`);
+        console.log(`Current time: ${new Date().getTime()}`);
+
+        if (new Date().getTime() - lastActivityTime >= (60 * 1000)) {
+            setOpenAlert(true);
+        }
+
     }
 
     useEffect(() => {
-        // After inactivity of 15 minutes, prompt user to log out or continue browsing
         if (loggedInUser) {
-            timer = setTimeout(() => {
-                setOpen(true);
-                alertDialogAction();
-            }, (1000 * 60) * 15);
+
+            document.addEventListener('mousemove', () => setLastActivityTime(new Date().getTime()));
+            document.addEventListener('touchmove', () => setLastActivityTime(new Date().getTime()));
+            document.addEventListener('keydown', () => setLastActivityTime(new Date().getTime()));
+
+            timer = setInterval(checkIdle, 1000);
+
+            return () => {
+                removeEventListeners();
+            }
         }
 
         // if (!loggedInUser) {
         //     navigate('/login');
         // }
 
-        if (loggedInUser) {
-            return () => {
-                clearTimeout(timer);
-            };
-        }
-
-    }, [loggedInUser, location]);
+    }, [loggedInUser]);
 
     return (
         <div className='max-w-lg mx-auto mt-3'>
@@ -81,7 +94,7 @@ export default function Navigation() {
                 loggedInUser && <>
                     <Nav currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
 
-                    <AlertDialog open={open} >
+                    <AlertDialog open={openAlert} >
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>No Activity Detected</AlertDialogTitle>
@@ -90,7 +103,7 @@ export default function Navigation() {
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel onClick={() => { clearTimeout(timer); setOpen(false); }}>Continue Browsing</AlertDialogCancel>
+                                <AlertDialogCancel onClick={() => { clearTimeout(timer); setLastActivityTime(new Date().getTime()); setOpenAlert(false); }}>Continue Browsing</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => logOutUser()}>Log out</AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
@@ -114,7 +127,7 @@ export default function Navigation() {
                             setIsMatched={setIsMatched} />}
                         />
 
-                        <Route path="/chat" element={<ChatMessages/>}
+                        <Route path="/chat" element={<ChatMessages />}
                         />
 
                         <Route path="/userProfile" element={<UserProfile />} />
