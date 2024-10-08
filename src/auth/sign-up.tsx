@@ -61,7 +61,7 @@ export default function SignUp() {
         });
         return;
       }
-      navigate('/login', { state: { email: result.data.email, password: result.data.password } });
+      navigate('/', { state: { email: result.data.email, password: result.data.password } });
     });
   }
 

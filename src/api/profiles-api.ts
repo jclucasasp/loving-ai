@@ -1,11 +1,13 @@
 import { NewUserProfileInterface, ProfileInterface } from "@/lib/interfaces";
 
-export async function GetRandomProfile(): Promise<ProfileInterface> {
+export async function GetRandomProfile(gender: string): Promise<ProfileInterface> {
     return await fetch('http://127.0.0.1:8080/profile/random', {
+        method: 'POST',
         headers: {
             'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
             'Content-Type': 'application/json'
         }, cache: 'force-cache',
+        body: JSON.stringify({gender}),
     })
         .then((res) => {
             if (!res.ok) {

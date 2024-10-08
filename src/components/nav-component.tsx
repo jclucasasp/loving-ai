@@ -20,7 +20,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
     const seedRandomProfile = async (id?: string) => {
         let profileData: Promise<ProfileInterface | null>;
         if (!id) {
-            profileData = GetRandomProfile();
+            profileData = GetRandomProfile(loggedInUser?.gender);
         } else {
             profileData = GetProfileById(id);
         }

@@ -62,7 +62,8 @@ export default function Navigation() {
         console.log(`Last activity time: ${lastActivityTime}`);
         console.log(`Current time: ${new Date().getTime()}`);
 
-        if (new Date().getTime() - lastActivityTime >= (60 * 1000)) {
+        // check if the user has been in idle for 15 minutes
+        if (new Date().getTime() - lastActivityTime >= (60 * 1000) * 15) {
             setOpenAlert(true);
         }
 
@@ -75,7 +76,8 @@ export default function Navigation() {
             document.addEventListener('touchmove', () => setLastActivityTime(new Date().getTime()));
             document.addEventListener('keydown', () => setLastActivityTime(new Date().getTime()));
 
-            timer = setInterval(checkIdle, 1000);
+            // check every minute if the user is idle
+            timer = setInterval(checkIdle, (1000 * 60));
 
             return () => {
                 removeEventListeners();
