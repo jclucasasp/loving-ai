@@ -4,13 +4,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginForm, LoginFormSchema } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ToastAction } from '@/components/ui/toast';
-import { LoginAuth } from '@/api/user-auth-api';
+import { LoginAuth, OTPRequest } from '@/api/user-auth-api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import EmailToken from '@/api/send';
 
 export default function Login() {
 
@@ -73,6 +74,9 @@ export default function Login() {
     }
 
     console.log(res.data);
+    // const res2 = await EmailToken(res.data);
+    const res2 = await OTPRequest(res.data);
+    console.log(res2);
 
   }
 

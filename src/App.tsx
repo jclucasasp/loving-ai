@@ -43,7 +43,7 @@ export default function Navigation() {
         document.removeEventListener('mousemove', () => console.log('mouse move event handler removed'));
         document.removeEventListener('touchmove', () => console.log('touch move event handler removed'));
         document.removeEventListener('keydown', () => console.log('key down event handler removed'));
-        clearTimeout(timer);
+        // clearTimeout(timer);
     }
 
     const logOutUser = async () => {
@@ -54,41 +54,41 @@ export default function Navigation() {
         }
     };
 
-    let timer: NodeJS.Timeout;
+    // let timer: NodeJS.Timeout;
 
-    const checkIdle = () => {
-        if (!loggedInUser || !lastActivityTime) return;
+    // const checkIdle = () => {
+    //     if (!loggedInUser || !lastActivityTime) return;
 
-        console.log(`Last activity time: ${lastActivityTime}`);
-        console.log(`Current time: ${new Date().getTime()}`);
+    //     console.log(`Last activity time: ${lastActivityTime}`);
+    //     console.log(`Current time: ${new Date().getTime()}`);
 
-        // check if the user has been in idle for 15 minutes
-        if (new Date().getTime() - lastActivityTime >= (60 * 1000) * 15) {
-            setOpenAlert(true);
-        }
+    //     // check if the user has been in idle for 15 minutes
+    //     if (new Date().getTime() - lastActivityTime >= (60 * 1000) * 15) {
+    //         setOpenAlert(true);
+    //     }
 
-    }
+    // }
 
-    useEffect(() => {
-        if (loggedInUser) {
+    // useEffect(() => {
+    //     if (loggedInUser) {
 
-            document.addEventListener('mousemove', () => setLastActivityTime(new Date().getTime()));
-            document.addEventListener('touchmove', () => setLastActivityTime(new Date().getTime()));
-            document.addEventListener('keydown', () => setLastActivityTime(new Date().getTime()));
+    //         document.addEventListener('mousemove', () => setLastActivityTime(new Date().getTime()));
+    //         document.addEventListener('touchmove', () => setLastActivityTime(new Date().getTime()));
+    //         document.addEventListener('keydown', () => setLastActivityTime(new Date().getTime()));
 
-            // check every minute if the user is idle
-            timer = setInterval(checkIdle, (1000 * 60));
+    //         // check every minute if the user is idle
+    //         timer = setInterval(checkIdle, (1000 * 60));
 
-            return () => {
-                removeEventListeners();
-            }
-        }
+    //         return () => {
+    //             removeEventListeners();
+    //         }
+    //     }
 
-        // if (!loggedInUser) {
-        //     navigate('/login');
-        // }
+    //     // if (!loggedInUser) {
+    //     //     navigate('/login');
+    //     // }
 
-    }, [loggedInUser]);
+    // }, [loggedInUser, openAlert]);
 
     return (
         <div className='max-w-lg mx-auto mt-3'>
@@ -105,7 +105,7 @@ export default function Navigation() {
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                                <AlertDialogCancel onClick={() => { clearTimeout(timer); setLastActivityTime(new Date().getTime()); setOpenAlert(false); }}>Continue Browsing</AlertDialogCancel>
+                                <AlertDialogCancel onClick={() => { setLastActivityTime(new Date().getTime()); setOpenAlert(false); }}>Continue Browsing</AlertDialogCancel>
                                 <AlertDialogAction onClick={() => logOutUser()}>Log out</AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>

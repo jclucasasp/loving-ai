@@ -16,6 +16,7 @@ export interface NewUserProfileInterface {
     lastName: string;
     email: string;
     password: string;
+    otp:string;
     age: number;
     ethnicity: string;
     gender: string;

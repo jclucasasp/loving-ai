@@ -24,17 +24,18 @@ export default function SignUp() {
   const form = useForm<NewUserForm>({
     resolver: zodResolver(NewUserSchema),
     defaultValues: {
-      firstName: "", 
-      lastName: "", 
-      email: "", 
+      firstName: "",
+      lastName: "",
+      email: "",
       password: "",
+      otp: "",
       confirm: "",
-      age: 0, 
-      ethnicity: "", 
-      bio: "", 
-      imageUrl: "", 
+      age: 0,
+      ethnicity: "",
+      bio: "",
+      imageUrl: "",
       gender: "",
-      myersBriggsPersonalityType: "", 
+      myersBriggsPersonalityType: "",
     },
   });
 
@@ -128,6 +129,15 @@ export default function SignUp() {
                 </FormItem>
               )}></FormField>
 
+              <FormField control={form.control} name="otp" render={({ field }) => (
+                <FormItem hidden>
+                  <FormControl>
+                    <Input type="text" {...field} value={field.value} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
+
               <FormField control={form.control} name="age" render={({ field }) => (
                 <FormItem>
                   <FormLabel>Age</FormLabel>
@@ -188,7 +198,9 @@ export default function SignUp() {
 
               <FormField control={form.control} name="myersBriggsPersonalityType" render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Myers Briggs Personality Type</FormLabel>
+                  <FormLabel>
+                    Your Myers Briggs Personality Type
+                  </FormLabel>
                   <Select onValueChange={field.onChange} >
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -206,6 +218,7 @@ export default function SignUp() {
                   </Select>
                 </FormItem>
               )}></FormField>
+
               <Button variant={"secondary"} type="submit" className="mt-3">Submit</Button>
             </form>
           </Form>

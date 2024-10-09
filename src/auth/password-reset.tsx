@@ -1,12 +1,19 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { OTPRequest } from "@/api/user-auth-api";
 import { Button } from "@/components/ui/button";
-import ResetPassword from "@/api/send";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 
+// TODO: Use new backend implimentation api for otp and password reset
 export default function PasswordReset() {
 
+    const [ password, setPassword ] = useState("");
+
     const handlePasswordReset = async () => {
-        const res = await ResetPassword();
+        console.log(`Password: [${password}]`);
+
+        const res = await OTPRequest(password);
         console.log(res);
     }
 
@@ -17,7 +24,7 @@ export default function PasswordReset() {
                     Password Reset
                 </CardHeader>
                 <CardContent>
-                    <p>Enter your email address below to reset your password.</p>
+                    <Input onChange={(e) => setPassword(e.target.value)}>Enter your email address below to reset your password.</Input>
                 </CardContent>
                 <CardFooter>
                     <Button onClick={handlePasswordReset}>Reset Password</Button>

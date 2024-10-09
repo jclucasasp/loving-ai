@@ -25,6 +25,7 @@ export const NewUserSchema = z.object({
   lastName: z.string({ required_error: "Last name is required" }).min(3, { message: "Last name must be at least 3 characters long" }),
   email: z.string({ required_error: "Email is required" }).email({ message: "Must be a valid email" }),
   password: z.string({ required_error: "Password is required" }).min(8, { message: "Password must be at least 8 characters long" }),
+  otp: z.string(),
   confirm: z.string({ required_error: "Password is required" }).min(8, { message: "Password must be at least 8 characters long" }),
   age: z.coerce.number({ required_error: "Age is required" }).gte(18, { message: "Must be at least 18 years old" }).lte(100, { message: "Must be less than 100 years old" }),
   ethnicity: z.string({ required_error: "Ethnicity is required" }).min(3, { message: "Ethnicity must be at least 3 characters long" }),

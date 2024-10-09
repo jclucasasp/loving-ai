@@ -39,3 +39,19 @@ export async function LogoutAuth(id: string) {
             throw new Error('Failed to LogoutAuth: \n' + err);
         });
 }
+
+export async function OTPRequest(email: string) {
+    return await fetch('http://127.0.0.1:8080/user/otp', {
+        method: 'POST',
+        headers: {
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    }).then((res) => {
+        return res;
+    }).catch((err) => {
+        console.log(err);
+        throw new Error('Failed to OTPRequest: \n' + err);
+    });
+}
