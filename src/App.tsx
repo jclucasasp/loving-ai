@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
+import Otp from "./auth/otp";
 
 //TODO: Handle fetch errors when the backend is down and redirect accordingly
 export default function Navigation() {

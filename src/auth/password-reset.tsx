@@ -1,21 +1,49 @@
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { OTPRequest } from "@/api/user-auth-api";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PasswordResetForm, PasswordRestSchema } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ToastAction } from "@/components/ui/toast";
+import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "@/hooks/use-toast";
 
 
-// TODO: Use new backend implimentation api for otp and password reset
+// TODO: Create an api for password reset and create form to reset the password.
 export default function PasswordReset() {
 
-    const [ password, setPassword ] = useState("");
+    const email = useLocation().state as string;
 
-    const handlePasswordReset = async () => {
-        console.log(`Password: [${password}]`);
+    const form = useForm<PasswordResetForm>({
+        resolver: zodResolver(PasswordRestSchema),
+        defaultValues: {
+            email: email || "testemail@noma.com",
+            otp: "",
+            password: "",
+            confirm: "",
+        }
+    });
 
-        const res = await OTPRequest(password);
-        console.log(res);
+    const onSubmit = (data: PasswordResetForm) => {
+
+        const res = PasswordRestSchema.safeParse(data);
+
+        if (!res.success) {
+            toast({
+                title: "Validation failed.",
+                description: res.error.message, variant: "destructive",
+                action: <ToastAction altText="Retry">Retry</ToastAction>,
+                duration: 3000
+            })
+            return;
+        }
+
+        console.log("Data: ",data)
     }
+
 
     return (
         <section className="flex flex-col h-screen items-center justify-center">
@@ -24,11 +52,70 @@ export default function PasswordReset() {
                     Password Reset
                 </CardHeader>
                 <CardContent>
-                    <Input onChange={(e) => setPassword(e.target.value)}>Enter your email address below to reset your password.</Input>
+
+                    <Form {...form} >
+                        < form className='flex flex-col gap-2' onSubmit={form.handleSubmit(onSubmit)}>
+
+                            <FormField name="email" control={form.control} render={({ field }) => (
+                                <FormItem >
+                                    <Label htmlFor="email">Email</Label>
+                                    <FormControl>
+                                        <Input {...field} id="email" type="email" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField name="otp" control={form.control} render={({ field }) => (
+                                <FormItem >
+                                    <Label htmlFor="otp">OTP</Label>
+                                    <FormControl>
+                                        <InputOTP maxLength={6} {...field}>
+                                            <InputOTPGroup>
+                                                <InputOTPSlot index={0} />
+                                                <InputOTPSlot index={1} />
+                                                <InputOTPSlot index={2} />
+                                            </InputOTPGroup>
+                                            <InputOTPSeparator />
+                                            <InputOTPGroup>
+                                                <InputOTPSlot index={3} />
+                                                <InputOTPSlot index={4} />
+                                                <InputOTPSlot index={5} />
+                                            </InputOTPGroup>
+                                        </InputOTP>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField name="password" control={form.control} render={({ field }) => (
+                                <FormItem>
+                                    <Label htmlFor="password">Password</Label>
+                                    <FormControl>
+                                        <Input {...field} id="password" type="password" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <FormField name="confirm" control={form.control} render={({ field }) => (
+                                <FormItem>
+                                    <Label htmlFor="confirm">Confirm Password</Label>
+                                    <FormControl>
+                                        <Input {...field} id="confirm" type="password" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}></FormField>
+
+                            <Button type='submit' variant='secondary'
+                                className='border w-full rounded-full mt-6 p-2'>
+                                Reset
+                            </Button>
+                        </form>
+                    </Form>
+
                 </CardContent>
-                <CardFooter>
-                    <Button onClick={handlePasswordReset}>Reset Password</Button>
-                </CardFooter>
             </Card>
         </section>
     )

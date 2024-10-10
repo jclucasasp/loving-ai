@@ -46,3 +46,15 @@ export const LoginFormSchema = z.object({
 });
 
 export type LoginForm = z.infer<typeof LoginFormSchema>;
+
+export const PasswordRestSchema = z.object({
+  email: z.string({ required_error: "Email is required" }).email({ message: "Must be a valid email" }),
+  otp: z.string({ required_error: "OTP is required" }).min(6, { message: "OTP must be at least 6 characters long" }),
+  password: z.string({ required_error: "Password is required" }).min(8, { message: "Password must be at least 8 characters long" }),
+  confirm: z.string({ required_error: "Password is required" }).min(8, { message: "Password must be at least 8 characters long" }),
+}).refine(data => data.password === data.confirm, {
+  message: "Passwords do not match",
+  path: ["confirm"],
+});
+
+export type PasswordResetForm = z.infer<typeof PasswordRestSchema>;

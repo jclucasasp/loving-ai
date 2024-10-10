@@ -66,5 +66,7 @@ export interface PersonalityDescriptionInterface {
     description: string;
 }
 
-
-export type StateScreenTypes = 'profile' | 'match' | 'chat' | 'login' | 'userProfile' | 'signUp';
+export interface PasswordResetInterface {
+    email: string;
+    password: string;
+}

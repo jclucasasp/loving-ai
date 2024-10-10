@@ -1,21 +1,20 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { LoginAuth, OTPRequest } from '@/api/user-auth-api';
 import { LoginForm, LoginFormSchema } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ToastAction } from '@/components/ui/toast';
-import { LoginAuth, OTPRequest } from '@/api/user-auth-api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import EmailToken from '@/api/send';
 
 export default function Login() {
 
-  const { email, password } = useLocation().state as { email: string, password: string } || {"email": "", "password": ""};
+  const { email, password } = useLocation().state as { email: string, password: string } || { "email": "", "password": "" };
 
   const { toast } = useToast();
 
@@ -58,11 +57,11 @@ export default function Login() {
   }
 
   const handleReset = async (data: LoginForm) => {
-    
+
     const emailSchema = z.string({ required_error: "Email is required" }).email({ message: "Must be a valid email" });
-    
+
     const res = emailSchema.safeParse(data.email);
-    
+
     if (!res.success) {
       toast({
         title: "Please enter a valid email.",
@@ -73,11 +72,19 @@ export default function Login() {
       return;
     }
 
-    console.log(res.data);
-    // const res2 = await EmailToken(res.data);
-    const res2 = await OTPRequest(res.data);
-    console.log(res2);
+    const otpRes = await OTPRequest(res.data);
 
+    if (!otpRes) {
+      toast({
+        title: "Error sending OTP.",
+        description: "Please try again. If the problem persists, please email us on lovingaiteam@gmail.com.",
+        variant: "destructive",
+        duration: 3000
+      });
+      return;
+    }
+
+    naviage('/reset', { state: { email: res.data } });
   }
 
   return (
@@ -108,8 +115,8 @@ export default function Login() {
                 <FormItem>
                   <div className='flex justify-between items-center'>
                     <Label htmlFor="password">Password</Label>
-                  <span className='text-slate-400 cursor-pointer text-sm select-none'
-                  onClick={() => handleReset(form.getValues())}>Forgot Password?</span>
+                    <span className='text-slate-400 cursor-pointer text-sm select-none'
+                      onClick={() => handleReset(form.getValues())}>Forgot Password?</span>
                   </div>
                   <FormControl>
                     <Input {...field} id="password" type="password" />
@@ -119,7 +126,7 @@ export default function Login() {
               )}></FormField>
 
               <Button type='submit' variant='secondary'
-                
+
                 className='border w-full rounded-full mt-6 p-2'>
                 Login
               </Button>
