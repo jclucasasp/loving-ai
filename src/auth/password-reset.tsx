@@ -2,32 +2,32 @@ import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/comp
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PasswordResetForm, PasswordRestSchema } from "@/lib/utils";
+import { VerifyAndResetPassword } from "@/api/user-auth-api";
+import { useLocation, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastAction } from "@/components/ui/toast";
-import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
 
-
-// TODO: Create an api for password reset and create form to reset the password.
 export default function PasswordReset() {
 
-    const email = useLocation().state as string;
+    const { email } = useLocation().state as { email: string } || { "email": "" };
+    const navigate = useNavigate();
 
     const form = useForm<PasswordResetForm>({
         resolver: zodResolver(PasswordRestSchema),
         defaultValues: {
-            email: email || "testemail@noma.com",
+            email: email,
             otp: "",
             password: "",
             confirm: "",
         }
     });
 
-    const onSubmit = (data: PasswordResetForm) => {
+    const onSubmit = async (data: PasswordResetForm) => {
 
         const res = PasswordRestSchema.safeParse(data);
 
@@ -41,7 +41,18 @@ export default function PasswordReset() {
             return;
         }
 
-        console.log("Data: ",data)
+        const result = await VerifyAndResetPassword(data.email, data.otp, data.password);
+        if (!result) {
+            toast({
+                title: 'OTP verification failed.',
+                description: 'Either your OTP is invalid or have expired.',
+                variant: 'destructive',
+                duration: 3000
+            });
+            return;
+        }
+
+        navigate('/', { state: { email: data.email, password: data.password } });
     }
 
 
@@ -57,7 +68,7 @@ export default function PasswordReset() {
                         < form className='flex flex-col gap-2' onSubmit={form.handleSubmit(onSubmit)}>
 
                             <FormField name="email" control={form.control} render={({ field }) => (
-                                <FormItem >
+                                <FormItem hidden>
                                     <Label htmlFor="email">Email</Label>
                                     <FormControl>
                                         <Input {...field} id="email" type="email" />

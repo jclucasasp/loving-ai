@@ -67,13 +67,13 @@ export default function SignUp() {
   }
 
   return (
-    <section className='flex flex-col justify-center items-center h-screen'>
+    <section className='flex flex-col justify-center items-center'>
       <Card className='w-full max-w-lg'>
         <CardHeader className='text-center text-2xl'>
           <div className='flex justify-center mb-3'>
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
           </div>
-          <CardTitle>Lets Get Started</CardTitle>
+          <CardTitle className="text-fuchsia-500">Lets Get Started</CardTitle>
         </CardHeader>
         <CardContent>
 
@@ -219,13 +219,11 @@ export default function SignUp() {
                 </FormItem>
               )}></FormField>
 
-              <Button variant={"secondary"} type="submit" className="mt-3">Submit</Button>
+              <Button variant={"secondary"} type="submit" className="mt-6 rounded-full w-full">Submit</Button>
             </form>
           </Form>
 
         </CardContent>
-        <CardFooter>
-        </CardFooter>
       </Card>
     </section>
   );

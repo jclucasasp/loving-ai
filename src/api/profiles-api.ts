@@ -46,7 +46,6 @@ export async function GetProfileById(userId: string): Promise<ProfileInterface> 
 }
 
 export async function CreateNewUserProfile(newUser: NewUserProfileInterface) {
-    console.log(newUser);
     return await fetch('http://127.0.0.1:8080/user/create', {
         method: 'POST',
         headers: {

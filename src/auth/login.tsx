@@ -11,10 +11,16 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useState } from 'react';
+import { Loader } from 'lucide-react';
+import SkeletonCard from '@/components/skeleton-card';
 
+// TODO: Loader for when resetting password
 export default function Login() {
 
   const { email, password } = useLocation().state as { email: string, password: string } || { "email": "", "password": "" };
+
+  const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
 
@@ -47,7 +53,8 @@ export default function Login() {
       toast({
         title: 'Login Failed',
         variant: 'destructive',
-        action: <ToastAction altText="Retry" >Retry</ToastAction>
+        action: <ToastAction altText="Retry" >Retry</ToastAction>,
+        duration: 3000
       });
       return;
     }
@@ -66,15 +73,16 @@ export default function Login() {
       toast({
         title: "Please enter a valid email.",
         variant: "destructive",
-        action: <ToastAction altText="Retry">Retry</ToastAction>,
-        duration: 3000
+        duration: 2000
       });
       return;
     }
 
+    setLoading(true);
     const otpRes = await OTPRequest(res.data);
+    setLoading(false);
 
-    if (!otpRes) {
+    if (!otpRes || otpRes.status >= 500) {
       toast({
         title: "Error sending OTP.",
         description: "Please try again. If the problem persists, please email us on lovingaiteam@gmail.com.",
@@ -84,17 +92,30 @@ export default function Login() {
       return;
     }
 
+    if (otpRes.status === 404) {
+      toast({
+        title: "Email does not excist",
+        description: "Please check if you have a typo in your email. If you are new here, you need to sign up first.",
+        variant: "destructive",
+        action: <ToastAction altText="Okay">Okay</ToastAction>,
+        duration: 5000
+      });
+      return;
+    }
+    
     naviage('/reset', { state: { email: res.data } });
   }
 
+  // TODO: Create custom loader
   return (
     <section className='flex flex-col justify-center items-center h-screen'>
+      {loading && <SkeletonCard />}
       <Card className='max-w-sm'>
         <CardHeader className='text-center text-2xl'>
           <div className='flex justify-center mb-3'>
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
           </div>
-          <CardTitle>Rizz loading...</CardTitle>
+          <CardTitle className='text-fuchsia-500'>Rizz loading...</CardTitle>
         </CardHeader>
         <CardContent>
 

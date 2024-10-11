@@ -55,3 +55,24 @@ export async function OTPRequest(email: string) {
         throw new Error('Failed to OTPRequest: \n' + err);
     });
 }
+
+export async function VerifyAndResetPassword(email:string, otp: string, password: string) {
+    return await fetch('http://127.0.0.1:8080/user/reset', {
+        method: 'POST',
+        headers: {
+            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, otp, password })
+    }).then((res) => {
+        if (!res) {
+            return null;
+        }
+        return res.json();
+    }).then((data) => {
+        return data;
+    }).catch((err) => {
+        console.log(err);
+        throw new Error('Failed to VerifyAndResetPassword: \n' + err);
+    });
+}

@@ -30,7 +30,7 @@ export default function Personality() {
     return (
         <Card>
             <CardHeader>
-                <h1 className="text-2xl text-center border-b-2 p-4">Personality</h1>
+                <h1 className="text-2xl text-fuchsia-500 text-center border-b-2 p-4">Personality</h1>
                 <CardDescription className="border-b-2 mb-3 2 p-2">
                     <p className="text-lg text-slate-500 mb-2">Here is a breackdown of the different personality types and a short description.</p>
                     <p className="mb-2">You should totally take the free personality test to make sure you get yours right?</p>

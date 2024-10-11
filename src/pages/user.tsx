@@ -225,13 +225,13 @@ export default function UserProfile() {
                                 </FormItem>
                             )}></FormField>
 
-                            <Button variant={"secondary"} type="submit" className="mt-3">Update Profile</Button>
+                            <Button variant={"secondary"} type="submit" className="mt-3 w-full rounded-full">Update Profile</Button>
                         </form>
                     </Form>
 
                 </CardContent>
                 <CardFooter>
-                    <Button variant={"destructive"} className="w-full" onClick={() => handleLogout()}>
+                    <Button variant={"destructive"} className="w-full rounded-full" onClick={() => handleLogout()}>
                         Log Out
                     </Button>
                 </CardFooter>
