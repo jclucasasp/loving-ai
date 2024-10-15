@@ -106,7 +106,7 @@ export default function Login() {
     naviage('/reset', { state: { email: res.data } });
   }
 
-  // TODO: Create custom loader
+  // TODO: Create custom loader when clicking on forgot password
   return (
     <section className='flex flex-col justify-center items-center h-screen'>
       {loading && <SkeletonCard />}

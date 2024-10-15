@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+//TODO: Change the loader to show the profile pic, etc while message is loading
 export default function ChatMessages() {
 
     const { conversationData,toProfile , loggedInUser } = useLocation().state;

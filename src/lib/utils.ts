@@ -15,6 +15,11 @@ export const ProfileSchema = z.object({
   ethnicity: z.string({ required_error: "Ethnicity is required" }).min(3, { message: "Ethnicity must be at least 3 characters long" }),
   gender: z.string({ required_error: "Gender is required" }),
   bio: z.string({ required_error: "Bio is required" }).min(10, { message: "Bio must be at least 10 characters long" }),
+  image: z.any()
+  .optional()
+  .nullable()
+  .refine((file) => { return !!file || file.size > 5 * 1024 * 1024 }, { message: "Image size should be smaller then 5MB" })
+  .refine((file) => { return !!file || file.type === "image/jpeg" || file.type === "image/jpg" }, { message: "Image type should be jpeg" }),
   imageUrl: z.string(),
   myersBriggsPersonalityType: z.string({ required_error: "Personality type is required" })
 });
@@ -31,6 +36,11 @@ export const NewUserSchema = z.object({
   ethnicity: z.string({ required_error: "Ethnicity is required" }).min(3, { message: "Ethnicity must be at least 3 characters long" }),
   gender: z.string({ required_error: "Gender is required" }),
   bio: z.string({ required_error: "Bio is required" }).min(10, { message: "Bio must be at least 10 characters long" }),
+  image: z.any()
+  .optional()
+  .nullable()
+  .refine((file) => { return !!file || file.size > 5 * 1024 * 1024 }, { message: "Image size should be smaller then 5MB" })
+  .refine((file) => { return !!file || file.type === "image/jpeg" || file.type === "image/jpg" }, { message: "Image type should be jpeg" }),
   imageUrl: z.string(),
   myersBriggsPersonalityType: z.string({ required_error: "Personality type is required" })
 }).refine(data => data.password === data.confirm, {

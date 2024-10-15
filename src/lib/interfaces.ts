@@ -6,6 +6,7 @@ export interface ProfileInterface {
     ethnicity: string;
     gender: string;
     bio: string;
+    image?: File;
     imageUrl: string;
     myersBriggsPersonalityType: string;
 }
@@ -21,6 +22,7 @@ export interface NewUserProfileInterface {
     ethnicity: string;
     gender: string;
     bio: string;
+    image?: File;
     imageUrl: string;
     myersBriggsPersonalityType: string;
 }

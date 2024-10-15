@@ -1,6 +1,6 @@
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Form, FormField, FormItem, FormControl, FormMessage, FormLabel } from "@/components/ui/form";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PersonalityTypeInterface } from "@/lib/interfaces";
 import { CreateNewUserProfile } from "@/api/profiles-api";
@@ -33,6 +33,7 @@ export default function SignUp() {
       age: 0,
       ethnicity: "",
       bio: "",
+      image: "",
       imageUrl: "",
       gender: "",
       myersBriggsPersonalityType: "",
@@ -53,7 +54,18 @@ export default function SignUp() {
       return;
     }
 
-    await CreateNewUserProfile(result.data).then((res) => {
+    // Helper class to send a multipart form
+    let formData = new FormData();
+
+    for (let key in data) {
+      if (key === 'image') {
+        formData.append(key, data[key as keyof NewUserForm] as File);
+      } else {
+        formData.append(key, data[key as keyof NewUserForm]);
+      }
+    }
+
+    await CreateNewUserProfile(formData).then((res) => {
       if (!res) {
         toast({
           variant: 'destructive',
@@ -62,6 +74,9 @@ export default function SignUp() {
         });
         return;
       }
+
+      console.log("Response from server: ", res);
+
       navigate('/', { state: { email: result.data.email, password: result.data.password } });
     });
   }
@@ -163,6 +178,18 @@ export default function SignUp() {
                   <FormLabel>Bio</FormLabel>
                   <FormControl>
                     <Textarea rows={5} placeholder={"I am definitely not an alien"} {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}></FormField>
+
+
+              <FormField control={form.control} name="image" render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel>Image</FormLabel>
+                  <FormControl>
+                    <Input type="file" {...fieldProps} accept="image/jpeg, image/jpg"
+                      onChange={(e) => onChange(e.target.files?.[0])} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
