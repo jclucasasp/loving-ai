@@ -171,7 +171,7 @@ export default function UserProfile() {
                             )}></FormField>
 
                             <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                                <FormItem>
+                                <FormItem hidden>
                                     <FormDescription>
                                         Your image url
                                     </FormDescription>

@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GetRandomProfile, GetProfileById } from "@/api/profiles-api";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ProfileInterface } from "@/lib/interfaces";
@@ -41,19 +42,23 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
                 <User className="w-10 h-10" />
                 <h2 className="text-gray-500">Profiles</h2>
             </div>
-            
+
             <div className="flex items-center">
-            <Button variant={"link"} className="text-purple-400 hover:scale-105 hover:italic"
-                onClick={() => navigate('/userProfile')}>
-                <p className="text-gray-500" >
-                    {"Rizz Master : " + loggedInUser?.firstName + " " + loggedInUser?.lastName}
-                </p>
-            </Button>
+                <Button variant={"link"} className="text-purple-400 hover:scale-105 hover:italic"
+                    onClick={() => navigate('/userProfile')}>
+                    <div className="text-gray-500 flex items-center gap-2" >
+                        <Avatar>
+                            {loggedInUser?.imageUrl !== "" && <AvatarImage src={"http://localhost:8080/images/" + loggedInUser?.imageUrl} />}
+                            <AvatarFallback>?</AvatarFallback>
+                        </Avatar>
+                        {loggedInUser?.firstName + " " + loggedInUser?.lastName}
+                    </div>
+                </Button>
             </div>
-            
+
             <div className="flex flex-col items-center cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic" onClick={() => navigate('/match')}>
-            <MessageCircle className="cursor-pointer w-9 h-9" />
-            <h2 className="text-gray-500">Matches</h2>
+                <MessageCircle className="cursor-pointer w-9 h-9" />
+                <h2 className="text-gray-500">Matches</h2>
             </div>
         </nav >
     );
