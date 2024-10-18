@@ -48,7 +48,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
                     onClick={() => navigate('/userProfile')}>
                     <div className="text-gray-500 flex items-center gap-2" >
                         <Avatar>
-                            {loggedInUser?.imageUrl !== "" && <AvatarImage src={"http://localhost:8080/images/" + loggedInUser?.imageUrl} />}
+                            <AvatarImage src={"http://localhost:8080/images/" + loggedInUser?.imageUrl} />
                             <AvatarFallback>?</AvatarFallback>
                         </Avatar>
                         {loggedInUser?.firstName + " " + loggedInUser?.lastName}
