@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 
+//TODO: Change the user profile page to also send a multipart form
 export default function SignUp() {
 
   const navigate = useNavigate();
@@ -196,7 +197,7 @@ export default function SignUp() {
               )}></FormField>
 
               <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                <FormItem hidden> 
+                <FormItem hidden>
                   <FormLabel>Image Url</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder={"image url"} {...field} />
