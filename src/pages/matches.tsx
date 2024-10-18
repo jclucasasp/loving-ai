@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { XCircle } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type MachesProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
@@ -63,15 +64,18 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps
     const MatchesList = () => {
         return (
             <Card className="p-2">
-                <ul className="flex h-[80vh] flex-col gap-3 overflow-y-scroll p-2">
+                <ul className="flex h-[80vh] flex-col gap-3 overflow-y-scroll">
                     {loading && <SkeletonMatches />}
                     {profiles?.map((profile) => (
-                        <li key={profile.userId} className="flex items-center justify-between">
-                            <section className="flex gap-3 items-center">
+                        <li key={profile.userId} className="flex items-center justify-between mt-4">
+                            <section className="flex items-center">
                                 <Button variant={"link"}
                                     onClick={() => { setCurrentProfile(profile); setIsMatched(true); navigate('/profile') }}
-                                    className="mb-2 flex gap-4">
-                                    <img src={"http://localhost:8080/images/" + profile.imageUrl} width={55} height={55} className="rounded-full" />
+                                    className="mb-2 flex gap-6">
+                                    <Avatar className="w-[65px] h-[65px]">
+                                        <AvatarImage src={"http://localhost:8080/images/" + profile.imageUrl} alt="profile image" />
+                                        <AvatarFallback>?</AvatarFallback>
+                                    </Avatar>
                                     <h3>{profile.firstName} {profile.lastName}</h3>
                                 </Button>
                             </section>

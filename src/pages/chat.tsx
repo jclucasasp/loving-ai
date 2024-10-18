@@ -1,3 +1,4 @@
+import {Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConversationInterface } from "@/lib/interfaces";
 import { CreateMessage } from "@/api/conversation-api";
 import SkeletonCard from "@/components/skeleton-card";
@@ -10,7 +11,7 @@ import { cn } from "@/lib/utils";
 //TODO: Change the loader to show the profile pic, etc while message is loading
 export default function ChatMessages() {
 
-    const { conversationData,toProfile , loggedInUser } = useLocation().state;
+    const { conversationData, toProfile, loggedInUser } = useLocation().state;
 
     const [conversation, setConversation] = useState<ConversationInterface | null>(conversationData);
     const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +62,10 @@ export default function ChatMessages() {
     return (
         <div>
             <section className="flex gap-4 items-center justify-center mb-3">
-                <img src={"http://localhost:8080/images/" + toProfile?.imageUrl} width={70} height={70} className="rounded-full" />
+                <Avatar className="w-[65px] h-[65px]">
+                    <AvatarImage src={"http://localhost:8080/images/" + toProfile?.imageUrl} alt="profile image" />
+                    <AvatarFallback>?</AvatarFallback>
+                </Avatar>
                 <h3 className="text-2xl text-fuchsia-500 italic">
                     {toProfile?.firstName + " " + toProfile?.lastName}
                 </h3>
@@ -92,7 +96,7 @@ export default function ChatMessages() {
             <div className="flex gap-2 align-center mt-3">
                 <Textarea ref={messageInputContainer} disabled={loading} onKeyDown={handleKeyDown}
                     rows={4}
-                    placeholder={"Press Shift and Enter at the same time to go to next line.\nHit Enter to send."} 
+                    placeholder={"Press Shift and Enter at the same time to go to next line.\nHit Enter to send."}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)} />
             </div>
