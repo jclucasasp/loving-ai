@@ -196,7 +196,7 @@ export default function SignUp() {
               )}></FormField>
 
               <FormField control={form.control} name="imageUrl" render={({ field }) => (
-                <FormItem>
+                <FormItem hidden> 
                   <FormLabel>Image Url</FormLabel>
                   <FormControl>
                     <Input type="text" placeholder={"image url"} {...field} />
