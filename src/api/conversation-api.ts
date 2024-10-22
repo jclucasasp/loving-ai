@@ -1,4 +1,3 @@
-import { toast } from "@/hooks/use-toast";
 import { ConversationInterface, ResponseInterface } from "@/lib/interfaces";
 
 export async function GetConversationFromTo(profileId: string, toProfileId: string): Promise<ConversationInterface> {
