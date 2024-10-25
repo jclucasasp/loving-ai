@@ -42,12 +42,23 @@ export default function PasswordReset() {
         }
 
         const result = await VerifyAndResetPassword(data.email, data.otp, data.password);
-        if (!result) {
+        if (!result || result.status == 401 ) {
             toast({
                 title: 'OTP verification failed.',
                 description: 'Either your OTP is invalid or have expired.',
                 variant: 'destructive',
                 duration: 3000
+            });
+            return;
+        }
+
+        if (result.status >= 500) {
+            toast({
+                title: 'Error resetting password.',
+                description: 'Please try again. If the problem persists, please email us on lovingaiteam@gmail.com.',
+                variant: 'destructive',
+                action: <ToastAction altText="Okay">Okay</ToastAction>,
+                duration: 7000
             });
             return;
         }

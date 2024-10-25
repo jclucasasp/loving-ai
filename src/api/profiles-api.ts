@@ -18,7 +18,7 @@ export async function GetRandomProfile(gender: string): Promise<ProfileInterface
             return data;
         }).catch((err) => {
             console.log(err);
-            throw new Error('Failed to GetRandomProfile: \n' + err);
+            return null;
         });
 }
 
@@ -41,7 +41,7 @@ export async function GetProfileById(userId: string): Promise<ProfileInterface> 
         return data;
     }).catch((err) => {
         console.log(err);
-        throw new Error('Failed to GetProfileById: [' + userId + ']' + err);
+        return null;
     });
 }
 
@@ -62,7 +62,7 @@ export async function CreateNewUserProfile(newUser: FormData) {
         return res;
     }).catch((err) => {
         console.log(err);
-        throw new Error('Failed to CreateNewUserProfile: \n' + err);
+        return null;
     });
 }
 
@@ -83,6 +83,6 @@ export async function UpdateUserProfile(profile: ProfileInterface): Promise<Prof
     }).then(data => data)
     .catch((err) => {
         console.log(err);
-        throw new Error('Failed to UpdateUserProfile: \n' + err);
+        return null;
     });
 }   

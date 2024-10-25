@@ -3,6 +3,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { useLocation, useNavigate } from 'react-router-dom';
 import { LoginAuth, OTPRequest } from '@/api/user-auth-api';
 import { LoginForm, LoginFormSchema } from '@/lib/utils';
+import SkeletonCard from '@/components/skeleton-card';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ToastAction } from '@/components/ui/toast';
 import { Button } from '@/components/ui/button';
@@ -10,12 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { useState } from 'react';
-import { Loader } from 'lucide-react';
-import SkeletonCard from '@/components/skeleton-card';
+import { z } from 'zod';
 
-// TODO: Loader for when resetting password
 export default function Login() {
 
   const { email, password } = useLocation().state as { email: string, password: string } || { "email": "", "password": "" };
@@ -73,13 +71,14 @@ export default function Login() {
       toast({
         title: "Please enter a valid email.",
         variant: "destructive",
-        duration: 2000
+        duration: 3000
       });
       return;
     }
 
     setLoading(true);
     const otpRes = await OTPRequest(res.data);
+    console.log("OTP Response: ", otpRes);
     setLoading(false);
 
     if (!otpRes || otpRes.status >= 500) {
@@ -87,7 +86,8 @@ export default function Login() {
         title: "Error sending OTP.",
         description: "Please try again. If the problem persists, please email us on lovingaiteam@gmail.com.",
         variant: "destructive",
-        duration: 3000
+        action: <ToastAction altText="Okay">Okay</ToastAction>,
+        duration: 7000
       });
       return;
     }
@@ -106,11 +106,10 @@ export default function Login() {
     naviage('/reset', { state: { email: res.data } });
   }
 
-  // TODO: Create custom loader when clicking on forgot password
   return (
     <section className='flex flex-col justify-center items-center h-screen'>
       {loading && <SkeletonCard />}
-      <Card className='max-w-sm'>
+     { !loading && <Card className='max-w-sm'>
         <CardHeader className='text-center text-2xl'>
           <div className='flex justify-center mb-3'>
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
@@ -158,7 +157,7 @@ export default function Login() {
         <CardFooter>
           <Button variant='link' onClick={() => naviage('/personality')} className='text-slate-400'>Don't have an account? Sign up</Button>
         </CardFooter>
-      </Card>
+      </Card>}
     </section>
   )
 }

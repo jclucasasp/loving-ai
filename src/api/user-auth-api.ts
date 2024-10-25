@@ -17,7 +17,7 @@ export async function LoginAuth(email: string, password: string) {
         return data;
     }).catch((err) => {
         console.error(err);
-        throw new Error('Failed to Authorization: \n' + err);
+        return null;
     });
 }
 
@@ -52,7 +52,7 @@ export async function OTPRequest(email: string) {
         return res;
     }).catch((err) => {
         console.log(err);
-        throw new Error('Failed to OTPRequest: \n' + err);
+        return null;
     });
 }
 
@@ -73,6 +73,6 @@ export async function VerifyAndResetPassword(email:string, otp: string, password
         return data;
     }).catch((err) => {
         console.log(err);
-        throw new Error('Failed to VerifyAndResetPassword: \n' + err);
+        return null;
     });
 }

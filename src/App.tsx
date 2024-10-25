@@ -140,6 +140,7 @@ export default function Navigation() {
                         <Route path="/personality" element={<Personality />} errorElement={<div>Error</div>} />
                         <Route path="/signUp" element={<SignUp />} />
                         <Route path="/reset" element={<PasswordReset />} />
+                        <Route path="/*" element={<Login />} />
                     </>
                 )
                 }
