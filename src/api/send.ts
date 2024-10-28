@@ -10,7 +10,7 @@ export default async function EmailToken(email: string) {
         template_params: {
             'to_email': email,
             'to_name': loggedInUser?.firstName + " " + loggedInUser?.lastName,
-            'message': 'This email has been send due to a request on Loving AI website. If you recieved it in error, please send an email to jclucasasp@gmail.com with the heading "Unauthorized Email".',
+            'message': 'This email has been send due to a request on Loving AI website. If you received it in error, please send an email to jclucasasp@gmail.com with the heading "Unauthorized Email".',
         }
     }
 

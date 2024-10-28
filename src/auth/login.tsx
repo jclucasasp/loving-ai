@@ -31,7 +31,7 @@ export default function Login() {
   });
 
 
-  const naviage = useNavigate();
+  const navigate = useNavigate();
 
   const onSubmit = (data: LoginForm) => {
     const result = LoginFormSchema.safeParse(data);
@@ -58,7 +58,7 @@ export default function Login() {
     }
 
     sessionStorage.setItem('loggedInUser', JSON.stringify(data));
-    naviage('/profile');
+    navigate('/profile');
   }
 
   const handleReset = async (data: LoginForm) => {
@@ -103,7 +103,7 @@ export default function Login() {
       return;
     }
     
-    naviage('/reset', { state: { email: res.data } });
+    navigate('/reset', { state: { email: res.data } });
   }
 
   return (
@@ -155,7 +155,7 @@ export default function Login() {
 
         </CardContent>
         <CardFooter>
-          <Button variant='link' onClick={() => naviage('/personality')} className='text-slate-400'>Don't have an account? Sign up</Button>
+          <Button variant='link' onClick={() => navigate('/personality')} className='text-slate-400'>Don't have an account? Sign up</Button>
         </CardFooter>
       </Card>}
     </section>

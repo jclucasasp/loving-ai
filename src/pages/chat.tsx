@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ConversationInterface } from "@/lib/interfaces";
 import { CreateMessage } from "@/api/conversation-api";
-import SkeletonCard from "@/components/skeleton-card";
 import { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { useLocation } from "react-router-dom";

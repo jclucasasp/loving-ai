@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import deleteMatchById, { GetMatchedProfiles } from "@/api/matches-api";
 import { GetConversationFromTo } from "@/api/conversation-api";
 import SkeletonMatches from "@/components/skeleton-matches";
@@ -9,14 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { XCircle } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-type MachesProps = {
+type MatchesProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
     setIsMatched: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps) {
+export default function Matches({ setCurrentProfile, setIsMatched }: MatchesProps) {
 
     const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
 
@@ -49,7 +49,7 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MachesProps
             duration: 4000,
             action: <ToastAction altText="Delete" onClick={async () => {
                 const res = await deleteMatchById(userId);
-                if (!res.ok) {
+                if (!res || res.status >= 500) {
                     toast({
                         variant: 'destructive',
                         description: 'Something went wrong',

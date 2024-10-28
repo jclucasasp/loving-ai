@@ -63,7 +63,7 @@ export default function PasswordReset() {
             return;
         }
 
-        navigate('/', { state: { email: data.email, password: data.password } });
+        navigate('/login', { state: { email: data.email, password: data.password } });
     }
 
 

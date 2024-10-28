@@ -45,7 +45,6 @@ export async function GetProfileById(userId: string): Promise<ProfileInterface> 
     });
 }
 
-//TODO: Change the backend to return a ResponseEntity<String> and set up all api handlers to return the res without making it a json string. See line 62.
 export async function CreateNewUserProfile(newUser: FormData) {
     return await fetch('http://127.0.0.1:8080/user/create', {
         method: 'POST',
