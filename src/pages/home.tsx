@@ -1,4 +1,12 @@
+import ComponentHeading from "@/components/component-heading";
 import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
@@ -6,7 +14,7 @@ export default function Home() {
 
   return (
     <section className="flex flex-col h-screen w-full">
-      <div className="flex items-center justify-between w-full border-b-2 pb-4">
+      <div className="flex items-center sm:justify-between justify-center w-full border-b-2 pb-4">
         <div className="flex items-center justify-start">
           <img
             src="/heart.png"
@@ -21,7 +29,7 @@ export default function Home() {
           <Button
             variant={"secondary"}
             size={"lg"}
-            className="rounded-full"
+            className="hidden sm:block rounded-full"
             onClick={() => navigate("/login")}
           >
             Login
@@ -29,7 +37,7 @@ export default function Home() {
           <Button
             variant={"default"}
             size={"lg"}
-            className="rounded-full"
+            className="hidden sm:block rounded-full"
             onClick={() => navigate("/personality")}
           >
             Sign Up
@@ -37,29 +45,65 @@ export default function Home() {
         </nav>
       </div>
 
-      
-        <div className="mt-20">
-          <h4 className="text-2xl ">Why spend your time alone...</h4>
-          <h3 className="text-3xl ">when you can find love now...</h3>
-          <h2 className="text-4xl text-fuchsia-500">
-            Can you Rizz up these AI Hotties?
-          </h2>
+      <article className="mt-4 border-b-2 pb-4">
+        <h4 className="text-lg md:text-xl">Why spend your time alone...</h4>
+        <h3 className="text-xl md:text-2xl ">when you can find love now...</h3>
+        <h2 className="text-2xl md:text-3xl text-fuchsia-500">
+          Can you <span className="italic font-bold">Rizz</span> up these AI Hotties?
+        </h2>
 
+        <div className="text-xs text-slate-600 md:text-base">
           <p className="mt-4">
             This app was created for real people just like you.
           </p>
           <p>Every AI person on here have their own unique personality.</p>
           <p>Experience instant connections and create lasting memories.</p>
         </div>
+      </article>
 
-        <div className="mt-3">
-          <img
-            src="http://localhost:8080/images/women/1ac57bbd-c7e0-4c47-b900-ffd45988ab98.jpg"
-            className="rounded-xl"
-            alt="image of a women"
-          />
-        </div>
       
+      <ComponentHeading className="mt-6 underline">Meet some of the Hotties:</ComponentHeading>
+      
+
+      <Carousel className="mt-3 w-full" opts={{ loop: true, align: "center" }}>
+        <CarouselContent className="-ml-2 sm:-ml-4">
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/AsianW.png" alt="picture of an asian woman" />
+          </CarouselItem>
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/AsianM.png" alt="picture of an asian man" />
+          </CarouselItem>
+
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/ColorW.png" alt="picture of an colored woman" />
+          </CarouselItem>
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/ColorM.png" alt="picture of an colored man" />
+          </CarouselItem>
+
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/CaucasianW.png" alt="picture of an caucasian woman" />
+          </CarouselItem>
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/CaucasianM.png" alt="picture of an caucasian man" />
+          </CarouselItem>
+
+          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+            <img src="/IndianW.png" alt="picture of an indian woman" />
+          </CarouselItem>
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+
+      <Button
+        variant={"secondary"}
+        size={"lg"}
+        className="mt-8 w-full rounded-full"
+        onClick={() => navigate("/login")}
+      >
+        Get Your Rizz On!
+      </Button>
     </section>
   );
 }

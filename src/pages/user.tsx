@@ -29,6 +29,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select";
+import ComponentHeading from "@/components/component-heading";
 
 export default function UserProfile() {
   const loggedInUser = useLoggedInUserState();
@@ -109,9 +110,7 @@ export default function UserProfile() {
 
   return (
     <>
-      <h2 className="text-2xl font-bold italic text-center text-fuchsia-500 mb-4">
-        User Profile
-      </h2>
+      <ComponentHeading>User Profile</ComponentHeading>
 
       <Card>
         <CardContent>

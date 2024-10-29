@@ -62,14 +62,14 @@ export default function ChatMessages() {
   return (
     <div>
       <section className="flex gap-4 items-center justify-center mb-3">
-        <Avatar className="w-[65px] h-[65px]">
+        <Avatar className="w-[45px] h-[45px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px]">
           <AvatarImage
             src={"http://localhost:8080/images/" + toProfile?.imageUrl}
             alt="profile image"
           />
           <AvatarFallback>?</AvatarFallback>
         </Avatar>
-        <h3 className="text-2xl text-fuchsia-500 italic">
+        <h3 className="text-lg sm:text-xl md:text-2xl text-fuchsia-500 italic">
           {toProfile?.firstName + " " + toProfile?.lastName}
         </h3>
       </section>
@@ -90,7 +90,7 @@ export default function ChatMessages() {
                         "bg-green-500/10 text-start"
                     )}
                   >
-                    <p className="text-balance text-black whitespace-pre">
+                    <p className="text-xs sm:text-sm md:text-base text-balance text-black whitespace-pre">
                       {m.messageText}
                     </p>
                     <div className="flex gap-2 text-xs text-gray-300 pointer-events-none">
@@ -118,8 +118,8 @@ export default function ChatMessages() {
           )}
         </article>
       </Card>
-      <div className="flex gap-2 align-center mt-3">
-        <Textarea
+      
+        <Textarea className="text-xs sm:text-sm md:text-base flex gap-2 align-center mt-3"
           ref={messageInputContainer}
           disabled={loading}
           onKeyDown={handleKeyDown}
@@ -130,7 +130,7 @@ export default function ChatMessages() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-      </div>
+      
     </div>
   );
 }

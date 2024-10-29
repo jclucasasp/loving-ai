@@ -1,4 +1,3 @@
-
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Toaster } from '@/components/ui/toaster.tsx';
 import { BrowserRouter } from 'react-router-dom';

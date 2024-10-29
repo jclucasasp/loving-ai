@@ -21,7 +21,7 @@ export default function Navigation() {
     const [isMatched, setIsMatched] = useState(false);
 
     const loggedInUser = useLoggedInUserState();
-    const navigate = useNavigate();
+    useNavigate();
 
     useBeforeUnload(useCallback(async () => {
         if (loggedInUser?.userId) {
@@ -31,7 +31,7 @@ export default function Navigation() {
     }, []));
 
     return (
-        <div className='max-w-lg mx-auto mt-3'>
+        <div className='max-w-md sm:max-w-lg md:max-w-xl mx-auto mt-3'>
             {
                 loggedInUser && <>
                     <Nav currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
