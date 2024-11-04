@@ -1,14 +1,16 @@
+import { AUTH_HEADER, HOST } from "@/lib/constants";
 import {
   PersonalityTypeInterface,
   PersonalityDescriptionInterface,
 } from "@/lib/interfaces";
 
+
 export async function GetPersonalityTypes(): Promise<
   PersonalityTypeInterface[]
 > {
-  return await fetch("http://127.0.0.1:8080/api/personality/types", {
+  return await fetch(HOST + "/api/personality/types", {
     headers: {
-      Authorization: import.meta.env.VITE_AUTHORISE_HEADER,
+      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
   })
@@ -30,9 +32,9 @@ export async function GetPersonalityTypes(): Promise<
 export async function GetPersonalityDescriptions(): Promise<
   PersonalityDescriptionInterface[]
 > {
-  return await fetch("http://127.0.0.1:8080/api/personality/descriptions", {
+  return await fetch(HOST + "/api/personality/descriptions", {
     headers: {
-      Authorization: import.meta.env.VITE_AUTHORISE_HEADER,
+      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
   })

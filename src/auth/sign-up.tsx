@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 
-//TODO: Change the user profile page to also send a multipart form
 export default function SignUp() {
 
   const navigate = useNavigate();

@@ -4,13 +4,13 @@ import { GetConversationFromTo } from "@/api/conversation-api";
 import ComponentHeading from "@/components/component-heading";
 import SkeletonMatches from "@/components/skeleton-matches";
 import { ProfileInterface } from "@/lib/interfaces";
+import { XCircle, CheckCircle } from "lucide-react";
 import { ToastAction } from "@/components/ui/toast";
 import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
-import { XCircle, CheckCircle } from "lucide-react";
 
 type MatchesProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;

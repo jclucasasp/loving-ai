@@ -1,10 +1,11 @@
+import { AUTH_HEADER, HOST } from "@/lib/constants";
 import { ProfileInterface } from "@/lib/interfaces";
 
 export async function LoginAuth(email: string, password: string) {
-    return await fetch('http://127.0.0.1:8080/user/login', {
+    return await fetch(HOST + '/user/login', {
         method: 'POST',
         headers: {
-            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
+            'Authorization': AUTH_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
@@ -22,10 +23,10 @@ export async function LoginAuth(email: string, password: string) {
 }
 
 export async function LogoutAuth(id: string) {
-    return await fetch('http://127.0.0.1:8080/user/logout', {
+    return await fetch(HOST + '/user/logout', {
         method: 'POST',
         headers: {
-            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
+            'Authorization': AUTH_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ id })
@@ -41,10 +42,10 @@ export async function LogoutAuth(id: string) {
 }
 
 export async function OTPRequest(email: string) {
-    return await fetch('http://127.0.0.1:8080/user/otp', {
+    return await fetch(HOST + '/user/otp', {
         method: 'POST',
         headers: {
-            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
+            'Authorization': AUTH_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email })
@@ -57,10 +58,10 @@ export async function OTPRequest(email: string) {
 }
 
 export async function VerifyAndResetPassword(email:string, otp: string, password: string) {
-    return await fetch('http://127.0.0.1:8080/user/reset', {
+    return await fetch(HOST + '/user/reset', {
         method: 'POST',
         headers: {
-            'Authorization': import.meta.env.VITE_AUTHORISE_HEADER,
+            'Authorization': AUTH_HEADER,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, otp, password })

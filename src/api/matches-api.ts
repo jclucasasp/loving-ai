@@ -1,9 +1,10 @@
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import { AUTH_HEADER, HOST } from "@/lib/constants";
 
 export async function GetMatches(userId: string): Promise<MatchInterface[]> {
-  return await fetch("http://127.0.0.1:8080/matches/all", {
+  return await fetch(HOST + "/matches/all", {
     headers: {
-      Authorization: import.meta.env.VITE_AUTHORISE_HEADER,
+      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     method: "POST",
@@ -30,10 +31,10 @@ export async function GetMatchedProfiles(
 ): Promise<ProfileInterface[]> {
   const data = await GetMatches(userId);
 
-  return await fetch("http://127.0.0.1:8080/match/profiles", {
+  return await fetch(HOST + "/match/profiles", {
     method: "POST",
     headers: {
-      Authorization: import.meta.env.VITE_AUTHORISE_HEADER,
+      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
@@ -62,10 +63,10 @@ export async function CreateMatch(
     throw new Error("fromProfileId and toProfileId are required");
   }
 
-  return await fetch("http://127.0.0.1:8080/match/create", {
+  return await fetch(HOST + "/match/create", {
     method: "POST",
     headers: {
-      Authorization: import.meta.env.VITE_AUTHORISE_HEADER,
+      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ profileId, toProfileId }),
@@ -87,10 +88,10 @@ export async function CreateMatch(
 }
 
 export default async function deleteMatchById(userId: string) {
-  return await fetch("http://127.0.0.1:8080/match/delete-by-id", {
+  return await fetch(HOST + "/match/delete-by-id", {
     method: "DELETE",
     headers: {
-      Authorization: import.meta.env.VITE_AUTHORISE_HEADER,
+      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId }),

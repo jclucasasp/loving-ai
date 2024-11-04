@@ -1,5 +1,6 @@
 import ComponentHeading from "@/components/component-heading";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   Carousel,
   CarouselContent,
@@ -7,7 +8,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ export default function Home() {
 
       <Button
         variant={"secondary"}
-        size={"lg"}
+        size={"xl"}
         className="mt-8 w-full rounded-full"
         onClick={() => navigate("/login")}
       >

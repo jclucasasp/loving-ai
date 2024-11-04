@@ -12,7 +12,7 @@ import Profiles from "@/pages/profile";
 import Matches from "@/pages/matches";
 import SignUp from "@/auth/sign-up";
 import Login from "@/auth/login";
-import Home from "./pages/home";
+import Home from "@/pages/home";
 
 export default function Navigation() {
 

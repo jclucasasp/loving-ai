@@ -8,6 +8,7 @@
 - [React EAmil](https://react.email/)
 - [EmailJS](https://www.emailjs.com/docs/rest-api/send/)
 - [Zod: Schema validation](https://www.emailjs.com/docs/rest-api/send/)
+- [Payfast: Payment Gateway](https://developers.payfast.co.za/docs#quickstart)
 
 # React + TypeScript + Vite
 
