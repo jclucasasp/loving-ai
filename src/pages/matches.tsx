@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
+import { HOST } from "@/lib/constants";
 
 type MatchesProps = {
     setCurrentProfile: React.Dispatch<React.SetStateAction<ProfileInterface | null>>;
@@ -74,7 +75,7 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MatchesProp
                                     onClick={() => { setCurrentProfile(profile); setIsMatched(true); navigate('/profile') }}
                                     className="mb-2 flex gap-3 md:gap-6">
                                     <Avatar className="w-[55px] h-[55px] sm:w-[65px] sm:h-[65px]">
-                                        <AvatarImage src={"http://localhost:8080/images/" + profile.imageUrl} alt="profile image" />
+                                        <AvatarImage src={HOST + "/images/" + profile.imageUrl} alt="profile image" />
                                         <AvatarFallback>?</AvatarFallback>
                                     </Avatar>
                                     <h3 className="text-sm sm:text-lg md:text-xl">{profile.firstName} {profile.lastName}</h3>

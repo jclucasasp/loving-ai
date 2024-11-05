@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { HOST } from "@/lib/constants";
 
 export default function ChatMessages() {
   const { conversationData, toProfile, loggedInUser } = useLocation().state;
@@ -63,7 +64,7 @@ export default function ChatMessages() {
       <section className="flex gap-4 items-center justify-center mb-3">
         <Avatar className="w-[45px] h-[45px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px]">
           <AvatarImage
-            src={"http://localhost:8080/images/" + toProfile?.imageUrl}
+            src={HOST + "/images/" + toProfile?.imageUrl}
             alt="profile image"
           />
           <AvatarFallback>?</AvatarFallback>
@@ -107,7 +108,7 @@ export default function ChatMessages() {
             <section className="flex items-center justify-end gap-3">
               <Avatar>
                 <AvatarImage
-                  src={"http://localhost:8080/images/" + toProfile?.imageUrl}
+                  src={HOST + "/images/" + toProfile?.imageUrl}
                   alt="profile image"
                 />
                 <AvatarFallback>?</AvatarFallback>

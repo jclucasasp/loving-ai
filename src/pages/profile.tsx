@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
+import { HOST } from "@/lib/constants";
 import React from "react";
 
 type ProfileProps = {
@@ -59,13 +60,13 @@ export default function Profiles({
             <img
               src={
                 profile?.imageUrl
-                  ? "http://localhost:8080/images/" + profile?.imageUrl
+                  ? HOST +"/images/" + profile?.imageUrl
                   : ""
               }
               alt="profile image"
               className="rounded-xl"
             />
-            <div className="absolute top-0 left-1 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-lg">
+            <div className="absolute top-0 left-2 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-lg">
               <h2 className="text-base sm:text-lg">
                 {profile?.firstName} {profile?.lastName}
               </h2>

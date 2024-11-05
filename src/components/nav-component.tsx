@@ -5,6 +5,7 @@ import { ProfileInterface } from "@/lib/interfaces";
 import { User, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { HOST } from "@/lib/constants";
 
 type NavProps = {
     currentProfile: ProfileInterface | null;
@@ -48,7 +49,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
                     onClick={() => navigate('/userProfile')}>
                     <div className="text-gray-500 flex items-center gap-2" >
                         <Avatar>
-                            <AvatarImage src={"http://localhost:8080/images/" + loggedInUser?.imageUrl} />
+                            <AvatarImage src={HOST + "/images/" + loggedInUser?.imageUrl} />
                             <AvatarFallback>?</AvatarFallback>
                         </Avatar>
                         {loggedInUser?.firstName + " " + loggedInUser?.lastName}
