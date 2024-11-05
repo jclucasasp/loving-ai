@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <section className="flex flex-col h-screen w-full">
-      <div className="flex items-center sm:justify-between justify-center w-full border-b-2 pb-4">
+      <div className="flex items-center sm:justify-between justify-center w-full border-b-2 pb-3">
         <div className="flex items-center justify-start">
           <img
             src="/heart.png"
@@ -45,15 +45,15 @@ export default function Home() {
         </nav>
       </div>
 
-      <article className="mt-4 border-b-2 pb-4">
-        <h4 className="text-lg md:text-xl">Why spend your time alone...</h4>
-        <h3 className="text-xl md:text-2xl ">when you can find love now...</h3>
-        <h2 className="text-2xl md:text-3xl text-fuchsia-500">
+      <article className="mt-3 border-b-2 pb-3">
+        <h4 className="text-md md:text-lg">Why spend your time alone...</h4>
+        <h3 className="text-lg md:text-xl ">when you can find love now...</h3>
+        <h2 className="text-xl md:text-2xl text-fuchsia-500">
           Can you <span className="italic font-bold">Rizz</span> up these AI Hotties?
         </h2>
 
-        <div className="text-xs text-slate-600 md:text-base">
-          <p className="mt-4">
+        <div className="text-xs text-slate-700 md:text-base">
+          <p className="mt-3">
             This app was created for real people just like you.
           </p>
           <p>Every AI person on here have their own unique personality.</p>
@@ -61,11 +61,9 @@ export default function Home() {
         </div>
       </article>
 
-      
-      <ComponentHeading className="mt-6 underline">Meet some of the Hotties:</ComponentHeading>
-      
+      <ComponentHeading className="mt-3 underline">Meet some of the Hotties:</ComponentHeading>
 
-      <Carousel className="mt-3 w-full" opts={{ loop: true, align: "center" }}>
+      <Carousel className=" w-full" opts={{ loop: true, align: "center" }}>
         <CarouselContent className="-ml-2 sm:-ml-4">
           <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
             <img src="/AsianW.png" alt="picture of an asian woman" />
@@ -98,11 +96,11 @@ export default function Home() {
 
       <Button
         variant={"secondary"}
-        size={"xl"}
-        className="mt-8 w-full rounded-full"
+        size={"lg"}
+        className="mt-6 w-full rounded-full"
         onClick={() => navigate("/login")}
       >
-        Get Your Rizz On!
+        <h4>Get Your Rizz On!</h4>
       </Button>
     </section>
   );

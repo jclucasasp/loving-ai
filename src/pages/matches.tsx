@@ -77,7 +77,7 @@ export default function Matches({ setCurrentProfile, setIsMatched }: MatchesProp
                                         <AvatarImage src={"http://localhost:8080/images/" + profile.imageUrl} alt="profile image" />
                                         <AvatarFallback>?</AvatarFallback>
                                     </Avatar>
-                                    <h3>{profile.firstName} {profile.lastName}</h3>
+                                    <h3 className="text-sm sm:text-lg md:text-xl">{profile.firstName} {profile.lastName}</h3>
                                 </Button>
                             </section>
                             <section className="flex gap-3 md:gap-6">

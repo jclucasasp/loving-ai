@@ -40,7 +40,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
         <nav className="flex mb-2 justify-between">
             <div className="flex flex-col items-center cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic" onClick={() => navigate('/profile')}>
                 <User className="w-8 h-8 md:w-10 md:h-10" />
-                <h2 className="text-sm md:text-base text-gray-500">Profiles</h2>
+                <h2 className="text-base md:text-lg text-gray-500">Profiles</h2>
             </div>
 
             <div className="flex items-center">
@@ -58,7 +58,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
 
             <div className="flex flex-col items-center cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic" onClick={() => navigate('/match')}>
                 <MessageCircle className="cursor-pointer w-7 h-7 md:w-9 md:h-9" />
-                <h2 className="text-sm md:text-base text-gray-500">Matches</h2>
+                <h2 className="text-base md:text-lg text-gray-500">Matches</h2>
             </div>
         </nav >
     );

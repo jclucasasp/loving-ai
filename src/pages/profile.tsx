@@ -65,11 +65,11 @@ export default function Profiles({
               alt="profile image"
               className="rounded-xl"
             />
-            <div className="absolute bottom-0 left-1 p-2 text-slate-100 text-lg bg-black/5 rounded-lg">
-              <h2 className="text-sm sm:text-base">
+            <div className="absolute top-0 left-1 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-lg">
+              <h2 className="text-base sm:text-lg">
                 {profile?.firstName} {profile?.lastName}
               </h2>
-              <p className="text-sm sm:text-base">{profile?.age}</p>
+              <h2 className="text-sm sm:text-base">{profile?.age}</h2>
             </div>
           </div>
           <div className="p-4">
@@ -88,7 +88,7 @@ export default function Profiles({
                 height={65}
                 width={65}
               />
-              Next ...
+              <h3 className="text-base sm:text-lg">Next</h3>
             </div>
             {!isMatched ? (
               <div
@@ -101,7 +101,7 @@ export default function Profiles({
                   height={67}
                   width={67}
                 />
-                Like
+                <h3 className="text-base sm:text-lg">Like</h3>
               </div>
             ) : (
               <div className="cursor-not-allowed">
@@ -111,7 +111,7 @@ export default function Profiles({
                   height={60}
                   width={65}
                 />
-                Matched
+                <h3 className="text-base sm:text-lg">Matched</h3>
               </div>
             )}
           </div>
