@@ -19,18 +19,5 @@ export default defineConfig({
     postcss: {
       plugins: [tailwindcss()]
     }
-  },
-  build: {
-    emptyOutDir: true,
-    outDir: 'dist',
-    lib: {
-      entry: path.resolve(__dirname, 'src/main.tsx'),
-      name: 'LovingAI',
-      fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'umd', 'iife']
-    },
-    rollupOptions: {
-      external: ['react', 'react-dom'],
-    }
   }
 })
