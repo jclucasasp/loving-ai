@@ -9,6 +9,7 @@
 - [EmailJS](https://www.emailjs.com/docs/rest-api/send/)
 - [Zod: Schema validation](https://www.emailjs.com/docs/rest-api/send/)
 - [Payfast: Payment Gateway](https://developers.payfast.co.za/docs#quickstart)
+- [Refine: Free Hosting for front and backend](https://render.com/)
 
 # React + TypeScript + Vite
 
