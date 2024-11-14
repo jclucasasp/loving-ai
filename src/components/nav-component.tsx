@@ -6,6 +6,7 @@ import { User, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import { HOST } from "@/lib/constants";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 
 type NavProps = {
     currentProfile: ProfileInterface | null;
@@ -17,12 +18,12 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
+    const loggedInUser = useLoggedInUserState();
 
     const seedRandomProfile = async (id?: string) => {
         let profileData: Promise<ProfileInterface | null>;
         if (!id) {
-            profileData = GetRandomProfile(loggedInUser?.gender);
+            profileData = GetRandomProfile(loggedInUser!.gender);
         } else {
             profileData = GetProfileById(id);
         }

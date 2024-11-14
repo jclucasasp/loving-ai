@@ -22,6 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 
 type MatchesProps = {
   setCurrentProfile: React.Dispatch<
@@ -34,7 +35,7 @@ export default function Matches({
   setCurrentProfile,
   setIsMatched,
 }: MatchesProps) {
-  const loggedInUser = JSON.parse(sessionStorage.loggedInUser);
+  const loggedInUser = useLoggedInUserState();
 
   const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,7 +45,7 @@ export default function Matches({
 
   useEffect(() => {
     const fetchMatchedProfiles = async () => {
-      const res = await GetMatchedProfiles(loggedInUser.userId);
+      const res = await GetMatchedProfiles(loggedInUser!.userId);
       setProfiles(res);
       setLoading(false);
     };
@@ -112,7 +113,7 @@ export default function Matches({
                   variant={"secondary"}
                   className="gap-1 sm:gap-2 rounded-full"
                   onClick={() => {
-                    handleChat(loggedInUser.userId, profile);
+                    handleChat(loggedInUser!.userId, profile);
                   }}
                 >
                   <CheckCircle />

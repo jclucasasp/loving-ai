@@ -57,7 +57,7 @@ export default function Login() {
       return;
     }
 
-    sessionStorage.setItem('loggedInUser', JSON.stringify(data));
+    sessionStorage.setItem('loggedInUser', btoa(JSON.stringify(data)));
     navigate('/profile');
   }
 
@@ -94,7 +94,7 @@ export default function Login() {
 
     if (otpRes.status === 404) {
       toast({
-        title: "Email does not excist",
+        title: "Email does not exist",
         description: "Please check if you have a typo in your email. If you are new here, you need to sign up first.",
         variant: "destructive",
         action: <ToastAction altText="Okay">Okay</ToastAction>,

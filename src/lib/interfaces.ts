@@ -8,6 +8,7 @@ export interface ProfileInterface {
     bio: string;
     image?: File;
     imageUrl: string;
+    verified?: boolean;
     myersBriggsPersonalityType: string;
 }
 
