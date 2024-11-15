@@ -37,9 +37,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
   };
 
   useEffect(() => {
-    if (loggedInUser && !loggedInUser.verified) {
-      navigate("/verify");
-    } else if (
+   if (
       loggedInUser &&
       !currentProfile &&
       location.pathname == "/profile"
@@ -48,7 +46,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
   }, [currentProfile, location.pathname]);
 
   return (
-    <nav className="flex justify-between items-center mt-4">
+    <nav className="flex justify-between items-center mt-4 mb-6">
       
       <Button variant={"link"}
         className="cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic"
@@ -63,7 +61,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
 
       
         <Button
-          variant={"link"} disabled={!loggedInUser?.verified}
+          variant={"link"} 
           className="text-purple-400 hover:scale-105 hover:italic disabled:cursor-not-allowed"
           onClick={() => navigate("/userProfile")}
         >

@@ -2,6 +2,7 @@ import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import Personality from "@/components/personality-component";
+import VerifyActivate from "@/auth/verify-activate";
 import PasswordReset from "@/auth/password-reset";
 import { LogoutAuth } from "@/api/user-auth-api";
 import { useCallback, useState } from "react";
@@ -47,10 +48,8 @@ export default function Navigation() {
       )}
 
       <Routes>
-        {loggedInUser ? (
+        {loggedInUser?.verified && (
           <>
-          <Route path="/verify" element={<Verify />} />
-
             <Route
               path="/profile"
               errorElement={<div>Error</div>}
@@ -75,10 +74,20 @@ export default function Navigation() {
             />
 
             <Route path="/chat" element={<ChatMessages />} />
-
             <Route path="/userProfile" element={<UserProfile />} />
           </>
-        ) : (
+        )}
+        ;
+        {!loggedInUser?.verified && (
+          <>
+            <Route path="/verify" element={<Verify />} />
+            <Route path="/verify/activate" element={<VerifyActivate />} />
+            <Route path="/userProfile" element={<UserProfile />} />
+            <Route path="/*" element={<Verify />} />
+          </>
+        )};
+
+        {!loggedInUser && (
           <>
             <Route
               path="/"

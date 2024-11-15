@@ -80,7 +80,6 @@ export default function Login() {
 
     setLoading(true);
     const otpRes = await OTPRequest(res.data);
-    console.log("OTP Response: ", otpRes);
     setLoading(false);
 
     if (!otpRes || otpRes.status >= 500) {
