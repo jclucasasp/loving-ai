@@ -11,66 +11,96 @@ import UserProfile from "@/pages/user";
 import Profiles from "@/pages/profile";
 import Matches from "@/pages/matches";
 import SignUp from "@/auth/sign-up";
+import Verify from "@/auth/verify";
 import Login from "@/auth/login";
 import Home from "@/pages/home";
 
 export default function Navigation() {
+  const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(
+    null
+  );
+  const [matches, setMatches] = useState<MatchInterface[]>(
+    [] as MatchInterface[]
+  );
+  const [isMatched, setIsMatched] = useState(false);
 
-    const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(null);
-    const [matches, setMatches] = useState<MatchInterface[]>([] as MatchInterface[]);
-    const [isMatched, setIsMatched] = useState(false);
+  const loggedInUser = useLoggedInUserState();
+  useNavigate();
 
-    const loggedInUser = useLoggedInUserState();
-    useNavigate();
+  useBeforeUnload(
+    useCallback(async () => {
+      if (loggedInUser?.userId) {
+        await LogoutAuth(loggedInUser?.userId!);
+      }
+    }, [])
+  );
 
-    useBeforeUnload(useCallback(async () => {
-        if (loggedInUser?.userId) {
-            await LogoutAuth(loggedInUser?.userId!);
-        }
+  return (
+    <div className="max-w-md sm:max-w-lg md:max-w-xl mx-auto mt-3">
+      {loggedInUser && (
+        <>
+          <Nav
+            currentProfile={currentProfile}
+            setCurrentProfile={setCurrentProfile}
+          />
+        </>
+      )}
 
-    }, []));
+      <Routes>
+        {loggedInUser ? (
+          <>
+          <Route path="/verify" element={<Verify />} />
 
-    return (
-        <div className='max-w-md sm:max-w-lg md:max-w-xl mx-auto mt-3'>
-            {
-                loggedInUser && <>
-                    <Nav currentProfile={currentProfile} setCurrentProfile={setCurrentProfile} />
-                </>
-            }
+            <Route
+              path="/profile"
+              errorElement={<div>Error</div>}
+              element={
+                <Profiles
+                  profile={currentProfile}
+                  setNextProfile={setCurrentProfile}
+                  isMatchedState={{ isMatched, setIsMatched }}
+                  matchSate={{ matches, setMatches }}
+                />
+              }
+            />
 
-            <Routes>
-                {loggedInUser ? (
-                    <>
-                        <Route path="/profile" errorElement={<div>Error</div>}
-                            element={<Profiles
-                                profile={currentProfile}
-                                setNextProfile={setCurrentProfile}
-                                isMatchedState={{ isMatched, setIsMatched }}
-                                matchSate={{ matches, setMatches }} />}
-                        />
+            <Route
+              path="/match"
+              element={
+                <Matches
+                  setCurrentProfile={setCurrentProfile}
+                  setIsMatched={setIsMatched}
+                />
+              }
+            />
 
-                        <Route path="/match" element={<Matches
-                            setCurrentProfile={setCurrentProfile}
-                            setIsMatched={setIsMatched} />}
-                        />
+            <Route path="/chat" element={<ChatMessages />} />
 
-                        <Route path="/chat" element={<ChatMessages />}
-                        />
-
-                        <Route path="/userProfile" element={<UserProfile />} />
-                    </>
-                ) : (
-                    <>
-                        <Route path="/" element={<Home />} errorElement={<div>Error</div>} />
-                        <Route path="/login" element={<Login />} errorElement={<div>Error</div>} />
-                        <Route path="/personality" element={<Personality />} errorElement={<div>Error</div>} />
-                        <Route path="/signUp" element={<SignUp />} />
-                        <Route path="/reset" element={<PasswordReset />} />
-                        <Route path="/*" element={<Login />} />
-                    </>
-                )}
-
-            </Routes>
-        </div>
-    );
+            <Route path="/userProfile" element={<UserProfile />} />
+          </>
+        ) : (
+          <>
+            <Route
+              path="/"
+              element={<Home />}
+              errorElement={<div>Error</div>}
+            />
+            <Route
+              path="/login"
+              element={<Login />}
+              errorElement={<div>Error</div>}
+            />
+            <Route
+              path="/personality"
+              element={<Personality />}
+              errorElement={<div>Error</div>}
+            />
+            <Route path="/signUp" element={<SignUp />} />
+            <Route path="/reset" element={<PasswordReset />} />
+            <Route path="/*" element={<Login />} />
+          </>
+        )}
+      </Routes>
+    </div>
+  );
 }
