@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Error from "@/components/error";
 
+//TODO: Create spinner 
 export default function Personality() {
   const [personalityTypes, setPersonalityTypes] = useState<
     PersonalityTypeInterface[]

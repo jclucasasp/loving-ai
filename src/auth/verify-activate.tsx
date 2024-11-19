@@ -75,9 +75,8 @@ export default function VerifyActivate() {
     });
 
     sessionStorage.removeItem("loggedInUser");
-    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(res.data)));
 
-    navigate("/profile");
+    navigate("/");
 
   };
 
