@@ -64,7 +64,7 @@ export default function VerifyActivate() {
         variant: "destructive",
         duration: 4000,
       });
-      return;
+       return;
     }
 
     toast({

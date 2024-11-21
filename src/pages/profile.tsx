@@ -5,7 +5,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import { HOST } from "@/lib/constants";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type ProfileProps = {
   profile: ProfileInterface | null;
@@ -52,72 +52,97 @@ export default function Profiles({
     }
   };
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    preLoadImage();
+  }, [profile?.imageUrl]);
+
+  const preLoadImage = async () => {
+    if (profile && HOST && profile.imageUrl) {
+      try {
+        console.log(profile.imageUrl);
+        setLoading(true);
+        const image = new Image();
+        image.src = HOST + "/images/" + profile.imageUrl;
+        await image.decode(); 
+      } catch (error) {
+        console.error("An error ocurred: ", error);
+      } finally{
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <section className="flex items-center justify-center">
-      <Card>
-        <CardContent>
-          <div className="relative flex justify-center mt-6">
-            <img
-              src={
-                profile?.imageUrl
-                  ? HOST +"/images/" + profile?.imageUrl
-                  : ""
-              }
-              alt="profile image"
-              className="rounded-xl"
-            />
-            <div className="absolute top-0 left-2 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-lg">
-              <h2 className="text-base sm:text-lg">
-                {profile?.firstName} {profile?.lastName}
-              </h2>
-              <h2 className="text-sm sm:text-base">{profile?.age}</h2>
-            </div>
-          </div>
-          <div className="p-4">
-            <p className="text-xs sm:text-sm md:text-base text-gray-600">{profile?.bio}</p>
-          </div>
-          <div className="flex justify-around mt-4 text-gray-500">
-            <div
-              className="cursor-pointer flex flex-col items-center"
-              onClick={() => {
-                setNextProfile(null), setIsMatched(false);
-              }}
-            >
+      {!loading && profile?.imageUrl && (
+        <Card className="min-h-[85vh] min-w-[55vh]">
+          <CardContent>
+            <div className="relative flex justify-center mt-6">
               <img
-                src="/thinking.png"
-                alt="thinking emoji"
-                height={65}
-                width={65}
+                src={
+                  profile?.imageUrl ? HOST + "/images/" + profile?.imageUrl : ""
+                }
+                alt="profile image"
+                className="rounded-xl object-cover w-full h-[55vh]"
+                loading="lazy"
               />
-              <h3 className="text-base sm:text-lg">Next</h3>
+              <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
+                <h2 className="text-base sm:text-lg">
+                  {profile?.firstName} {profile?.lastName}
+                </h2>
+                <h2 className="text-sm sm:text-base">{profile?.age}</h2>
+              </div>
             </div>
-            {!isMatched ? (
+            <div className="p-4">
+              <p className="text-xs sm:text-sm md:text-base text-gray-600">
+                {profile?.bio}
+              </p>
+            </div>
+            <div className="flex justify-around mt-4 text-gray-500">
               <div
                 className="cursor-pointer flex flex-col items-center"
-                onClick={createMatchHandler}
+                onClick={() => {
+                  setNextProfile(null), setIsMatched(false);
+                }}
               >
                 <img
-                  src="/heartFace.png"
-                  alt="face with hearts emoji"
-                  height={67}
-                  width={67}
-                />
-                <h3 className="text-base sm:text-lg">Like</h3>
-              </div>
-            ) : (
-              <div className="cursor-not-allowed">
-                <img
-                  src="/kissyFace.png"
-                  alt="kissy face emoji"
-                  height={60}
+                  src="/thinking.png"
+                  alt="thinking emoji"
+                  height={65}
                   width={65}
                 />
-                <h3 className="text-base sm:text-lg">Matched</h3>
+                <h3 className="text-base sm:text-lg">Next</h3>
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              {!isMatched ? (
+                <div
+                  className="cursor-pointer flex flex-col items-center"
+                  onClick={createMatchHandler}
+                >
+                  <img
+                    src="/heartFace.png"
+                    alt="face with hearts emoji"
+                    height={67}
+                    width={67}
+                  />
+                  <h3 className="text-base sm:text-lg">Like</h3>
+                </div>
+              ) : (
+                <div className="cursor-not-allowed">
+                  <img
+                    src="/kissyFace.png"
+                    alt="kissy face emoji"
+                    height={60}
+                    width={65}
+                  />
+                  <h3 className="text-base sm:text-lg">Matched</h3>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </section>
   );
 }
