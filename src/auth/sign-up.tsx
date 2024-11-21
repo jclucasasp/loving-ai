@@ -75,8 +75,6 @@ export default function SignUp() {
         return;
       }
 
-      console.log("Response from server: ", res);
-
       navigate('/login', { state: { email: result.data.email, password: result.data.password } });
     });
   }

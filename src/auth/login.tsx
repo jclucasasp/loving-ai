@@ -56,8 +56,6 @@ export default function Login() {
       });
       return;
     }
-    
-    console.log("User Profile: ", data);
 
     sessionStorage.setItem('loggedInUser', btoa(JSON.stringify(data)));
     navigate('/profile');

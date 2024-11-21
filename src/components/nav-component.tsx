@@ -21,9 +21,6 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
 
   const loggedInUser = useLoggedInUserState();
 
-  if (loggedInUser && !loggedInUser.verified) {
-  }
-
   const seedRandomProfile = async (id?: string) => {
     let profileData: Promise<ProfileInterface | null>;
     if (!id) {

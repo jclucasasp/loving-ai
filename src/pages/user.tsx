@@ -74,7 +74,7 @@ export default function UserProfile() {
     const updatedProfile = await UpdateUserProfile(result.data);
 
     if (!updatedProfile.userId) {
-      console.log("Failed to update profile");
+      console.error("Failed to update profile");
 
       toast({
         title: "Failed to update profile",

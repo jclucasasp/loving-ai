@@ -2,10 +2,10 @@ import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
+import React, { useEffect, useState } from "react";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import { HOST } from "@/lib/constants";
-import React, { useEffect, useState } from "react";
 
 type ProfileProps = {
   profile: ProfileInterface | null;
@@ -61,7 +61,6 @@ export default function Profiles({
   const preLoadImage = async () => {
     if (profile && HOST && profile.imageUrl) {
       try {
-        console.log(profile.imageUrl);
         setLoading(true);
         const image = new Image();
         image.src = HOST + "/images/" + profile.imageUrl;
