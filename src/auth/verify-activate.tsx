@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import { ToastAction } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { VerifyOTP } from "@/api/user-auth-api";

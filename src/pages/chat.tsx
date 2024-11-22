@@ -69,7 +69,7 @@ export default function ChatMessages() {
           />
           <AvatarFallback>?</AvatarFallback>
         </Avatar>
-        <h3 className="text-lg sm:text-xl md:text-2xl text-fuchsia-500 italic">
+        <h3 className="text-lg sm:text-xl md:text-2xl text-[#7F43DF] italic">
           {toProfile?.firstName + " " + toProfile?.lastName}
         </h3>
       </section>

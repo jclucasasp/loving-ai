@@ -1,5 +1,5 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import { PersonalityTypeInterface } from "@/lib/interfaces";
 import { GetPersonalityTypes } from "@/api/personality-api";
 import { ProfileForm, ProfileSchema } from "@/lib/utils";

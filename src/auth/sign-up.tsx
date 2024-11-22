@@ -58,7 +58,7 @@ export default function SignUp() {
     let formData = new FormData();
 
     for (let key in data) {
-      if (key === 'image') {
+      if (key === "image") {
         formData.append(key, data[key as keyof NewUserForm] as File);
       } else {
         formData.append(key, data[key as keyof NewUserForm]);
@@ -68,25 +68,25 @@ export default function SignUp() {
     await CreateNewUserProfile(formData).then((res) => {
       if (!res) {
         toast({
-          variant: 'destructive',
-          description: 'Email already taken. Please try again.',
+          variant: "destructive",
+          description: "Email already taken. Please try again.",
           action: <ToastAction altText="Retry" >Retry</ToastAction>
         });
         return;
       }
 
-      navigate('/login', { state: { email: result.data.email, password: result.data.password } });
+      navigate("/login", { state: { email: result.data.email, password: result.data.password } });
     });
   }
 
   return (
-    <section className='flex flex-col justify-center items-center'>
-      <Card className='w-full max-w-lg'>
-        <CardHeader className='text-center text-2xl'>
-          <div className='flex justify-center mb-3'>
+    <section className="flex flex-col justify-center items-center">
+      <Card className="w-full max-w-lg">
+        <CardHeader className="text-center text-2xl">
+          <div className="flex justify-center mb-3">
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
           </div>
-          <CardTitle className="text-fuchsia-500">Lets Get Started</CardTitle>
+          <CardTitle className="text-[#FF0066]">Lets Get Started</CardTitle>
         </CardHeader>
         <CardContent>
 

@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 
 type MatchesProps = {
   setCurrentProfile: React.Dispatch<

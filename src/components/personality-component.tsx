@@ -4,6 +4,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import {
   PersonalityTypeInterface,
@@ -18,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Error from "@/components/error";
 
-//TODO: Create spinner 
+//TODO: Create spinner
 export default function Personality() {
   const [personalityTypes, setPersonalityTypes] = useState<
     PersonalityTypeInterface[]
@@ -49,63 +50,59 @@ export default function Personality() {
 
   return (
     <>
-    {personalityTypes == null && <Error/> }
-    {personalityTypes && <Card>
-      <CardHeader>
-        <h1 className="text-2xl font-bold text-fuchsia-500 text-center border-b-2 p-4">
-          Personality
-        </h1>
-        <CardDescription className="border-b-2 mb-3 2 p-2">
-          <p className="text-lg text-slate-500 mb-2">
-            Here is a breakdown of the different personality types and a short
-            description.
-          </p>
-          <p className="mb-2 text-base">
-            You should totally take the free personality test to make sure you
-            get yours right?
-          </p>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="overflow-y-auto h-[55vh] mb-6 text-sm text-slate-500 border-b-2">
-        {personalityTypes.map((type) => (
-          <div key={type.id} className="flex gap-2 border-b-2 p-2">
-            <p className="font-bold">
-              {type.type + " : "}
-              <span className="font-normal">
-                {
-                  personalityDescriptions.find(
-                    (description) => description.id === type.id
-                  )?.description
-                }
-              </span>
-            </p>
-          </div>
-        ))}
-      </CardContent>
-      <CardFooter className="justify-between gap-2 flex-col sm:flex-row">
-        <Button
-          variant={"default"}
-          className="w-full rounded-full"
-          onClick={() => {
-            window.open(
-              "https://www.16personalities.com/free-personality-test",
-              "_blank"
-            );
-          }}
-        >
-          Free Personality Test
-        </Button>
-        <Button
-          variant={"secondary"}
-          className="w-full rounded-full"
-          onClick={() => {
-            navigate("/signUp", { state: { personalityTypes } });
-          }}
-        >
-          Create account
-        </Button>
-      </CardFooter>
-    </Card>}
+      {personalityTypes == null && <Error />}
+      {personalityTypes && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Personality</CardTitle>
+            <CardDescription className="border-b-2 mb-3 2 p-2">
+                Here is a breakdown of the different personality types and a
+                short description.
+                You should totally take the free personality test to make sure
+                you get yours right?
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="overflow-y-auto h-[55vh] mb-6 text-sm text-slate-500 border-b-2">
+            {personalityTypes.map((type) => (
+              <div key={type.id} className="flex gap-2 border-b-2 p-2">
+                <p className="font-bold">
+                  {type.type + " : "}
+                  <span className="font-normal">
+                    {
+                      personalityDescriptions.find(
+                        (description) => description.id === type.id
+                      )?.description
+                    }
+                  </span>
+                </p>
+              </div>
+            ))}
+          </CardContent>
+          <CardFooter className="justify-between gap-2 flex-col sm:flex-row">
+            <Button
+              variant={"default"}
+              className="w-full rounded-full"
+              onClick={() => {
+                window.open(
+                  "https://www.16personalities.com/free-personality-test",
+                  "_blank"
+                );
+              }}
+            >
+              Free Personality Test
+            </Button>
+            <Button
+              variant={"secondary"}
+              className="w-full rounded-full"
+              onClick={() => {
+                navigate("/signUp", { state: { personalityTypes } });
+              }}
+            >
+              Create account
+            </Button>
+          </CardFooter>
+        </Card>
+      )}
     </>
   );
 }

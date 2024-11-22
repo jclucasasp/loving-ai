@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { GetRandomProfile, GetProfileById } from "@/api/profiles-api";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ProfileInterface } from "@/lib/interfaces";
 import { User, MessageCircle } from "lucide-react";
@@ -46,7 +46,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
     <nav className="flex justify-between items-center mt-4 mb-6">
       
       <Button variant={"link"}
-        className="cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic"
+        className="cursor-pointer hover:text-[#7F43DF] hover:scale-105 hover:italic"
         disabled={!loggedInUser?.verified}
         onClick={() => navigate("/profile") }
       >
@@ -59,7 +59,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
       
         <Button
           variant={"link"} 
-          className="text-purple-400 hover:scale-105 hover:italic disabled:cursor-not-allowed"
+          className="text-[#7F43DF] hover:scale-110 disabled:cursor-not-allowed"
           onClick={() => navigate("/userProfile")}
         >
           <div className="text-gray-500 flex items-center gap-2">
@@ -72,7 +72,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
         </Button>
 
       <Button variant={"link"}
-        className="cursor-pointer hover:text-purple-400 hover:scale-105 hover:italic"
+        className="hover:text-[#7F43DF] hover:scale-110"
         disabled={!loggedInUser?.verified}
         onClick={() => navigate("/match")}
       ><div className="flex flex-col items-center">

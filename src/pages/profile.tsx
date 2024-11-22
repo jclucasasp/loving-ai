@@ -1,5 +1,5 @@
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
 import React, { useEffect, useState } from "react";
@@ -66,7 +66,7 @@ export default function Profiles({
         image.src = HOST + "/images/" + profile.imageUrl;
         await image.decode(); 
       } catch (error) {
-        console.error("An error ocurred: ", error);
+        console.error("An error occurred: ", error);
       } finally{
         setLoading(false);
       }

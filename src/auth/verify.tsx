@@ -1,4 +1,4 @@
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import ComponentHeading from "@/components/component-heading";
 import { OTPRequest } from "@/api/user-auth-api";
 import { Button } from "@/components/ui/button";

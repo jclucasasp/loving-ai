@@ -1,18 +1,18 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { LoginAuth, OTPRequest } from '@/api/user-auth-api';
-import { LoginForm, LoginFormSchema } from '@/lib/utils';
-import SkeletonCard from '@/components/skeleton-card';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { ToastAction } from '@/components/ui/toast';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { z } from 'zod';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { LoginAuth, OTPRequest } from "@/api/user-auth-api";
+import { LoginForm, LoginFormSchema } from "@/lib/utils";
+import SkeletonCard from "@/components/skeleton-card";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ToastAction } from "@/components/ui/toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { z } from "zod";
 
 export default function Login() {
 
@@ -49,16 +49,16 @@ export default function Login() {
 
     if (!data) {
       toast({
-        title: 'Login Failed',
-        variant: 'destructive',
+        title: "Login Failed",
+        variant: "destructive",
         action: <ToastAction altText="Retry" >Retry</ToastAction>,
         duration: 3000
       });
       return;
     }
 
-    sessionStorage.setItem('loggedInUser', btoa(JSON.stringify(data)));
-    navigate('/profile');
+    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data)));
+    navigate("/profile");
   }
 
   const handleReset = async (data: LoginForm) => {
@@ -102,23 +102,23 @@ export default function Login() {
       return;
     }
     
-    navigate('/reset', { state: { email: res.data } });
+    navigate("/reset", { state: { email: res.data } });
   }
 
   return (
-    <section className='flex flex-col justify-center items-center h-screen'>
+    <section className="flex flex-col justify-center items-center h-screen">
       {loading && <SkeletonCard />}
-     { !loading && <Card className='max-w-sm'>
-        <CardHeader className='text-center text-2xl'>
-          <div className='flex justify-center mb-3'>
+     { !loading && <Card className="max-w-sm">
+        <CardHeader className="text-center text-2xl">
+          <div className="flex justify-center mb-3">
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
           </div>
-          <CardTitle className='text-fuchsia-500'>Rizz loading...</CardTitle>
+          <CardTitle className="text-[#FF0066]">Rizz loading...</CardTitle>
         </CardHeader>
         <CardContent>
 
           <Form {...form} >
-            < form className='flex flex-col gap-2' onSubmit={form.handleSubmit(onSubmit)}>
+            < form className="flex flex-col gap-2" onSubmit={form.handleSubmit(onSubmit)}>
 
               <FormField name="email" control={form.control} render={({ field }) => (
                 <FormItem>
@@ -132,9 +132,9 @@ export default function Login() {
 
               <FormField name="password" control={form.control} render={({ field }) => (
                 <FormItem>
-                  <div className='flex justify-between items-center'>
+                  <div className="flex justify-between items-center">
                     <Label htmlFor="password">Password</Label>
-                    <span className='text-slate-400 cursor-pointer text-sm select-none'
+                    <span className="text-slate-400 cursor-pointer text-sm select-none"
                       onClick={() => handleReset(form.getValues())}>Forgot Password?</span>
                   </div>
                   <FormControl>
@@ -144,9 +144,9 @@ export default function Login() {
                 </FormItem>
               )}></FormField>
 
-              <Button type='submit' variant='secondary'
+              <Button type="submit" variant="secondary"
 
-                className='border w-full rounded-full mt-6 p-2'>
+                className="border w-full rounded-full mt-6 p-2">
                 Login
               </Button>
             </form>
@@ -154,7 +154,7 @@ export default function Login() {
 
         </CardContent>
         <CardFooter>
-          <Button variant='link' onClick={() => navigate('/personality')} className='text-slate-400'>Don't have an account? Sign up</Button>
+          <Button variant="link" onClick={() => navigate("/personality")} className="text-slate-400">Don"t have an account? Sign up</Button>
         </CardFooter>
       </Card>}
     </section>

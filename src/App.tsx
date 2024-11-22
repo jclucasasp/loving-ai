@@ -1,6 +1,6 @@
 import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import Personality from "@/components/personality-component";
 import VerifyActivate from "@/auth/verify-activate";
 import PasswordReset from "@/auth/password-reset";

@@ -1,4 +1,4 @@
-import useLoggedInUserState from "@/hooks/use-loggedin-user-state"
+import useLoggedInUserState from "@/hooks/use-user-state"
 
 export default async function EmailToken(email: string) {
     const loggedInUser = useLoggedInUserState();
