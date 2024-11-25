@@ -76,7 +76,7 @@ export default function Profiles({
   return (
     <section className="flex items-center justify-center">
       {!loading && profile?.imageUrl && (
-        <Card className="min-h-[85vh] min-w-[55vh]">
+        <Card className="max-h-[85vh] max-w-[55vh] ">
           <CardContent>
             <div className="relative flex justify-center mt-6">
               <img
@@ -84,10 +84,10 @@ export default function Profiles({
                   profile?.imageUrl ? HOST + "/images/" + profile?.imageUrl : ""
                 }
                 alt="profile image"
-                className="rounded-xl object-cover w-full h-[55vh]"
+                className="rounded-xl object-cover "
                 loading="lazy"
               />
-              <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
+              <div className="absolute top-0 left-2 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
                 <h2 className="text-base sm:text-lg">
                   {profile?.firstName} {profile?.lastName}
                 </h2>

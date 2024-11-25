@@ -47,6 +47,7 @@ export default function UserProfile() {
       bio: loggedInUser?.bio,
       imageUrl: loggedInUser?.imageUrl,
       myersBriggsPersonalityType: loggedInUser?.myersBriggsPersonalityType,
+      verified: loggedInUser?.verified,
     },
   });
 
@@ -87,7 +88,10 @@ export default function UserProfile() {
     }
 
     sessionStorage.clear();
-    sessionStorage.setItem("loggedInUser", JSON.stringify(updatedProfile));
+    sessionStorage.setItem(
+      "loggedInUser",
+      btoa(JSON.stringify(updatedProfile))
+    );
     navigate("/profile");
 
     toast({

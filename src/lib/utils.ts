@@ -16,7 +16,8 @@ export const ProfileSchema = z.object({
   gender: z.string({ required_error: "Gender is required" }),
   bio: z.string({ required_error: "Bio is required" }).min(10, { message: "Bio must be at least 10 characters long" }),
   imageUrl: z.string(),
-  myersBriggsPersonalityType: z.string({ required_error: "Personality type is required" })
+  myersBriggsPersonalityType: z.string({ required_error: "Personality type is required" }),
+  verified: z.boolean(),
 });
 export type ProfileForm = z.infer<typeof ProfileSchema>;
 
