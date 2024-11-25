@@ -2,7 +2,7 @@ import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import { AUTH_HEADER, HOST } from "@/lib/constants";
 
 export async function GetMatches(userId: string): Promise<MatchInterface[]> {
-  return await fetch(HOST + "/matches/all", {
+  return await fetch(HOST + "/api/matches/all", {
     headers: {
       Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export async function GetMatchedProfiles(
 ): Promise<ProfileInterface[]> {
   const data = await GetMatches(userId);
 
-  return await fetch(HOST + "/match/profiles", {
+  return await fetch(HOST + "/api/match/profiles", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -63,7 +63,7 @@ export async function CreateMatch(
     throw new Error("fromProfileId and toProfileId are required");
   }
 
-  return await fetch(HOST + "/match/create", {
+  return await fetch(HOST + "/api/match/create", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -88,7 +88,7 @@ export async function CreateMatch(
 }
 
 export default async function deleteMatchById(userId: string) {
-  return await fetch(HOST + "/match/delete-by-id", {
+  return await fetch(HOST + "/api/match/delete-by-id", {
     method: "DELETE",
     headers: {
       Authorization: AUTH_HEADER,

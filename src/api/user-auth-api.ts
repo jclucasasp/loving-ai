@@ -2,7 +2,7 @@ import { AUTH_HEADER, HOST } from "@/lib/constants";
 import { ProfileInterface } from "@/lib/interfaces";
 
 export async function LoginAuth(email: string, password: string) {
-  return await fetch(HOST + "/user/login", {
+  return await fetch(HOST + "/api/user/login", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -26,7 +26,7 @@ export async function LoginAuth(email: string, password: string) {
 }
 
 export async function LogoutAuth(id: string) {
-  return await fetch(HOST + "/user/logout", {
+  return await fetch(HOST + "/api/user/logout", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -47,7 +47,7 @@ export async function LogoutAuth(id: string) {
 
 export async function OTPRequest(identifier: string) {
   if (identifier.includes("@")) {
-    return await fetch(HOST + "/user/otp", {
+    return await fetch(HOST + "/api/user/otp", {
       method: "POST",
       headers: {
         Authorization: AUTH_HEADER,
@@ -64,7 +64,7 @@ export async function OTPRequest(identifier: string) {
       });
   }
 
-  return await fetch(HOST + "/user/otp", {
+  return await fetch(HOST + "/api/user/otp", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -86,7 +86,7 @@ export async function VerifyAndResetPassword(
   otp: string,
   password: string
 ) {
-  return await fetch(HOST + "/user/reset", {
+  return await fetch(HOST + "/api/user/reset", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -110,7 +110,7 @@ export async function VerifyAndResetPassword(
 }
 
 export async function VerifyOTP(userId: string, otp: string) {
-  return await fetch(HOST + "/user/verify", {
+  return await fetch(HOST + "/api/user/verify", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,

@@ -4,7 +4,7 @@ import { ProfileInterface } from "@/lib/interfaces";
 export async function GetRandomProfile(
   gender: string
 ): Promise<ProfileInterface> {
-  return await fetch(HOST + "/profile/random", {
+  return await fetch(HOST + "/api/profile/random", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -31,7 +31,7 @@ export async function GetRandomProfile(
 export async function GetProfileById(
   userId: string
 ): Promise<ProfileInterface> {
-  return await fetch(HOST + "/profile/id", {
+  return await fetch(HOST + "/api/profile/id", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -55,7 +55,7 @@ export async function GetProfileById(
 }
 
 export async function CreateNewUserProfile(newUser: FormData) {
-  return await fetch(HOST + "/user/create", {
+  return await fetch(HOST + "/api/user/create", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -78,7 +78,7 @@ export async function CreateNewUserProfile(newUser: FormData) {
 export async function UpdateUserProfile(
   profile: ProfileInterface
 ): Promise<ProfileInterface> {
-  return await fetch(HOST + "/profile/update", {
+  return await fetch(HOST + "/api/profile/update", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,

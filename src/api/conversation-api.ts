@@ -5,7 +5,7 @@ export async function GetConversationFromTo(
   profileId: string,
   toProfileId: string
 ): Promise<ConversationInterface> {
-  return await fetch(HOST + "/conversation/from-to", {
+  return await fetch(HOST + "/api/conversation/from-to", {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
@@ -33,7 +33,7 @@ export async function CreateMessage(
   matchId: string,
   response: ResponseInterface
 ): Promise<ConversationInterface> {
-  return await fetch(HOST + "/conversation/add/" + matchId, {
+  return await fetch(HOST + "/api/conversation/add/" + matchId, {
     method: "POST",
     headers: {
       Authorization: AUTH_HEADER,
