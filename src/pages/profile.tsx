@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import { HOST } from "@/lib/constants";
+import { LoaderCircleIcon } from "lucide-react";
 
 type ProfileProps = {
   profile: ProfileInterface | null;
@@ -51,37 +52,28 @@ export default function Profiles({
       setMatches([...matches, newMatch]);
     }
   };
-
-  const [loading, setLoading] = useState(false);
+  const[currentPicture, setCurrentPicture] = useState(HOST + "/images/" + profile?.imageUrl);
+  const[currentBio, setCurrentBio] = useState(profile?.bio);
+  const[currentName, setCurrentName] = useState(profile?.firstName + " " + profile?.lastName);
+  const [currentAge, setCurrentAge] = useState(profile?.age);
 
   useEffect(() => {
-    preLoadImage();
+  if (profile) {
+    setCurrentPicture(HOST + "/images/" + profile?.imageUrl);
+    setCurrentBio(profile?.bio);
+    setCurrentName(profile?.firstName + " " + profile?.lastName);
+    setCurrentAge(profile?.age);
+  }
   }, [profile?.imageUrl]);
-
-  const preLoadImage = async () => {
-    if (profile && HOST && profile.imageUrl) {
-      try {
-        setLoading(true);
-        const image = new Image();
-        image.src = HOST + "/images/" + profile.imageUrl;
-        await image.decode(); 
-      } catch (error) {
-        console.error("An error occurred: ", error);
-      } finally{
-        setLoading(false);
-      }
-    }
-  };
 
   return (
     <section className="flex items-center justify-center">
-      {!loading && profile?.imageUrl && (
         <Card>
           <CardContent>
             <div className="relative flex justify-center mt-6">
               <img
                 src={
-                  profile?.imageUrl ? HOST + "/images/" + profile?.imageUrl : ""
+                  profile?.imageUrl ? HOST + "/images/" + profile?.imageUrl : currentPicture
                 }
                 alt="profile image"
                 className="rounded-xl object-cover "
@@ -89,14 +81,14 @@ export default function Profiles({
               />
               <div className="absolute top-0 left-2 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
                 <h2 className="text-base sm:text-lg">
-                  {profile?.firstName} {profile?.lastName}
+                  {profile?.firstName ? profile.firstName+ " " + profile.lastName : currentName}
                 </h2>
-                <h2 className="text-sm sm:text-base">{profile?.age}</h2>
+                <h2 className="text-sm sm:text-base">{profile?.age ? profile.age : currentAge}</h2>
               </div>
             </div>
             <div className="p-4">
               <p className="text-xs sm:text-sm md:text-base text-gray-600">
-                {profile?.bio}
+                {profile?.bio ? profile.bio : currentBio}
               </p>
             </div>
             <div className="flex justify-around mt-4 text-gray-500">
@@ -141,7 +133,6 @@ export default function Profiles({
             </div>
           </CardContent>
         </Card>
-      )}
     </section>
   );
 }

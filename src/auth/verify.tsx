@@ -1,13 +1,12 @@
-import useLoggedInUserState from "@/hooks/use-user-state";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import ComponentHeading from "@/components/component-heading";
+import useLoggedInUserState from "@/hooks/use-user-state";
 import { OTPRequest } from "@/api/user-auth-api";
+import { LoaderCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import SkeletonCard from "@/components/skeleton-card";
 import { useState } from "react";
-import { LoaderCircleIcon } from "lucide-react";
 
 export default function Verify() {
   const loggedInUser = useLoggedInUserState();
