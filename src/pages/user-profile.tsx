@@ -30,10 +30,12 @@ import {
     SelectValue,
   } from "@/components/ui/select";
 import ComponentHeading from "@/components/component-heading";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default function UserProfile() {
   const loggedInUser = useLoggedInUserState();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<ProfileForm>({
     resolver: zodResolver(ProfileSchema),
@@ -60,6 +62,7 @@ export default function UserProfile() {
   };
 
   const onSubmit = async (data: ProfileForm) => {
+    setLoading(true);
     const result = ProfileSchema.safeParse(data);
 
     if (!result.success) {
@@ -73,6 +76,7 @@ export default function UserProfile() {
     }
 
     const updatedProfile = await UpdateUserProfile(result.data);
+    setLoading(false);
 
     if (!updatedProfile.userId) {
       console.error("Failed to update profile");
@@ -304,10 +308,12 @@ export default function UserProfile() {
               ></FormField>
 
               <Button
+              disabled={loading}
                 variant={"secondary"}
                 type="submit"
                 className="mt-3 w-full rounded-full"
               >
+                {loading &&<span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
                 Update Profile
               </Button>
             </form>
@@ -315,10 +321,12 @@ export default function UserProfile() {
         </CardContent>
         <CardFooter>
           <Button
+          disabled={loading}
             variant={"destructive"}
             className="w-full rounded-full"
             onClick={() => handleLogout()}
           >
+            {loading &&<span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
             Log Out
           </Button>
         </CardFooter>

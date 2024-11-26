@@ -8,7 +8,7 @@ import { LogoutAuth } from "@/api/user-auth-api";
 import { useCallback, useState } from "react";
 import Nav from "@/components/nav-component";
 import ChatMessages from "@/pages/chat";
-import UserProfile from "@/pages/user";
+import UserProfile from "@/pages/user-profile";
 import Profiles from "@/pages/profile";
 import Matches from "@/pages/matches";
 import SignUp from "@/auth/sign-up";

@@ -25,6 +25,8 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import ComponentHeading from "@/components/component-heading";
+import { useState } from "react";
+import { LoaderCircleIcon } from "lucide-react";
 
 
 const FormSchema = z.object({
@@ -33,6 +35,7 @@ const FormSchema = z.object({
 
 export default function VerifyActivate() {
   const loggedInUser = useLoggedInUserState();
+  const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
 
@@ -44,7 +47,9 @@ export default function VerifyActivate() {
   });
 
   const onSubmit = async (data: any) => {
+    setLoading(true);
     const res = await VerifyOTP(loggedInUser!.userId, data.otp);
+    setLoading(false);
 
     if (res.status >= 500) {
       toast({
@@ -75,15 +80,15 @@ export default function VerifyActivate() {
     });
 
     sessionStorage.removeItem("loggedInUser");
-
-    navigate("/");
+    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(res.data)));
+    navigate("/profile");
 
   };
 
   return (
     <section className="flex flex-col items-center justify-center">
-      <ComponentHeading>Enter OTP</ComponentHeading>
-      <Card className="max-w-sm">
+      <ComponentHeading>Activate Your Account</ComponentHeading>
+      <Card>
         <CardContent className="mt-3">
           <Form {...form}>
             <form
@@ -95,7 +100,7 @@ export default function VerifyActivate() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="otp">OTP</FormLabel>
+                    <FormLabel htmlFor="otp">Enter the OTP from your email</FormLabel>
                     <FormControl>
                       <InputOTP maxLength={6} {...field}>
                         <InputOTPGroup>
@@ -117,10 +122,12 @@ export default function VerifyActivate() {
               ></FormField>
 
               <Button
+              disabled={loading}
                 type="submit"
                 variant="secondary"
-                className="border w-full rounded-full mt-6 p-2"
+                className="border w-full rounded-full mt-6 p-2 gap-2"
               >
+                { loading && <span><LoaderCircleIcon className="h-4 w-4 animate-spin" /></span>}
                 Verify
               </Button>
             </form>

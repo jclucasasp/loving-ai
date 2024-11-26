@@ -13,11 +13,13 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default function Login() {
 
   const { email, password } = useLocation().state as { email: string, password: string } || { "email": "", "password": "" };
 
+  const [loadingOTP, setLoadingOTP] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const { toast } = useToast();
@@ -45,7 +47,9 @@ export default function Login() {
 
   const handleLogin = async (formData: LoginForm) => {
 
+    setLoading(true);
     const data = await LoginAuth(formData.email, formData.password);
+    setLoading(false);
 
     if (!data) {
       toast({
@@ -62,7 +66,7 @@ export default function Login() {
   }
 
   const handleReset = async (data: LoginForm) => {
-
+    setLoadingOTP(true);
     const emailSchema = z.string({ required_error: "Email is required" }).email({ message: "Must be a valid email" });
 
     const res = emailSchema.safeParse(data.email);
@@ -76,9 +80,9 @@ export default function Login() {
       return;
     }
 
-    setLoading(true);
+    
     const otpRes = await OTPRequest(res.data);
-    setLoading(false);
+    setLoadingOTP(false);
 
     if (!otpRes || otpRes.status >= 500) {
       toast({
@@ -107,8 +111,8 @@ export default function Login() {
 
   return (
     <section className="flex flex-col justify-center items-center h-screen">
-      {loading && <SkeletonCard />}
-     { !loading && <Card className="max-w-sm">
+      {loadingOTP && <SkeletonCard />}
+     { !loadingOTP && <Card className="max-w-sm">
         <CardHeader className="text-center text-2xl">
           <div className="flex justify-center mb-3">
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
@@ -145,8 +149,9 @@ export default function Login() {
               )}></FormField>
 
               <Button type="submit" variant="secondary"
-
+                disabled={loadingOTP}
                 className="border w-full rounded-full mt-6 p-2">
+                  {loading &&<span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
                 Login
               </Button>
             </form>

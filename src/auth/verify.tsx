@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import SkeletonCard from "@/components/skeleton-card";
 import { useState } from "react";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default function Verify() {
   const loggedInUser = useLoggedInUserState();
@@ -33,9 +34,8 @@ export default function Verify() {
 
   return (
     <section className="flex flex-col w-full items-center justify-center">
-      {loading && <SkeletonCard />}
       <ComponentHeading>Lets Get You Verified</ComponentHeading>
-      <Card className="max-w-sm sm:max-w-md">
+      <Card>
         <CardContent className="text-xs sm:text-sm mt-3">
           <p className="mb-2">
             You only need to get verified once. Clicking the below button will
@@ -45,7 +45,7 @@ export default function Verify() {
             By signing up you automatically agree to the following terms and
             conditions...
           </p>
-          <article className="overflow-y-auto h-[300px] sm:h-[400px] border-t-2 p-2 text-slate-500">
+          <article className="overflow-y-auto h-[55vh] border-t-2 p-2 text-slate-500">
             <p>1. Introduction</p>
             <p>
               Welcome to Loving AI, a social platform designed to facilitate
@@ -132,6 +132,7 @@ export default function Verify() {
         </CardContent>
         <CardFooter>
           <Button
+          disabled={loading}
             size={"lg"}
             variant={"secondary"}
             className="w-full rounded-full"
@@ -139,6 +140,7 @@ export default function Verify() {
               handleClick();
             }}
           >
+            { loading && <span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
             Sign me up
           </Button>
         </CardFooter>

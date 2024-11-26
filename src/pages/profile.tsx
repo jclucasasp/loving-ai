@@ -76,7 +76,7 @@ export default function Profiles({
   return (
     <section className="flex items-center justify-center">
       {!loading && profile?.imageUrl && (
-        <Card className="max-h-[85vh] max-w-[55vh] ">
+        <Card>
           <CardContent>
             <div className="relative flex justify-center mt-6">
               <img
