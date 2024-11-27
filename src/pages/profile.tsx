@@ -6,7 +6,6 @@ import React, { useEffect, useState } from "react";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import { HOST } from "@/lib/constants";
-import { LoaderCircleIcon } from "lucide-react";
 
 type ProfileProps = {
   profile: ProfileInterface | null;

@@ -7,20 +7,19 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
 import {
-    InputOTP,
-    InputOTPGroup,
-    InputOTPSlot,
-    InputOTPSeparator,
-  } from "@/components/ui/input-otp";
-  import {
-    Form,
-    FormField,
-    FormItem,
-    FormControl,
-    FormMessage,
-    FormLabel,
-  } from "@/components/ui/form";
-
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+} from "@/components/ui/input-otp";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormMessage,
+  FormLabel,
+} from "@/components/ui/form";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,15 +27,16 @@ import ComponentHeading from "@/components/component-heading";
 import { useState } from "react";
 import { LoaderCircleIcon } from "lucide-react";
 
-
 const FormSchema = z.object({
-    otp: z.string({ required_error: "OTP is required" }).min(6, { message: "OTP must be at least 6 characters long" }),
-  });
+  otp: z
+    .string({ required_error: "OTP is required" })
+    .min(6, { message: "OTP must be at least 6 characters long" }),
+});
 
 export default function VerifyActivate() {
   const loggedInUser = useLoggedInUserState();
   const [loading, setLoading] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -49,7 +49,6 @@ export default function VerifyActivate() {
   const onSubmit = async (data: any) => {
     setLoading(true);
     const res = await VerifyOTP(loggedInUser!.userId, data.otp);
-    setLoading(false);
 
     if (res.status >= 500) {
       toast({
@@ -69,7 +68,7 @@ export default function VerifyActivate() {
         variant: "destructive",
         duration: 4000,
       });
-       return;
+      return;
     }
 
     toast({
@@ -79,10 +78,9 @@ export default function VerifyActivate() {
       duration: 4000,
     });
 
-    sessionStorage.removeItem("loggedInUser");
-    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(res.data)));
-    navigate("/profile");
-
+    sessionStorage.clear();
+    setLoading(false);
+    navigate("/login");
   };
 
   return (
@@ -100,7 +98,9 @@ export default function VerifyActivate() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="otp">Enter the OTP from your email</FormLabel>
+                    <FormLabel htmlFor="otp">
+                      Enter the OTP from your email
+                    </FormLabel>
                     <FormControl>
                       <InputOTP maxLength={6} {...field}>
                         <InputOTPGroup>
@@ -122,12 +122,16 @@ export default function VerifyActivate() {
               ></FormField>
 
               <Button
-              disabled={loading}
+                disabled={loading}
                 type="submit"
                 variant="secondary"
                 className="border w-full rounded-full mt-6 p-2 gap-2"
               >
-                { loading && <span><LoaderCircleIcon className="h-4 w-4 animate-spin" /></span>}
+                {loading && (
+                  <span>
+                    <LoaderCircleIcon className="h-4 w-4 animate-spin" />
+                  </span>
+                )}
                 Verify
               </Button>
             </form>

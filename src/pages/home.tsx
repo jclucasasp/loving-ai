@@ -47,7 +47,7 @@ export default function Home() {
 
       <article className="mt-3 border-b-2 pb-3">
         <h4 className="text-md md:text-lg">Why spend your time alone...</h4>
-        <h3 className="text-lg md:text-xl ">when you can find love now...</h3>
+        <h3 className="text-lg md:text-xl ">when you can find companionship now...</h3>
         <h2 className="text-xl md:text-2xl text-[#FF0066] ">
           Can you <span className="italic font-bold">Rizz</span> up these AI Hotties?
         </h2>
