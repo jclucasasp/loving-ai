@@ -66,11 +66,10 @@ export default function Login() {
   }
 
   const handleReset = async (data: LoginForm) => {
-    setLoadingOTP(true);
     const emailSchema = z.string({ required_error: "Email is required" }).email({ message: "Must be a valid email" });
-
+    
     const res = emailSchema.safeParse(data.email);
-
+    
     if (!res.success) {
       toast({
         title: "Please enter a valid email.",
@@ -79,8 +78,8 @@ export default function Login() {
       });
       return;
     }
-
     
+    setLoadingOTP(true);
     const otpRes = await OTPRequest(res.data);
     setLoadingOTP(false);
 
