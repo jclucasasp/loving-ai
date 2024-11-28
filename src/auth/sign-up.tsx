@@ -12,10 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { LoaderCircleIcon } from "lucide-react";
 
 export default function SignUp() {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const { personalityTypes }: { personalityTypes: PersonalityTypeInterface[] } = useLocation().state;
 
@@ -55,6 +58,7 @@ export default function SignUp() {
     }
 
     // Helper class to send a multipart form
+    setLoading(true);
     let formData = new FormData();
 
     for (let key in data) {
@@ -83,7 +87,7 @@ export default function SignUp() {
           action: <ToastAction altText="Retry">Retry</ToastAction>
         })
       }
-
+      setLoading(false);
       navigate("/login", { state: { email: result.data.email, password: result.data.password } });
     });
   }
@@ -253,7 +257,10 @@ export default function SignUp() {
                 </FormItem>
               )}></FormField>
 
-              <Button variant={"secondary"} type="submit" className="mt-6 rounded-full w-full">Submit</Button>
+              <Button disabled={loading} 
+              variant={"secondary"} type="submit" className="mt-6 rounded-full w-full">
+                {loading && <span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
+                Submit</Button>
             </form>
           </Form>
 
