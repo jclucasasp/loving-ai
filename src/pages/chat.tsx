@@ -3,16 +3,24 @@ import { ConversationInterface } from "@/lib/interfaces";
 import { CreateMessage } from "@/api/conversation-api";
 import { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
+import EmojiPicker from "emoji-picker-react";
 import { Card } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import { HOST } from "@/lib/constants";
+import { cn } from "@/lib/utils";
+import {
+  PopoverContent,
+  Popover,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export default function ChatMessages() {
   const { conversationData, toProfile, loggedInUser } = useLocation().state;
 
   const [conversation, setConversation] =
     useState<ConversationInterface | null>(conversationData);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
@@ -58,6 +66,11 @@ export default function ChatMessages() {
       messageInputContainer.current?.focus();
     }
   }, [conversation, loading]);
+
+  const emojiHandleClick = (emoji: any) => {
+    setMessage(message + emoji.emoji);
+    setShowModal(false);
+  };
 
   return (
     <div>
@@ -113,24 +126,43 @@ export default function ChatMessages() {
                 />
                 <AvatarFallback>?</AvatarFallback>
               </Avatar>
-              <span className="text-green-500 animate-pulse">Busy typing...</span>
+              <span className="text-green-500 animate-pulse">
+                Busy typing...
+              </span>
             </section>
           )}
         </article>
       </Card>
-      
-        <Textarea className="text-xs sm:text-sm md:text-base flex gap-2 align-center mt-3"
-          ref={messageInputContainer}
-          disabled={loading}
-          onKeyDown={handleKeyDown}
-          rows={4}
-          placeholder={
-            "Press Shift and Enter at the same time to go to next line.\nHit Enter to send."
-          }
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-      
+
+      <Popover open={showModal}>
+        <PopoverTrigger asChild>
+          <Button
+            className="rounded-full mt-2"
+            variant={"secondary"}
+            onClick={() => setShowModal(!showModal)}
+          >
+            Emojis
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-90 absolute bottom-0 left-12">
+          <div className="">
+          <EmojiPicker onEmojiClick={emojiHandleClick} />
+          </div>
+        </PopoverContent>
+      </Popover>
+
+      <Textarea
+        className="text-xs sm:text-sm md:text-base flex gap-2 align-center mt-3"
+        ref={messageInputContainer}
+        disabled={loading}
+        onKeyDown={handleKeyDown}
+        rows={4}
+        placeholder={
+          "Press Shift and Enter at the same time to go to next line.\nHit Enter to send."
+        }
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+      />
     </div>
   );
 }
