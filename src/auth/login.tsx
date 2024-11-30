@@ -6,6 +6,7 @@ import { LoginForm, LoginFormSchema } from "@/lib/utils";
 import SkeletonCard from "@/components/skeleton-card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastAction } from "@/components/ui/toast";
+import { LoaderCircleIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,7 +14,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
-import { LoaderCircleIcon } from "lucide-react";
 
 export default function Login() {
 
@@ -109,9 +109,9 @@ export default function Login() {
   }
 
   return (
-    <section className="flex flex-col justify-center items-center h-screen">
+    <section className="mt-24">
       {loadingOTP && <SkeletonCard />}
-     { !loadingOTP && <Card className="max-w-sm">
+     { !loadingOTP && <Card>
         <CardHeader className="text-center text-2xl">
           <div className="flex justify-center mb-3">
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />

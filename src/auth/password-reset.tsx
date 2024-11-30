@@ -84,7 +84,7 @@ export default function PasswordReset() {
   };
 
   return (
-    <section className="flex flex-col h-screen items-center justify-center">
+    <section className="mt-24">
       <Card className="max-w-sm">
         <CardHeader>
           <CardTitle>Password Reset</CardTitle>

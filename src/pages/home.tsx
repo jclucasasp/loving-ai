@@ -13,8 +13,8 @@ export default function Home() {
   const navigate = useNavigate();
 
   return (
-    <section className="flex flex-col h-screen w-full">
-      <div className="flex items-center sm:justify-between justify-center w-full border-b-2 pb-3">
+    <div>
+      <div className="flex items-center sm:justify-between justify-center border-b-2 pb-3">
         <div className="flex items-center justify-start">
           <img
             src="/heart.png"
@@ -63,30 +63,30 @@ export default function Home() {
 
       <ComponentHeading className="mt-3 underline">Meet some of the Hotties:</ComponentHeading>
 
-      <Carousel className=" w-full" opts={{ loop: true, align: "center" }}>
-        <CarouselContent className="-ml-2 sm:-ml-4">
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+      <Carousel className="" opts={{ loop: true, align: "center" }}>
+        <CarouselContent className="-ml-2 ">
+          <CarouselItem className="basis-1/2">
             <img src="/AsianW.png" alt="picture of an asian woman" />
           </CarouselItem>
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+          <CarouselItem className="basis-1/2">
             <img src="/AsianM.png" alt="picture of an asian man" />
           </CarouselItem>
 
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+          <CarouselItem className="basis-1/2">
             <img src="/ColorW.png" alt="picture of an colored woman" />
           </CarouselItem>
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+          <CarouselItem className="basis-1/2">
             <img src="/ColorM.png" alt="picture of an colored man" />
           </CarouselItem>
 
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+          <CarouselItem className="basis-1/2">
             <img src="/CaucasianW.png" alt="picture of an caucasian woman" />
           </CarouselItem>
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+          <CarouselItem className="basis-1/2">
             <img src="/CaucasianM.png" alt="picture of an caucasian man" />
           </CarouselItem>
 
-          <CarouselItem className="basis-1/2 md:basis-2/3 pl-1 md:pl-4">
+          <CarouselItem className="basis-1/2">
             <img src="/IndianW.png" alt="picture of an indian woman" />
           </CarouselItem>
         </CarouselContent>
@@ -96,12 +96,12 @@ export default function Home() {
 
       <Button
         variant={"secondary"}
-        size={"lg"}
+        size={"default"}
         className="mt-6 w-full rounded-full"
         onClick={() => navigate("/login")}
       >
         <h4>Get Your Rizz On!</h4>
       </Button>
-    </section>
+    </div>
   );
 }

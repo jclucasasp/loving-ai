@@ -52,17 +52,17 @@ export default function Personality() {
     <>
       {personalityTypes == null && <Error />}
       {personalityTypes && (
-        <Card>
+        <Card className=" mt-3 md:mt-6">
           <CardHeader>
             <CardTitle>Personality</CardTitle>
-            <CardDescription className="border-b-2 mb-3 2 p-2">
+            <CardDescription className="border-b-2 mb-3 p-2">
                 Here is a breakdown of the different personality types and a
                 short description.
                 You should totally take the free personality test to make sure
                 you get yours right?
             </CardDescription>
           </CardHeader>
-          <CardContent className="overflow-y-auto h-[55vh] mb-6 text-sm text-slate-500 border-b-2">
+          <CardContent className="overflow-y-auto h-[40dvh] sm:h-[50dvh] md:h-[65dvh] mb-6 text-sm text-slate-500 border-b-2">
             {personalityTypes.map((type) => (
               <div key={type.id} className="flex gap-2 border-b-2 p-2">
                 <p className="font-bold">

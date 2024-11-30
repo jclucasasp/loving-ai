@@ -3,8 +3,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function SkeletonCard() {
     return (
-        <div className="flex flex-col h-screen items-center justify-center">
-            <Card className="max-w-sm">
+        <div>
+            <Card>
                 <CardHeader className="flex items-center">
             <Skeleton className="h-[30px] w-[200px] rounded-xl" />
             </CardHeader>

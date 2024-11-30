@@ -43,7 +43,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
   }, [currentProfile, location.pathname]);
 
   return (
-    <nav className="flex justify-between items-center mt-4 mb-6">
+    <nav className="flex justify-between items-center mt-4 mb-6 w-full">
       
       <Button variant={"link"}
         className="cursor-pointer hover:text-[#7F43DF] hover:scale-105 hover:italic"

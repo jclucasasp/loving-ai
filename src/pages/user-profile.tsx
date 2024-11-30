@@ -120,7 +120,7 @@ export default function UserProfile() {
     <>
       <ComponentHeading>User Profile</ComponentHeading>
 
-      <Card>
+      <Card className="w-full">
         <CardContent>
           <Form {...form}>
             <form

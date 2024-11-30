@@ -1,29 +1,22 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import EmojiComponent from "@/components/emoji-component";
 import { ConversationInterface } from "@/lib/interfaces";
 import { CreateMessage } from "@/api/conversation-api";
 import { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
-import EmojiPicker from "emoji-picker-react";
 import { Card } from "@/components/ui/card";
 import { HOST } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import {
-  PopoverContent,
-  Popover,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
 export default function ChatMessages() {
   const { conversationData, toProfile, loggedInUser } = useLocation().state;
 
   const [conversation, setConversation] =
     useState<ConversationInterface | null>(conversationData);
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-
+  
   const messageInputContainer = useRef<HTMLTextAreaElement>(null);
   const conversationContainer = useRef<HTMLDivElement>(null);
 
@@ -67,13 +60,10 @@ export default function ChatMessages() {
     }
   }, [conversation, loading]);
 
-  const emojiHandleClick = (emoji: any) => {
-    setMessage(message + emoji.emoji);
-    setShowModal(false);
-  };
+  
 
   return (
-    <div>
+    <div className="w-full">
       <section className="flex gap-4 items-center justify-center mb-3">
         <Avatar className="w-[45px] h-[45px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px]">
           <AvatarImage
@@ -87,9 +77,9 @@ export default function ChatMessages() {
         </h3>
       </section>
 
-      <Card className="p-2">
+      <Card>
         <article
-          className="p-2 overflow-y-auto h-[65vh]"
+          className="p-2 overflow-y-auto h-[65dvh]"
           ref={conversationContainer}
         >
           {!!conversation &&
@@ -134,22 +124,7 @@ export default function ChatMessages() {
         </article>
       </Card>
 
-      <Popover open={showModal}>
-        <PopoverTrigger asChild>
-          <Button
-            className="rounded-full mt-2"
-            variant={"secondary"}
-            onClick={() => setShowModal(!showModal)}
-          >
-            Emojis
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-90 absolute bottom-0 left-12">
-          <div className="">
-          <EmojiPicker onEmojiClick={emojiHandleClick} />
-          </div>
-        </PopoverContent>
-      </Popover>
+      <EmojiComponent message={message} setMessage={setMessage} />
 
       <Textarea
         className="text-xs sm:text-sm md:text-base flex gap-2 align-center mt-3"

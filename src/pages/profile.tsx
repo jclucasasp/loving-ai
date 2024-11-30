@@ -66,7 +66,7 @@ export default function Profiles({
   }, [profile?.imageUrl]);
 
   return (
-    <section className="flex items-center justify-center">
+    <>
         <Card>
           <CardContent>
             <div className="relative flex justify-center mt-6">
@@ -74,11 +74,12 @@ export default function Profiles({
                 src={
                   profile?.imageUrl ? HOST + "/images/" + profile?.imageUrl : currentPicture
                 }
+                width={700}
                 alt="profile image"
-                className="rounded-xl object-cover "
+                className="rounded-xl"
                 loading="lazy"
               />
-              <div className="absolute top-0 left-2 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
+              <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
                 <h2 className="text-base sm:text-lg">
                   {profile?.firstName ? profile.firstName+ " " + profile.lastName : currentName}
                 </h2>
@@ -132,6 +133,6 @@ export default function Profiles({
             </div>
           </CardContent>
         </Card>
-    </section>
+    </>
   );
 }

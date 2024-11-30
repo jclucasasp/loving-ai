@@ -37,7 +37,7 @@ export default function Navigation() {
   );
 
   return (
-    <div className="max-w-md sm:max-w-lg md:max-w-xl mx-auto mt-3">
+    <div className="flex flex-col items-center m-auto max-w-[750px] p-2">
       {loggedInUser && (
         <>
           <Nav
