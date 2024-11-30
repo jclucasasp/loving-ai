@@ -124,7 +124,7 @@ export default function ChatMessages() {
         </article>
       </Card>
 
-      <EmojiComponent message={message} setMessage={setMessage} />
+     { window.innerWidth > 768 && <EmojiComponent message={message} setMessage={setMessage} />}
 
       <Textarea
         className="text-xs sm:text-sm md:text-base flex gap-2 align-center mt-3"

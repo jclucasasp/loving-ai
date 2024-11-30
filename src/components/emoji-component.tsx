@@ -32,9 +32,9 @@ export default function EmojiComponent({setMessage, message}: EmojiComponentProp
             Emojis
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="flex absolute bottom-14  -left-2 ">
+        <PopoverContent className="flex absolute bottom-14 -left-2 ">
           <div className="">
-          <EmojiPicker onEmojiClick={emojiHandleClick} width={250} height={450} />
+          <EmojiPicker onEmojiClick={emojiHandleClick} width={250} height={400} />
           </div>
         </PopoverContent>
       </Popover>
