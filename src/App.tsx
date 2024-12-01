@@ -5,7 +5,7 @@ import Personality from "@/components/personality-component";
 import VerifyActivate from "@/auth/verify-activate";
 import PasswordReset from "@/auth/password-reset";
 import { LogoutAuth } from "@/api/user-auth-api";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Nav from "@/components/nav-component";
 import ChatMessages from "@/pages/chat";
 import UserProfile from "@/pages/user-profile";
@@ -26,7 +26,7 @@ export default function Navigation() {
   const [isMatched, setIsMatched] = useState(false);
 
   const loggedInUser = useLoggedInUserState();
-  useNavigate();
+  const navigate = useNavigate();
 
   useBeforeUnload(
     useCallback(async () => {
@@ -35,6 +35,12 @@ export default function Navigation() {
       }
     }, [])
   );
+
+  useEffect(() => {
+    if (!loggedInUser) {
+      navigate("/");
+    }
+  }, [loggedInUser?.userId]);
 
   return (
     <div className="flex flex-col items-center m-auto max-w-[750px] p-2">
