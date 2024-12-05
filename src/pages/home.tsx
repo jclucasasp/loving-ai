@@ -8,12 +8,24 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Helmet } from "react-helmet-async";
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
     <div>
+      <Helmet>
+        <title>Home | Loving AI</title>
+        <meta
+          name="description"
+          content="Are you looking for love or just a companion? 
+          Are you lonely? Want to chat? Single? Tired of searching for someone to match with and then having to wait and guess if they will match you back? 
+          Tired of rejection? Tired of being judged? Or do you just want to level up on your rizz? No more guesswork or waiting...
+         Every AI profile have their own unique personality and have been created to be super fun, engaging and true to real live people. Experience instant connections and create lasting memories now..."
+        />
+        <link rel="canonical" href="https://www.loving-ai.com" />
+      </Helmet>
       <div className="flex items-center sm:justify-between justify-center border-b-2 pb-3">
         <div className="flex items-center justify-start">
           <img
@@ -47,9 +59,12 @@ export default function Home() {
 
       <article className="mt-3 border-b-2 pb-3">
         <h4 className="text-md md:text-lg">Why spend your time alone...</h4>
-        <h3 className="text-lg md:text-xl ">when you can find companionship now...</h3>
+        <h3 className="text-lg md:text-xl ">
+          when you can find companionship now...
+        </h3>
         <h2 className="text-xl md:text-2xl text-[#FF0066] ">
-          Can you <span className="italic font-bold">Rizz</span> up these AI Hotties?
+          Can you <span className="italic font-bold">Rizz</span> up these AI
+          Hotties?
         </h2>
 
         <div className="text-xs text-slate-700 md:text-base">
@@ -61,7 +76,9 @@ export default function Home() {
         </div>
       </article>
 
-      <ComponentHeading className="mt-3 underline">Meet some of the Hotties:</ComponentHeading>
+      <ComponentHeading className="mt-3 underline">
+        Meet some of the Hotties:
+      </ComponentHeading>
 
       <Carousel className="" opts={{ loop: true, align: "center" }}>
         <CarouselContent className="-ml-2 ">

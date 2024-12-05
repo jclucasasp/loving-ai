@@ -1,14 +1,14 @@
 import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import useLoggedInUserState from "@/hooks/use-user-state";
 import Personality from "@/components/personality-component";
+import useLoggedInUserState from "@/hooks/use-user-state";
+import { useCallback, useEffect, useState } from "react";
 import VerifyActivate from "@/auth/verify-activate";
 import PasswordReset from "@/auth/password-reset";
 import { LogoutAuth } from "@/api/user-auth-api";
-import { useCallback, useEffect, useState } from "react";
+import UserProfile from "@/pages/user-profile";
 import Nav from "@/components/nav-component";
 import ChatMessages from "@/pages/chat";
-import UserProfile from "@/pages/user-profile";
 import Profiles from "@/pages/profile";
 import Matches from "@/pages/matches";
 import SignUp from "@/auth/sign-up";
