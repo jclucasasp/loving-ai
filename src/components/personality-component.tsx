@@ -1,3 +1,4 @@
+import SkeletonPersonality from "./skeleton-personality";
 import {
   Card,
   CardContent,
@@ -19,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Error from "@/components/error";
 
-//TODO: Create spinner
 export default function Personality() {
   const [personalityTypes, setPersonalityTypes] = useState<
     PersonalityTypeInterface[]
@@ -29,8 +29,10 @@ export default function Personality() {
   >([]);
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const getPersonalities = async () => {
+    setLoading(true);
     const typesData = GetPersonalityTypes();
     const descriptionsData = GetPersonalityDescriptions();
     const [types, descriptions] = await Promise.all([
@@ -38,6 +40,7 @@ export default function Personality() {
       descriptionsData,
     ]);
 
+    setLoading(false);
     return { types, descriptions };
   };
 
@@ -63,6 +66,7 @@ export default function Personality() {
             </CardDescription>
           </CardHeader>
           <CardContent className="overflow-y-auto h-[40dvh] sm:h-[50dvh] md:h-[65dvh] mb-6 text-sm text-slate-500 border-b-2">
+            { loading && <SkeletonPersonality /> }
             {personalityTypes.map((type) => (
               <div key={type.id} className="flex gap-2 border-b-2 p-2">
                 <p className="font-bold">
