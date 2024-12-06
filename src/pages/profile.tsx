@@ -2,7 +2,7 @@ import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-user-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
 import { HOST } from "@/lib/constants";
@@ -51,90 +51,92 @@ export default function Profiles({
       setMatches([...matches, newMatch]);
     }
   };
-  const[currentPicture, setCurrentPicture] = useState(HOST + "/images/" + profile?.imageUrl);
-  const[currentBio, setCurrentBio] = useState(profile?.bio);
-  const[currentName, setCurrentName] = useState(profile?.firstName + " " + profile?.lastName);
-  const [currentAge, setCurrentAge] = useState(profile?.age);
+  const [currentPicture, setCurrentPicture] = useState(
+    HOST + "/images/Blurred.jpg"
+  );
+  const [currentBio, setCurrentBio] = useState("Bio Loading...");
+  const [currentName, setCurrentName] = useState("John Doe...");
+  const [currentAge, setCurrentAge] = useState(0);
+
+  const fetchProfileDetails = useCallback(async () => {
+    if (profile) {
+      setCurrentPicture(HOST + "/images/" + profile.imageUrl);
+      setCurrentBio(profile.bio);
+      setCurrentName(profile.firstName + " " + profile.lastName);
+      setCurrentAge(profile.age);
+    }
+  }, [profile]);
 
   useEffect(() => {
-  if (profile) {
-    setCurrentPicture(HOST + "/images/" + profile?.imageUrl);
-    setCurrentBio(profile?.bio);
-    setCurrentName(profile?.firstName + " " + profile?.lastName);
-    setCurrentAge(profile?.age);
-  }
-  }, [profile?.imageUrl]);
+    fetchProfileDetails();
+  }, [fetchProfileDetails]);
 
   return (
     <>
-        <Card>
-          <CardContent>
-            <div className="relative flex justify-center mt-6">
+      <Card>
+        <CardContent>
+          <div className="relative flex justify-center mt-6">
+            <img
+              src={currentPicture}
+              width={700}
+              alt="profile image"
+              className="rounded-xl"
+              loading="eager"
+            />
+            <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
+              <h2 className="text-base sm:text-lg">{currentName}</h2>
+              <h2 className="text-sm sm:text-base">{currentAge}</h2>
+            </div>
+          </div>
+          <div className="p-4">
+            <p className="text-xs sm:text-sm md:text-base text-gray-600">
+              {currentBio}
+            </p>
+          </div>
+          <div className="flex justify-around mt-4 text-gray-500">
+            <div
+              className="cursor-pointer flex flex-col items-center"
+              onClick={() => {
+                setNextProfile(null), setIsMatched(false);
+              }}
+              aria-label="Go to next profile"
+            >
               <img
-                src={
-                  profile?.imageUrl ? HOST + "/images/" + profile?.imageUrl : currentPicture
-                }
-                width={700}
-                alt="profile image"
-                className="rounded-xl"
-                loading="lazy"
+                src="/thinking.png"
+                alt="thinking emoji"
+                height={65}
+                width={65}
               />
-              <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
-                <h2 className="text-base sm:text-lg">
-                  {profile?.firstName ? profile.firstName+ " " + profile.lastName : currentName}
-                </h2>
-                <h2 className="text-sm sm:text-base">{profile?.age ? profile.age : currentAge}</h2>
-              </div>
+              <h3 className="text-base sm:text-lg">Next</h3>
             </div>
-            <div className="p-4">
-              <p className="text-xs sm:text-sm md:text-base text-gray-600">
-                {profile?.bio ? profile.bio : currentBio}
-              </p>
-            </div>
-            <div className="flex justify-around mt-4 text-gray-500">
+            {!isMatched ? (
               <div
                 className="cursor-pointer flex flex-col items-center"
-                onClick={() => {
-                  setNextProfile(null), setIsMatched(false);
-                }}
-                aria-label="Go to next profile"
+                onClick={createMatchHandler}
+                aria-label="Like profile"
               >
                 <img
-                  src="/thinking.png"
-                  alt="thinking emoji"
-                  height={65}
+                  src="/heartFace.png"
+                  alt="face with hearts emoji"
+                  height={67}
+                  width={67}
+                />
+                <h3 className="text-base sm:text-lg">Like</h3>
+              </div>
+            ) : (
+              <div className="cursor-not-allowed" aria-label="Already matched">
+                <img
+                  src="/kissyFace.png"
+                  alt="kissy face emoji"
+                  height={60}
                   width={65}
                 />
-                <h3 className="text-base sm:text-lg">Next</h3>
+                <h3 className="text-base sm:text-lg">Matched</h3>
               </div>
-              {!isMatched ? (
-                <div
-                  className="cursor-pointer flex flex-col items-center"
-                  onClick={createMatchHandler}
-                  aria-label="Like profile"
-                >
-                  <img
-                    src="/heartFace.png"
-                    alt="face with hearts emoji"
-                    height={67}
-                    width={67}
-                  />
-                  <h3 className="text-base sm:text-lg">Like</h3>
-                </div>
-              ) : (
-                <div className="cursor-not-allowed" aria-label="Already matched">
-                  <img
-                    src="/kissyFace.png"
-                    alt="kissy face emoji"
-                    height={60}
-                    width={65}
-                  />
-                  <h3 className="text-base sm:text-lg">Matched</h3>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 }
