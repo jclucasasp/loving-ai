@@ -96,6 +96,7 @@ export default function Matches({
                     setIsMatched(true);
                     navigate("/profile");
                   }}
+                  aria-label="Go to profile"
                   className="mb-2 flex gap-1 md:gap-3 lg:gap-6"
                 >
                   <Avatar className="w-[50px] h-[50px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px]">
@@ -118,6 +119,7 @@ export default function Matches({
                   onClick={() => {
                     handleChat(loggedInUser!.userId, profile);
                   }}
+                  aria-label="Go to chat"
                 >
                   <CheckCircle />
                   Chat
@@ -128,6 +130,7 @@ export default function Matches({
                       variant={"destructive"}
                       size={"default"}
                       className="bg-red-500 gap-1 sm:gap-2 rounded-full"
+                      aria-label="Delete this match"
                     >
                       <XCircle />
                       Del
@@ -141,8 +144,8 @@ export default function Matches({
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel className="rounded-full">Cancel</AlertDialogCancel>
-                      <AlertDialogAction className="rounded-full bg-red-500 hover:bg-red-500/90 hover:text-black"
+                      <AlertDialogCancel aria-label="Cancel" className="rounded-full">Cancel</AlertDialogCancel>
+                      <AlertDialogAction aria-label="Confirm to delete match" className="rounded-full bg-red-500 hover:bg-red-500/90 hover:text-black"
                         onClick={() => handleDelete(profile.userId) }
                       >
                         Continue

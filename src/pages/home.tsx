@@ -16,16 +16,27 @@ export default function Home() {
   return (
     <div>
       <Helmet>
-        <title>Home | Loving AI</title>
+        <title>Loving AI</title>
         <meta
           name="description"
-          content="Are you looking for love or just a companion? 
-          Are you lonely? Want to chat? Single? Tired of searching for someone to match with and then having to wait and guess if they will match you back? 
-          Tired of rejection? Tired of being judged? Or do you just want to level up on your rizz? No more guesswork or waiting...
-         Every AI profile have their own unique personality and have been created to be super fun, engaging and true to real live people. Experience instant connections and create lasting memories now..."
+          content="Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection."
         />
         <link rel="canonical" href="https://www.loving-ai.com" />
+        <script type="application/ld+json">
+          {`
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "JC Lucas",
+      "jobTitle": "Freelance Fullstack Software Engineer",
+      "description": "An AI enthusiast and expert in creating engaging, fun, and realistic AI companions for instant connections and lasting memories.",
+      "url": "https://www.loving-ai.com",
+      "image": "https://www.loving-ai.com/images/profile.jpg",
+    }
+    `}
+        </script>
       </Helmet>
+
       <div className="flex items-center sm:justify-between justify-center border-b-2 pb-3">
         <div className="flex items-center justify-start">
           <img
@@ -43,6 +54,7 @@ export default function Home() {
             size={"lg"}
             className="hidden sm:block rounded-full"
             onClick={() => navigate("/login")}
+            aria-label="Login"
           >
             Login
           </Button>
@@ -51,6 +63,7 @@ export default function Home() {
             size={"lg"}
             className="hidden sm:block rounded-full"
             onClick={() => navigate("/personality")}
+            aria-label="Sign Up"
           >
             Sign Up
           </Button>
@@ -116,6 +129,7 @@ export default function Home() {
         size={"default"}
         className="mt-6 w-full rounded-full"
         onClick={() => navigate("/login")}
+        aria-label="Login"
       >
         <h4>Get Your Rizz On!</h4>
       </Button>

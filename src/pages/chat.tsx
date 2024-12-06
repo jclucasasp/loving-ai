@@ -16,7 +16,7 @@ export default function ChatMessages() {
     useState<ConversationInterface | null>(conversationData);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  
+
   const messageInputContainer = useRef<HTMLTextAreaElement>(null);
   const conversationContainer = useRef<HTMLDivElement>(null);
 
@@ -59,8 +59,6 @@ export default function ChatMessages() {
       messageInputContainer.current?.focus();
     }
   }, [conversation, loading]);
-
-  
 
   return (
     <div className="w-full">
@@ -124,7 +122,13 @@ export default function ChatMessages() {
         </article>
       </Card>
 
-     { window.innerWidth > 768 && <EmojiComponent message={message} setMessage={setMessage} />}
+      {window.innerWidth > 768 && (
+        <EmojiComponent
+          message={message}
+          setMessage={setMessage}
+          messageInputContainer={messageInputContainer}
+        />
+      )}
 
       <Textarea
         className="text-xs sm:text-sm md:text-base flex gap-2 align-center mt-3"

@@ -82,6 +82,7 @@ export default function Personality() {
             <Button
               variant={"default"}
               className="w-full rounded-full"
+              aria-label="Free Personality Test on a different website"
               onClick={() => {
                 window.open(
                   "https://www.16personalities.com/free-personality-test",
@@ -97,6 +98,7 @@ export default function Personality() {
               onClick={() => {
                 navigate("/signUp", { state: { personalityTypes } });
               }}
+              aria-label="Create account"
             >
               Create account
             </Button>

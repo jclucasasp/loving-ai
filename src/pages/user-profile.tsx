@@ -312,6 +312,7 @@ export default function UserProfile() {
                 variant={"secondary"}
                 type="submit"
                 className="mt-3 w-full rounded-full"
+                aria-label="Update profile"
               >
                 {loading &&<span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
                 Update Profile
@@ -325,6 +326,7 @@ export default function UserProfile() {
             variant={"destructive"}
             className="w-full rounded-full"
             onClick={() => handleLogout()}
+            aria-label="Log out"
           >
             {loading &&<span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
             Log Out

@@ -9,15 +9,17 @@ import { useState } from "react";
 import React from "react";
 
 type EmojiComponentProps = {
-    setMessage: React.Dispatch<React.SetStateAction<string>>;
-    message: string;
-}
-export default function EmojiComponent({setMessage, message}: EmojiComponentProps) {
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  message: string;
+  messageInputContainer: React.RefObject<HTMLTextAreaElement>;
+};
+export default function EmojiComponent({setMessage, message, messageInputContainer}: EmojiComponentProps) {
 
     const [showModal, setShowModal] = useState<boolean>(false);
     const emojiHandleClick = (emoji: any) => {
-        setMessage(message + emoji.emoji);
+        setMessage(message + emoji.emoji + " ");
         setShowModal(false);
+        messageInputContainer.current?.focus();
       };
 
     return (
@@ -28,6 +30,7 @@ export default function EmojiComponent({setMessage, message}: EmojiComponentProp
             className="rounded-full mt-2"
             variant={"secondary"}
             onClick={() => setShowModal(!showModal)}
+            aria-label="Open emoji picker"
           >
             Emojis
           </Button>

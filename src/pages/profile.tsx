@@ -97,6 +97,7 @@ export default function Profiles({
                 onClick={() => {
                   setNextProfile(null), setIsMatched(false);
                 }}
+                aria-label="Go to next profile"
               >
                 <img
                   src="/thinking.png"
@@ -110,6 +111,7 @@ export default function Profiles({
                 <div
                   className="cursor-pointer flex flex-col items-center"
                   onClick={createMatchHandler}
+                  aria-label="Like profile"
                 >
                   <img
                     src="/heartFace.png"
@@ -120,7 +122,7 @@ export default function Profiles({
                   <h3 className="text-base sm:text-lg">Like</h3>
                 </div>
               ) : (
-                <div className="cursor-not-allowed">
+                <div className="cursor-not-allowed" aria-label="Already matched">
                   <img
                     src="/kissyFace.png"
                     alt="kissy face emoji"
