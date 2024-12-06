@@ -31,7 +31,7 @@ export default function Home() {
       "jobTitle": "Freelance Fullstack Software Engineer",
       "description": "An AI enthusiast and expert in creating engaging, fun, and realistic AI companions for instant connections and lasting memories.",
       "url": "https://www.loving-ai.com",
-      "image": "https://www.loving-ai.com/images/profile.jpg",
+      "image": "https://www.loving-ai.com/heart.png",
     }
     `}
         </script>
