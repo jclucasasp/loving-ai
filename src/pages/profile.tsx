@@ -73,70 +73,74 @@ export default function Profiles({
 
   return (
     <>
-      <Card>
-        <CardContent>
-          <div className="relative flex justify-center mt-6">
-            <img
-              src={currentPicture}
-              width={700}
-              alt="profile image"
-              className="rounded-xl"
-              loading="eager"
-            />
-            <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
-              <h2 className="text-base sm:text-lg">{currentName}</h2>
-              <h2 className="text-sm sm:text-base">{currentAge}</h2>
-            </div>
-          </div>
-          <div className="p-4">
-            <p className="text-xs sm:text-sm md:text-base text-gray-600">
-              {currentBio}
-            </p>
-          </div>
-          <div className="flex justify-around mt-4 text-gray-500">
-            <div
-              className="cursor-pointer flex flex-col items-center"
-              onClick={() => {
-                setNextProfile(null), setIsMatched(false);
-              }}
-              aria-label="Go to next profile"
-            >
+      {currentPicture && (
+        <Card>
+          <CardContent>
+            <div className="relative flex justify-center mt-6">
               <img
-                src="/thinking.png"
-                alt="thinking emoji"
-                height={65}
-                width={65}
+                src={currentPicture}
+                width={700}
+                alt="profile image"
+                className="rounded-xl"
               />
-              <h3 className="text-base sm:text-lg">Next</h3>
+              <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
+                <h2 className="text-base sm:text-lg">{currentName}</h2>
+                <h2 className="text-sm sm:text-base">{currentAge}</h2>
+              </div>
             </div>
-            {!isMatched ? (
+            <div className="p-4">
+              <p className="text-xs sm:text-sm md:text-base text-gray-600">
+                {currentBio}
+              </p>
+            </div>
+            <div className="flex justify-around mt-4 text-gray-500">
               <div
                 className="cursor-pointer flex flex-col items-center"
-                onClick={createMatchHandler}
-                aria-label="Like profile"
+                onClick={() => {
+                  setNextProfile(null), setIsMatched(false);
+                }}
+                aria-label="Go to next profile"
               >
                 <img
-                  src="/heartFace.png"
-                  alt="face with hearts emoji"
-                  height={67}
-                  width={67}
-                />
-                <h3 className="text-base sm:text-lg">Like</h3>
-              </div>
-            ) : (
-              <div className="cursor-not-allowed" aria-label="Already matched">
-                <img
-                  src="/kissyFace.png"
-                  alt="kissy face emoji"
-                  height={60}
+                  src="/thinking.png"
+                  alt="thinking emoji"
+                  height={65}
                   width={65}
                 />
-                <h3 className="text-base sm:text-lg">Matched</h3>
+                <h3 className="text-base sm:text-lg">Next</h3>
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+              {!isMatched ? (
+                <div
+                  className="cursor-pointer flex flex-col items-center"
+                  onClick={createMatchHandler}
+                  aria-label="Like profile"
+                >
+                  <img
+                    src="/heartFace.png"
+                    alt="face with hearts emoji"
+                    height={67}
+                    width={67}
+                  />
+                  <h3 className="text-base sm:text-lg">Like</h3>
+                </div>
+              ) : (
+                <div
+                  className="cursor-not-allowed"
+                  aria-label="Already matched"
+                >
+                  <img
+                    src="/kissyFace.png"
+                    alt="kissy face emoji"
+                    height={60}
+                    width={65}
+                  />
+                  <h3 className="text-base sm:text-lg">Matched</h3>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </>
   );
 }
