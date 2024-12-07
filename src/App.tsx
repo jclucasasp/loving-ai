@@ -1,8 +1,7 @@
-import { Routes, Route, useNavigate, useBeforeUnload } from "react-router-dom";
-import { lazy, Suspense, useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import useLoggedInUserState from "@/hooks/use-user-state";
-import { LogoutAuth } from "@/api/user-auth-api";
 import Nav from "@/components/nav-component";
 import Profiles from "@/pages/profile";
 
@@ -17,14 +16,6 @@ export default function Navigation() {
 
   const loggedInUser = useLoggedInUserState();
   const navigate = useNavigate();
-
-  useBeforeUnload(
-    useCallback(async () => {
-      if (loggedInUser?.userId) {
-        await LogoutAuth(loggedInUser?.userId!);
-      }
-    }, [])
-  );
 
   useEffect(() => {
     if (!loggedInUser) {

@@ -32,6 +32,7 @@ export async function LogoutAuth(id: string) {
       Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
+    keepalive: true,
     body: JSON.stringify({ id }),
   })
     .then((res) => {
