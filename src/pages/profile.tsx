@@ -5,6 +5,9 @@ import { ToastAction } from "@/components/ui/toast";
 import React, { useCallback, useEffect, useState } from "react";
 import { CreateMatch } from "@/api/matches-api";
 import { useToast } from "@/hooks/use-toast";
+import HeartFace from "@/assets/heartFace.png";
+import KissyFace from "@/accests/kissyFace.png";
+import Thinking from "@/assets/thinking.png";
 import { HOST } from "@/lib/constants";
 
 type ProfileProps = {
@@ -102,7 +105,7 @@ export default function Profiles({
                 aria-label="Go to next profile"
               >
                 <img
-                  src="/thinking.png"
+                  src={Thinking}
                   alt="thinking emoji"
                   height={65}
                   width={65}
@@ -116,7 +119,7 @@ export default function Profiles({
                   aria-label="Like profile"
                 >
                   <img
-                    src="/heartFace.png"
+                    src={HeartFace}
                     alt="face with hearts emoji"
                     height={67}
                     width={67}
@@ -129,7 +132,7 @@ export default function Profiles({
                   aria-label="Already matched"
                 >
                   <img
-                    src="/kissyFace.png"
+                    src={KissyFace}
                     alt="kissy face emoji"
                     height={60}
                     width={65}
