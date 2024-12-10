@@ -6,7 +6,7 @@ import path from 'node:path';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // base: "/loving-ai",
+  base: "/loving-ai/",
   server: {
     host: true,
     port: 5173,
