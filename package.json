@@ -1,11 +1,14 @@
 {
   "name": "Loving AI",
+  "description": "Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection.",
+  "homepage": "https://www.jclucasasp.github.io/loving-ai/",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -25,6 +28,7 @@
     "dotenv": "^16.4.5",
     "embla-carousel-react": "^8.3.0",
     "emoji-picker-react": "^4.12.0",
+    "gh-pages": "^6.2.0",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.427.0",
     "react": "^18.3.1",
