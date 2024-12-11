@@ -83,6 +83,17 @@ export default function Login() {
     const otpRes = await OTPRequest(res.data);
     setLoadingOTP(false);
 
+    if (otpRes && otpRes.status >= 400 && otpRes.status < 500) {
+      toast({
+        title: "Email does not exist",
+        description: "Please check if you have a typo in your email. If you are new here, you need to sign up first.",
+        variant: "destructive",
+        action: <ToastAction altText="Okay">Okay</ToastAction>,
+        duration: 5000
+      });
+      return;
+    }
+    
     if (!otpRes || otpRes.status >= 500) {
       toast({
         title: "Error sending OTP.",
@@ -90,17 +101,6 @@ export default function Login() {
         variant: "destructive",
         action: <ToastAction altText="Okay">Okay</ToastAction>,
         duration: 7000
-      });
-      return;
-    }
-
-    if (otpRes.status === 404) {
-      toast({
-        title: "Email does not exist",
-        description: "Please check if you have a typo in your email. If you are new here, you need to sign up first.",
-        variant: "destructive",
-        action: <ToastAction altText="Okay">Okay</ToastAction>,
-        duration: 5000
       });
       return;
     }

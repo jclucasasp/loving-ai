@@ -1,13 +1,13 @@
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
+import React, { useCallback, useEffect, useState } from "react";
 import useLoggedInUserState from "@/hooks/use-user-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
-import React, { useCallback, useEffect, useState } from "react";
 import { CreateMatch } from "@/api/matches-api";
-import { useToast } from "@/hooks/use-toast";
 import HeartFace from "@/assets/heartFace.png";
 import KissyFace from "@/assets/kissyFace.png";
 import Thinking from "@/assets/thinking.png";
+import { useToast } from "@/hooks/use-toast";
 import { HOST } from "@/lib/constants";
 
 type ProfileProps = {

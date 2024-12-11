@@ -1,6 +1,14 @@
 import ComponentHeading from "@/components/component-heading";
+import CaucasianW from "@/../public/CaucasianW.png";
+import CaucasianM from "@/../public/CaucasianM.png";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import IndianW from "@/../public/IndianW.png";
+import AsianW from "@/../public/AsianW.png";
+import AsianM from "@/../public/AsianM.png";
+import ColorW from "@/../public/ColorW.png";
+import ColorM from "@/../public/ColorM.png";
+import Heart from "@/../public/heart.png";
 import {
   Carousel,
   CarouselContent,
@@ -9,14 +17,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Helmet } from "react-helmet-async";
-import Heart from "@/../public/heart.png";
-import AsianW from "@/../public/AsianW.png";
-import AsianM from "@/../public/AsianM.png";
-import CaucasianW from "@/../public/CaucasianW.png";
-import CaucasianM from "@/../public/CaucasianM.png";
-import ColorW from "@/../public/ColorW.png";
-import ColorM from "@/../public/ColorM.png";
-import IndianW from "@/../public/IndianW.png";
 
 export default function Home() {
   const navigate = useNavigate();

@@ -114,7 +114,7 @@ export default function PasswordReset() {
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <Label htmlFor="otp">OTP</Label>
+                    <Label htmlFor="otp">Enter the OTP from your email</Label>
                     <FormControl>
                       <InputOTP maxLength={6} {...field}>
                         <InputOTPGroup>
