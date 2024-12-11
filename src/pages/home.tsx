@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/carousel";
 import { Helmet } from "react-helmet-async";
 
+//TODO: Add a footer with about, contact and privacy policy
 export default function Home() {
   const navigate = useNavigate();
 
