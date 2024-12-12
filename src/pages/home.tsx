@@ -30,6 +30,14 @@ export default function Home() {
           name="description"
           content="Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection."
         />
+        <meta property="og:title" content="Loving AI" />
+        <meta
+          property="og:description"
+          content="Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection."
+        />
+        <meta property="og:image" content="https://www.loving-ai.com/Loving_Ai.png" />
+        <meta property="og:url" content="https://www.loving-ai.com" />
+
         <link rel="canonical" href="https://www.loving-ai.com" />
         <script type="application/ld+json">
           {`
