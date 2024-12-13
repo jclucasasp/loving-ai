@@ -37,7 +37,7 @@ export default function Home() {
         />
         <meta
           property="og:image"
-          content="https://www.loving-ai.com/Loving_Ai.jpg"
+          content="https://api.loving-ai.com/images/ogimage.jpg"
         />
         <meta property="og:url" content="https://www.loving-ai.com" />
 
@@ -45,10 +45,12 @@ export default function Home() {
         <meta http-equiv="Content-Language" content="en" />
 
         <link rel="canonical" href="https://www.loving-ai.com" />
-        <script defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "250c12b439054d1e9b1b2e279d890c8a"}'
-        ></script>
+
+        <img
+          src="https://api.loving-ai.com/images/ogimage.jpg"
+          alt="Loving AI"
+          style={{ display: "none" }}
+        />
 
         <script type="application/ld+json">
           {`
@@ -59,7 +61,7 @@ export default function Home() {
       "jobTitle": "Freelance Fullstack Software Engineer",
       "description": "An AI enthusiast and expert in creating engaging, fun, and realistic AI companions for instant connections and lasting memories.",
       "url": "https://www.loving-ai.com",
-      "image": "https://www.loving-ai.com/Loving_Ai.jpg",
+      "image": "https://api.loving-ai.com/images/ogimage.jpg",
     }
     `}
         </script>
