@@ -1,5 +1,11 @@
+import {
+  Routes,
+  Route,
+  useNavigate,
+  Navigate,
+  useBeforeUnload,
+} from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import { Routes, Route, useNavigate } from "react-router-dom";
 import useLoggedInUserState from "@/hooks/use-user-state";
 import { lazy, Suspense, useState } from "react";
 import Nav from "@/components/nav-component";
@@ -17,9 +23,12 @@ export default function Navigation() {
   const loggedInUser = useLoggedInUserState();
   useNavigate();
 
+  useBeforeUnload((event: BeforeUnloadEvent) => {
+    event.preventDefault();
+  });
+
   // Lazy-load components
   const Personality = lazy(() => import("@/components/personality-component"));
-  const VerifyActivate = lazy(() => import("@/auth/verify-activate"));
   const PasswordReset = lazy(() => import("@/auth/password-reset"));
   const UserProfile = lazy(() => import("@/pages/user-profile"));
   const ChatMessages = lazy(() => import("@/pages/chat"));
@@ -32,7 +41,7 @@ export default function Navigation() {
 
   return (
     <div className="flex flex-col items-center m-auto max-w-[750px] p-2">
-      {loggedInUser && loggedInUser.userId && (
+      {loggedInUser && (
         <>
           <Nav
             currentProfile={currentProfile}
@@ -41,66 +50,59 @@ export default function Navigation() {
         </>
       )}
 
-      <Suspense fallback={<>Loading</>}>
+      <Suspense fallback={<></>}>
         <Routes>
-          {loggedInUser && loggedInUser.userId && loggedInUser.verified && (
+          {/* Public Routes */}
+          {!loggedInUser || !loggedInUser.userId ? (
             <>
-              <Route
-                path="/profile"
-                errorElement={<div>Error</div>}
-                element={
-                  <Profiles
-                    profile={currentProfile}
-                    setNextProfile={setCurrentProfile}
-                    isMatchedState={{ isMatched, setIsMatched }}
-                    matchSate={{ matches, setMatches }}
-                  />
-                }
-              />
-
-              <Route
-                path="/match"
-                element={
-                  <Matches
-                    setCurrentProfile={setCurrentProfile}
-                    setIsMatched={setIsMatched}
-                  />
-                }
-              />
-
-              <Route path="/chat" element={<ChatMessages />} />
-              <Route path="/userProfile" element={<UserProfile />} />
-            </>
-          )}
-          ;
-          {loggedInUser && loggedInUser.userId && !loggedInUser.verified ? (
-            <>
-              <Route path="/verify" element={<Verify />} />
-              <Route path="/verify/activate" element={<VerifyActivate />} />
-              <Route path="/userProfile" element={<UserProfile />} />
-              <Route path="/*" element={<Verify />} />
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/personality" element={<Personality />} />
+              <Route path="/signUp" element={<SignUp />} />
+              <Route path="/reset" element={<PasswordReset />} />
+              {/* Optionally redirect to /login if user is not logged in */}
+              <Route path="*" element={<Navigate replace to="/" />} />
             </>
           ) : (
             <>
-              <Route
-                path="/"
-                element={<Home />}
-                errorElement={<div>Error</div>}
-              />
-              <Route
-                path="/login"
-                element={<Login />}
-                errorElement={<div>Error</div>}
-              />
-              <Route
-                path="/personality"
-                element={<Personality />}
-                errorElement={<div>Error</div>}
-              />
-              <Route path="/signUp" element={<SignUp />} />
-              <Route path="/reset" element={<PasswordReset />} />
-              {/* <Route path="/*" element={<Login />} /> */}
-              <Route path="*" element={<Home />} />
+              {/* Private Routes for Verified Users */}
+              {loggedInUser && loggedInUser.verified ? (
+                <>
+                  <Route
+                    path="/profile"
+                    element={
+                      <Profiles
+                        profile={currentProfile}
+                        setNextProfile={setCurrentProfile}
+                        isMatchedState={{ isMatched, setIsMatched }}
+                        matchSate={{ matches, setMatches }}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/match"
+                    element={
+                      <Matches
+                        setCurrentProfile={setCurrentProfile}
+                        setIsMatched={setIsMatched}
+                      />
+                    }
+                  />
+                  <Route path="/chat" element={<ChatMessages />} />
+                  <Route path="/userProfile" element={<UserProfile />} />
+                  {/* Optionally redirect to /profile if user is verified */}
+                  <Route
+                    path="*"
+                    element={<Navigate replace to="/profile" />}
+                  />
+                </>
+              ) : (
+                <>
+                  <Route path="/verify" element={<Verify />} />
+                  {/* Optionally redirect to /verify if user is not verified */}
+                  <Route path="*" element={<Navigate replace to="/verify" />} />
+                </>
+              )}
             </>
           )}
         </Routes>
