@@ -3,7 +3,6 @@ import {
   Route,
   useNavigate,
   Navigate,
-  useBeforeUnload,
 } from "react-router-dom";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import useLoggedInUserState from "@/hooks/use-user-state";
@@ -22,10 +21,6 @@ export default function Navigation() {
 
   const loggedInUser = useLoggedInUserState();
   useNavigate();
-
-  useBeforeUnload((event: BeforeUnloadEvent) => {
-    event.preventDefault();
-  });
 
   // Lazy-load components
   const Personality = lazy(() => import("@/components/personality-component"));
