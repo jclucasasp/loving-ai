@@ -1,14 +1,6 @@
 import ComponentHeading from "@/components/component-heading";
-import CaucasianW from "@/../public/CaucasianW.png";
-import CaucasianM from "@/../public/CaucasianM.png";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import IndianW from "@/../public/IndianW.png";
-import AsianW from "@/../public/AsianW.png";
-import AsianM from "@/../public/AsianM.png";
-import ColorW from "@/../public/ColorW.png";
-import ColorM from "@/../public/ColorM.png";
-import Heart from "@/../public/heart.png";
 import {
   Carousel,
   CarouselContent,
@@ -26,7 +18,7 @@ export default function Home() {
       <div className="flex items-center sm:justify-between justify-center border-b-2 pb-3">
         <div className="flex items-center justify-start">
           <img
-            src={Heart}
+            src={"/heart.png"}
             alt="heart with arrow through it"
             height={80}
             width={80}
@@ -82,28 +74,28 @@ export default function Home() {
       <Carousel className="" opts={{ loop: true, align: "center" }}>
         <CarouselContent className="-ml-2 ">
           <CarouselItem className="basis-1/2">
-            <img src={AsianW} alt="picture of an asian woman" />
+            <img src={"/AsianW.png"} alt="picture of an asian woman" />
           </CarouselItem>
           <CarouselItem className="basis-1/2">
-            <img src={AsianM} alt="picture of an asian man" />
-          </CarouselItem>
-
-          <CarouselItem className="basis-1/2">
-            <img src={ColorW} alt="picture of an colored woman" />
-          </CarouselItem>
-          <CarouselItem className="basis-1/2">
-            <img src={ColorM} alt="picture of an colored man" />
+            <img src={"/AsianM.png"} alt="picture of an asian man" />
           </CarouselItem>
 
           <CarouselItem className="basis-1/2">
-            <img src={CaucasianW} alt="picture of an caucasian woman" />
+            <img src={"/ColorW.png"} alt="picture of an colored woman" />
           </CarouselItem>
           <CarouselItem className="basis-1/2">
-            <img src={CaucasianM} alt="picture of an caucasian man" />
+            <img src={"/ColorM.png"} alt="picture of an colored man" />
           </CarouselItem>
 
           <CarouselItem className="basis-1/2">
-            <img src={IndianW} alt="picture of an indian woman" />
+            <img src={"/CaucasianW.png"} alt="picture of an caucasian woman" />
+          </CarouselItem>
+          <CarouselItem className="basis-1/2">
+            <img src={"/CaucasianM.png"} alt="picture of an caucasian man" />
+          </CarouselItem>
+
+          <CarouselItem className="basis-1/2">
+            <img src={"/IndianW.png"} alt="picture of an indian woman" />
           </CarouselItem>
         </CarouselContent>
         <CarouselPrevious />

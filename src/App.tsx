@@ -1,7 +1,7 @@
-import { lazy, Suspense, useEffect, useState } from "react";
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import useLoggedInUserState from "@/hooks/use-user-state";
+import { lazy, Suspense, useState } from "react";
 import Nav from "@/components/nav-component";
 import Profiles from "@/pages/profile";
 
@@ -15,13 +15,7 @@ export default function Navigation() {
   const [isMatched, setIsMatched] = useState(false);
 
   const loggedInUser = useLoggedInUserState();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!loggedInUser) {
-      navigate("/");
-    }
-  }, [loggedInUser?.userId]);
+  useNavigate();
 
   // Lazy-load components
   const Personality = lazy(() => import("@/components/personality-component"));
@@ -38,7 +32,7 @@ export default function Navigation() {
 
   return (
     <div className="flex flex-col items-center m-auto max-w-[750px] p-2">
-      {loggedInUser && (
+      {loggedInUser && loggedInUser.userId && (
         <>
           <Nav
             currentProfile={currentProfile}
@@ -47,9 +41,9 @@ export default function Navigation() {
         </>
       )}
 
-      <Suspense fallback={<></>}>
+      <Suspense fallback={<>Loading</>}>
         <Routes>
-          {loggedInUser?.verified && (
+          {loggedInUser && loggedInUser.userId && loggedInUser.verified && (
             <>
               <Route
                 path="/profile"
@@ -79,16 +73,14 @@ export default function Navigation() {
             </>
           )}
           ;
-          {!loggedInUser?.verified && (
+          {loggedInUser && loggedInUser.userId && !loggedInUser.verified ? (
             <>
               <Route path="/verify" element={<Verify />} />
               <Route path="/verify/activate" element={<VerifyActivate />} />
               <Route path="/userProfile" element={<UserProfile />} />
               <Route path="/*" element={<Verify />} />
             </>
-          )}
-          ;
-          {!loggedInUser && (
+          ) : (
             <>
               <Route
                 path="/"
@@ -107,7 +99,8 @@ export default function Navigation() {
               />
               <Route path="/signUp" element={<SignUp />} />
               <Route path="/reset" element={<PasswordReset />} />
-              <Route path="/*" element={<Login />} />
+              {/* <Route path="/*" element={<Login />} /> */}
+              <Route path="*" element={<Home />} />
             </>
           )}
         </Routes>
