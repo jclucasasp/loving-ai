@@ -16,7 +16,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Helmet } from "react-helmet-async";
 
 //TODO: Add a footer with about, contact and privacy policy
 export default function Home() {
@@ -24,43 +23,6 @@ export default function Home() {
 
   return (
     <div>
-      <Helmet>
-        <title>Loving AI</title>
-        <meta
-          name="description"
-          content="Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection."
-        />
-        <meta property="og:title" content="Loving AI" />
-        <meta
-          property="og:description"
-          content="Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection."
-        />
-        <meta
-          property="og:image"
-          content="https://api.loving-ai.com/images/ogimage.jpg"
-        />
-        <meta property="og:url" content="https://www.loving-ai.com" />
-
-        <meta name="robots" content="index, follow" />
-        <meta http-equiv="Content-Language" content="en" />
-
-        <link rel="canonical" href="https://www.loving-ai.com" />
-
-        <script type="application/ld+json">
-          {`
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "JC Lucas",
-      "jobTitle": "Freelance Fullstack Software Engineer",
-      "description": "An AI enthusiast and expert in creating engaging, fun, and realistic AI companions for instant connections and lasting memories.",
-      "url": "https://www.loving-ai.com",
-      "image": "https://api.loving-ai.com/images/ogimage.jpg",
-    }
-    `}
-        </script>
-      </Helmet>
-
       <div className="flex items-center sm:justify-between justify-center border-b-2 pb-3">
         <div className="flex items-center justify-start">
           <img
