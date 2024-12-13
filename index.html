@@ -29,7 +29,22 @@
       "description": "Chat with an AI companion for instant connections and lasting memories. Unique personalities, no guesswork, and no rejection."
     }
   </script>
-  <script type="module" crossorigin src="/assets/index-Bimh7iAN.js"></script>
+    <script type="text/javascript">
+      (function (l) {
+        if (l.search[1] === "/") {
+          var decoded = l.search
+            .slice(1)
+            .split("&")
+            .map(function (s) {
+              return s.replace(/~and~/g, "&");
+            })
+            .join("?");
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      })(window.location);
+    </script>
+  
+  <script type="module" crossorigin src="/assets/index-B3mHd3VY.js"></script>
   <link rel="stylesheet" crossorigin href="/assets/index-D3WfM-DL.css">
 </head>
 
