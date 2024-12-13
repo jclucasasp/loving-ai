@@ -46,12 +46,6 @@ export default function Home() {
 
         <link rel="canonical" href="https://www.loving-ai.com" />
 
-        <img
-          src="https://api.loving-ai.com/images/ogimage.jpg"
-          alt="Loving AI"
-          style={{ display: "none" }}
-        />
-
         <script type="application/ld+json">
           {`
     {
