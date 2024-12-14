@@ -24,6 +24,7 @@ export default function Navigation() {
 
   // Lazy-load components
   const Personality = lazy(() => import("@/components/personality-component"));
+  const VerifyActivate = lazy(() => import("@/auth/verify-activate"));
   const PasswordReset = lazy(() => import("@/auth/password-reset"));
   const UserProfile = lazy(() => import("@/pages/user-profile"));
   const ChatMessages = lazy(() => import("@/pages/chat"));
@@ -96,6 +97,7 @@ export default function Navigation() {
                   <Route path="/verify" element={<Verify />} />
                   {/* Optionally redirect to /verify if user is not verified */}
                   <Route path="*" element={<Navigate replace to="/verify" />} />
+                  <Route path="/verify/activate" element={<VerifyActivate />} />
                 </>
               )}
             </>
