@@ -94,7 +94,7 @@ export default function SignUp() {
 
   return (
     <section className="flex flex-col justify-center items-center">
-      <Card>
+      <Card className="sm:w-[535px] md:w-[635px] lg:w-[735px]">
         <CardHeader className="text-center text-2xl">
           <div className="flex justify-center mb-3">
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
