@@ -6,8 +6,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "VITE_NODE_ENV=development vite",
+    "build": "VITE_NODE_ENV=production tsc -b && vite build",
     "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
