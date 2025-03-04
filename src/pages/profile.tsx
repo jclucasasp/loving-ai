@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import useLoggedInUserState from "@/hooks/use-user-state";
 import { Card, CardContent } from "@/components/ui/card";
 import { ToastAction } from "@/components/ui/toast";
+import BlurredImage from "@/assets/Blurred.jpg";
 import { CreateMatch } from "@/api/matches-api";
 import HeartFace from "@/assets/heartFace.png";
 import KissyFace from "@/assets/kissyFace.png";
@@ -54,12 +55,13 @@ export default function Profiles({
       setMatches([...matches, newMatch]);
     }
   };
-  const [currentPicture, setCurrentPicture] = useState(
-    HOST + "/images/Blurred.jpg"
-  );
+  const [currentPicture, setCurrentPicture] = useState("");
+
   const [currentBio, setCurrentBio] = useState("Bio Loading...");
   const [currentName, setCurrentName] = useState("John Doe...");
   const [currentAge, setCurrentAge] = useState(0);
+
+  const [loading, setLoading] = useState(true);
 
   const fetchProfileDetails = useCallback(async () => {
     if (profile) {
@@ -67,6 +69,7 @@ export default function Profiles({
       setCurrentBio(profile.bio);
       setCurrentName(profile.firstName + " " + profile.lastName);
       setCurrentAge(profile.age);
+      setLoading(false);
     }
   }, [profile]);
 
@@ -76,74 +79,64 @@ export default function Profiles({
 
   return (
     <>
-      {currentPicture && (
-        <Card>
-          <CardContent>
-            <div className="relative flex justify-center mt-6">
-              <img
-                src={currentPicture}
-                width={700}
-                alt="profile image"
-                className="rounded-xl"
-              />
-              <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
-                <h2 className="text-base sm:text-lg">{currentName}</h2>
-                <h2 className="text-sm sm:text-base">{currentAge}</h2>
-              </div>
+      <Card>
+        <CardContent>
+          <div className="relative flex justify-center mt-6">
+            <img
+              src={loading ? BlurredImage : currentPicture}
+              width={700}
+              alt="profile image"
+              className="rounded-xl"
+            />
+            <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
+              <h2 className="text-base sm:text-lg">{currentName}</h2>
+              <h2 className="text-sm sm:text-base">{currentAge}</h2>
             </div>
-            <div className="p-4">
-              <p className="text-xs sm:text-sm md:text-base text-gray-600">
-                {currentBio}
-              </p>
+          </div>
+          <div className="p-4">
+            <p className="text-xs sm:text-sm md:text-base text-gray-600">
+              {currentBio}
+            </p>
+          </div>
+          <div className="flex justify-around mt-4 text-gray-500">
+            <div
+              className="cursor-pointer flex flex-col items-center"
+              onClick={() => {
+                setNextProfile(null), setIsMatched(false);
+              }}
+              aria-label="Go to next profile"
+            >
+              <img src={Thinking} alt="thinking emoji" height={65} width={65} />
+              <h3 className="text-base sm:text-lg">Next</h3>
             </div>
-            <div className="flex justify-around mt-4 text-gray-500">
+            {!isMatched ? (
               <div
                 className="cursor-pointer flex flex-col items-center"
-                onClick={() => {
-                  setNextProfile(null), setIsMatched(false);
-                }}
-                aria-label="Go to next profile"
+                onClick={createMatchHandler}
+                aria-label="Like profile"
               >
                 <img
-                  src={Thinking}
-                  alt="thinking emoji"
-                  height={65}
+                  src={HeartFace}
+                  alt="face with hearts emoji"
+                  height={67}
+                  width={67}
+                />
+                <h3 className="text-base sm:text-lg">Like</h3>
+              </div>
+            ) : (
+              <div className="cursor-not-allowed" aria-label="Already matched">
+                <img
+                  src={KissyFace}
+                  alt="kissy face emoji"
+                  height={60}
                   width={65}
                 />
-                <h3 className="text-base sm:text-lg">Next</h3>
+                <h3 className="text-base sm:text-lg">Matched</h3>
               </div>
-              {!isMatched ? (
-                <div
-                  className="cursor-pointer flex flex-col items-center"
-                  onClick={createMatchHandler}
-                  aria-label="Like profile"
-                >
-                  <img
-                    src={HeartFace}
-                    alt="face with hearts emoji"
-                    height={67}
-                    width={67}
-                  />
-                  <h3 className="text-base sm:text-lg">Like</h3>
-                </div>
-              ) : (
-                <div
-                  className="cursor-not-allowed"
-                  aria-label="Already matched"
-                >
-                  <img
-                    src={KissyFace}
-                    alt="kissy face emoji"
-                    height={60}
-                    width={65}
-                  />
-                  <h3 className="text-base sm:text-lg">Matched</h3>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </>
   );
 }
