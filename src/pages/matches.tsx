@@ -76,18 +76,16 @@ export default function Matches({
     }
   };
 
-  //TODO: Fix the layout to have the buttons align to the end
   const MatchesList = () => {
     return (
       <Card>
-        <ul className="flex h-[80dvh]  flex-col sm:gap-3 overflow-y-scroll">
+        <ul className="flex h-[80dvh] ml-[-8px] flex-col sm:gap-3 overflow-y-scroll">
           {loading && <SkeletonMatches />}
           {profiles?.map((profile) => (
             <li
               key={profile.userId}
-                className="flex justify-between mt-5 mr-2"
+              className="flex justify-between mt-5 mr-1 md:mr-2"
             >
-              
               <section className="flex items-center">
                 <Button
                   variant={"link"}
@@ -106,9 +104,10 @@ export default function Matches({
                     />
                     <AvatarFallback>?</AvatarFallback>
                   </Avatar>
-                  <h3 className="text-sm sm:text-lg md:text-xl">
-                    {profile.firstName} {profile.lastName}
-                  </h3>
+                  <div className="text-sm sm:text-lg md:text-xl flex gap-2">
+                    <h3>{profile.firstName}</h3>
+                    <h3 className="hidden sm:block">{profile.lastName}</h3>
+                  </div>
                 </Button>
               </section>
 
@@ -144,9 +143,16 @@ export default function Matches({
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel aria-label="Cancel" className="rounded-full">Cancel</AlertDialogCancel>
-                      <AlertDialogAction aria-label="Confirm to delete match" className="rounded-full bg-red-500 hover:bg-red-500/90 hover:text-black"
-                        onClick={() => handleDelete(profile.userId) }
+                      <AlertDialogCancel
+                        aria-label="Cancel"
+                        className="rounded-full"
+                      >
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        aria-label="Confirm to delete match"
+                        className="rounded-full bg-red-500 hover:bg-red-500/90 hover:text-black"
+                        onClick={() => handleDelete(profile.userId)}
                       >
                         Continue
                       </AlertDialogAction>
