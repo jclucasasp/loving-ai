@@ -63,14 +63,12 @@
   * {
     @apply border-border;
   }
+}
 
   @layer components {
-    
     body {
       @apply bg-background text-foreground;
-      background-image: url('./assets/Cupid.jpg');
-      background-color: #f6edff;
-      background-blend-mode: lighten;
+      background-image: linear-gradient(rgba(246, 237, 255, 0.7), rgba(246, 237, 255, 0.7)),url('./assets/Cupid.jpg');
     }
     
     Button, Form, h1, h2, h3 {
@@ -83,4 +81,3 @@
       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
   }
-}
