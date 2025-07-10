@@ -79,8 +79,8 @@ export default function Matches({
   const MatchesList = () => {
     return (
       <Card>
-        <ul className="flex h-[80dvh] ml-[-8px] flex-col sm:gap-3 overflow-y-scroll">
-          {loading && <SkeletonMatches />}
+        <ul className="flex h-[80dvh] flex-col sm:gap-3 overflow-y-scroll">
+        {loading && <SkeletonMatches />}
           {profiles?.map((profile) => (
             <li
               key={profile.userId}
@@ -97,7 +97,7 @@ export default function Matches({
                   aria-label="Go to profile"
                   className="mb-2 flex gap-1 md:gap-3 lg:gap-6"
                 >
-                  <Avatar className="w-[50px] h-[50px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px]">
+                  <Avatar className="w-[50px] h-[50px] sm:w-[55px] sm:h-[55px] md:w-[65px] md:h-[65px] ml-[-6px]">
                     <AvatarImage
                       src={HOST + "/images/" + profile.imageUrl}
                       alt="profile image"
