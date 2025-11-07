@@ -45,7 +45,7 @@ export interface MessageInterface {
     senderProfileId?: string;
     receiverProfileId?: string;
     sendDate?: string;
-    messageText: string;
+    content: string;
 }
 
 export interface ResponseInterface {
