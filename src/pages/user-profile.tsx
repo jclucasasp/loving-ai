@@ -285,18 +285,18 @@ export default function UserProfile() {
                                                 <SelectTrigger className="w-full">
                                                     <SelectValue
                                                         placeholder={
-                                                            personalityTypes.find(
-                                                                (p) =>
-                                                                    p.id ===
+                                                            // personalityTypes.find(
+                                                            //     (p) =>
+                                                            //         p.id ===
                                                                     loggedInUser?.myersBriggsPersonalityType
-                                                            )?.type
+                                                            // )?.type
                                                         }
                                                     />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
                                                 {personalityTypes.map((p) => (
-                                                    <SelectItem key={p.id} value={p.id}>
+                                                    <SelectItem key={p.id} value={p.type}>
                                                         {p.type}
                                                     </SelectItem>
                                                 ))}{" "}

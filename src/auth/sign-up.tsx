@@ -335,7 +335,7 @@ export default function SignUp() {
                       </FormControl>
                       <SelectContent>
                         {personalityTypes.map((p) => (
-                          <SelectItem key={p.id} value={p.id}>
+                          <SelectItem key={p.id} value={p.type}>
                             {p.type}
                           </SelectItem>
                         ))}{" "}
