@@ -71,9 +71,9 @@ export default function SignUp() {
 
     // Helper class to send a multipart form
     setLoading(true);
-    let formData = new FormData();
+    const formData = new FormData();
 
-    for (let key in data) {
+    for (const key in data) {
       if (key === "image") {
         formData.append(key, data[key as keyof NewUserForm] as File);
       } else {
@@ -335,7 +335,7 @@ export default function SignUp() {
                       </FormControl>
                       <SelectContent>
                         {personalityTypes.map((p) => (
-                          <SelectItem key={p.id} value={p.id}>
+                          <SelectItem key={p.id} value={p.type}>
                             {p.type}
                           </SelectItem>
                         ))}{" "}

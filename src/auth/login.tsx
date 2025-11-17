@@ -116,7 +116,7 @@ export default function Login() {
           <div className="flex justify-center mb-3">
             <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
           </div>
-          <CardTitle className="text-[#FF0066]">Rizz loading...</CardTitle>
+          <CardTitle className="text-[#FF0066]">Welcome to Loving AI</CardTitle>
         </CardHeader>
         <CardContent>
 
@@ -147,7 +147,7 @@ export default function Login() {
                 </FormItem>
               )}></FormField>
 
-              <Button type="submit" variant="secondary"
+              <Button type="submit" variant="special"
                 disabled={loadingOTP}
                 className="border w-full rounded-full mt-6 p-2">
                   {loading &&<span><LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin" /></span>}
