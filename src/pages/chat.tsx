@@ -8,6 +8,7 @@ import {useLocation} from "react-router-dom";
 import {Card} from "@/components/ui/card";
 import {HOST} from "@/lib/constants";
 import {cn} from "@/lib/utils";
+import {getAccessToken} from "@/auth/authQuery.ts";
 
 export default function ChatMessages() {
     const {conversationData, toProfile, loggedInUser} = useLocation().state;
@@ -19,6 +20,8 @@ export default function ChatMessages() {
 
     const messageInputContainer = useRef<HTMLTextAreaElement>(null);
     const conversationContainer = useRef<HTMLDivElement>(null);
+
+    const token = getAccessToken();
 
     const handleMessageSubmit = async () => {
         if (message.trim()) {
@@ -32,7 +35,7 @@ export default function ChatMessages() {
                 gender: toProfile?.gender || "",
                 bio: toProfile?.bio || "",
                 personality: toProfile?.myersBriggsPersonalityType || "",
-            });
+            }, token!);
             setConversation(newConversation);
             setLoading(false);
         }

@@ -1,10 +1,10 @@
 import { MatchInterface, ProfileInterface } from "@/lib/interfaces";
-import { AUTH_HEADER, HOST } from "@/lib/constants";
+import {  HOST } from "@/lib/constants";
 
-export async function GetMatches(userId: string): Promise<MatchInterface[]> {
+export async function GetMatches(userId: string, token: string): Promise<MatchInterface[]> {
   return await fetch(HOST + "/api/matches/all", {
     headers: {
-      Authorization: AUTH_HEADER,
+        Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     method: "POST",
@@ -27,14 +27,15 @@ export async function GetMatches(userId: string): Promise<MatchInterface[]> {
 }
 
 export async function GetMatchedProfiles(
-  userId: string
+  userId: string,
+  token: string,
 ): Promise<ProfileInterface[]> {
-  const data = await GetMatches(userId);
+  const data = await GetMatches(userId, token);
 
   return await fetch(HOST + "/api/match/profiles", {
     method: "POST",
     headers: {
-      Authorization: AUTH_HEADER,
+        Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
@@ -57,7 +58,8 @@ export async function GetMatchedProfiles(
 
 export async function CreateMatch(
   profileId: string,
-  toProfileId: string
+  toProfileId: string,
+  token: string,
 ): Promise<MatchInterface> {
   if (!profileId || !toProfileId) {
     throw new Error("fromProfileId and toProfileId are required");
@@ -65,8 +67,8 @@ export async function CreateMatch(
 
   return await fetch(HOST + "/api/match/create", {
     method: "POST",
-    headers: {
-      Authorization: AUTH_HEADER,
+      headers: {
+        Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ profileId, toProfileId }),
@@ -87,11 +89,11 @@ export async function CreateMatch(
     });
 }
 
-export default async function deleteMatchById(userId: string) {
+export default async function deleteMatchById(userId: string, token: string) {
   return await fetch(HOST + "/api/match/delete-by-id", {
     method: "DELETE",
     headers: {
-      Authorization: AUTH_HEADER,
+    Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId }),

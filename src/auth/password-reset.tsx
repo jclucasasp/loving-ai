@@ -165,7 +165,7 @@ export default function PasswordReset() {
 
               <Button
                 type="submit"
-                variant="secondary"
+                variant="special"
                 className="border w-full rounded-full mt-6 p-2"
               >
                 Reset

@@ -133,7 +133,7 @@ export default function Verify() {
           <Button
           disabled={loading}
             size={"lg"}
-            variant={"secondary"}
+            variant={"special"}
             className="w-full rounded-full"
             onClick={() => {
               handleClick();

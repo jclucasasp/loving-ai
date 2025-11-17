@@ -1,14 +1,15 @@
 import {ConversationInterface, ResponseInterface} from "@/lib/interfaces";
-import {AUTH_HEADER, HOST} from "@/lib/constants";
+import { HOST} from "@/lib/constants";
 
 export async function GetConversationFromTo(
     profileId: string,
-    toProfileId: string
+    toProfileId: string,
+    token: string
 ): Promise<ConversationInterface> {
     return await fetch(HOST + "/api/conversation/from-to", {
         method: "POST",
         headers: {
-            Authorization: AUTH_HEADER,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({profileId, toProfileId}),
@@ -31,12 +32,13 @@ export async function GetConversationFromTo(
 
 export async function CreateMessage(
     matchId: string,
-    response: ResponseInterface
+    response: ResponseInterface,
+    token: string
 ): Promise<ConversationInterface> {
     return await fetch(HOST + "/api/conversation/add/" + matchId, {
         method: "POST",
         headers: {
-            Authorization: AUTH_HEADER,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify(response),

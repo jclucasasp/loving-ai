@@ -1,14 +1,15 @@
-import { AUTH_HEADER, HOST } from "@/lib/constants";
+import { HOST } from "@/lib/constants";
 import { ProfileInterface } from "@/lib/interfaces";
 
 export async function GetRandomProfile(
-  gender: string
+  gender: string,
+  token: string,
 ): Promise<ProfileInterface> {
   return await fetch(HOST + "/api/profile/random", {
     method: "POST",
     headers: {
-      Authorization: AUTH_HEADER,
-      "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
     },
     cache: "force-cache",
     body: JSON.stringify({ gender }),
@@ -29,12 +30,14 @@ export async function GetRandomProfile(
 }
 
 export async function GetProfileById(
-  userId: string
+  userId: string,
+    token:string
 ): Promise<ProfileInterface> {
   return await fetch(HOST + "/api/profile/id", {
     method: "POST",
+      credentials: "include",
     headers: {
-      Authorization: AUTH_HEADER,
+        Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId }),
@@ -58,7 +61,6 @@ export async function CreateNewUserProfile(newUser: FormData) {
   return await fetch(HOST + "/api/user/create", {
     method: "POST",
     headers: {
-      Authorization: AUTH_HEADER,
     },
     body: newUser,
     cache: "force-cache",
@@ -76,12 +78,13 @@ export async function CreateNewUserProfile(newUser: FormData) {
 }
 
 export async function UpdateUserProfile(
-  profile: ProfileInterface
+  profile: ProfileInterface,
+  token: string
 ): Promise<ProfileInterface> {
   return await fetch(HOST + "/api/profile/update", {
     method: "POST",
     headers: {
-      Authorization: AUTH_HEADER,
+        Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(profile),

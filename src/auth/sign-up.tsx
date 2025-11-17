@@ -348,7 +348,7 @@ export default function SignUp() {
 
               <Button
                 disabled={loading}
-                variant={"secondary"}
+                variant={"special"}
                 type="submit"
                 className="mt-6 rounded-full w-full"
               >

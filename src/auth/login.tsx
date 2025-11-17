@@ -32,7 +32,6 @@ export default function Login() {
     }
   });
 
-
   const navigate = useNavigate();
 
   const onSubmit = (data: LoginForm) => {
@@ -61,7 +60,6 @@ export default function Login() {
       return;
     }
 
-    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data)));
     navigate("/profile");
   }
 

@@ -1,11 +1,12 @@
-import { AUTH_HEADER, HOST } from "@/lib/constants";
+import { HOST } from "@/lib/constants";
 import { ProfileInterface } from "@/lib/interfaces";
+import {clearAccessToken, setAccessToken} from "@/auth/authQuery.ts";
 
 export async function LoginAuth(email: string, password: string) {
   return await fetch(HOST + "/api/user/login", {
     method: "POST",
+      credentials: "include",
     headers: {
-      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, password }),
@@ -16,8 +17,11 @@ export async function LoginAuth(email: string, password: string) {
       }
       return res.json();
     })
-    .then((data: ProfileInterface) => {
-      return data;
+    .then((data: { accessToken: string, profile: ProfileInterface }) => {
+      sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data.profile)));
+      setAccessToken(data.accessToken);
+
+      return data.profile;
     })
     .catch((err) => {
       console.error(err);
@@ -28,8 +32,8 @@ export async function LoginAuth(email: string, password: string) {
 export async function LogoutAuth(id: string) {
   return await fetch(HOST + "/api/user/logout", {
     method: "POST",
+      credentials: "include",
     headers: {
-      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     keepalive: true,
@@ -38,6 +42,7 @@ export async function LogoutAuth(id: string) {
     .then((res) => {
       if (res.ok) {
         sessionStorage.clear();
+        clearAccessToken();
       }
     })
     .catch((err) => {
@@ -50,8 +55,8 @@ export async function OTPRequest(identifier: string) {
   if (identifier.includes("@")) {
     return await fetch(HOST + "/api/user/otp", {
       method: "POST",
+        credentials: "include",
       headers: {
-        Authorization: AUTH_HEADER,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: identifier }),
@@ -67,8 +72,8 @@ export async function OTPRequest(identifier: string) {
 
   return await fetch(HOST + "/api/user/otp", {
     method: "POST",
+      credentials: "include",
     headers: {
-      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ id: identifier }),
@@ -89,8 +94,8 @@ export async function VerifyAndResetPassword(
 ) {
   return await fetch(HOST + "/api/user/reset", {
     method: "POST",
+      credentials: "include",
     headers: {
-      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ email, otp, password }),
@@ -113,8 +118,8 @@ export async function VerifyAndResetPassword(
 export async function VerifyOTP(userId: string, otp: string) {
   return await fetch(HOST + "/api/user/verify", {
     method: "POST",
+      credentials: "include",
     headers: {
-      Authorization: AUTH_HEADER,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ userId, otp }),

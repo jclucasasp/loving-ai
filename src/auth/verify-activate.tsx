@@ -124,7 +124,7 @@ export default function VerifyActivate() {
               <Button
                 disabled={loading}
                 type="submit"
-                variant="secondary"
+                variant="special"
                 className="border w-full rounded-full mt-6 p-2 gap-2"
               >
                 {loading && (

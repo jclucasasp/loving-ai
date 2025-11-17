@@ -98,7 +98,7 @@ export default function Personality() {
                             Free Personality Test
                         </Button>
                         <Button
-                            variant={"secondary"}
+                            variant={"special"}
                             className="w-full rounded-full"
                             onClick={() => {
                                 navigate("/signUp", {state: {personalityTypes}});
