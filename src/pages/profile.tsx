@@ -10,7 +10,6 @@ import KissyFace from "@/assets/kissyFace.png";
 import Thinking from "@/assets/thinking.png";
 import {useToast} from "@/hooks/use-toast";
 import {HOST} from "@/lib/constants";
-import {getAccessToken} from "@/auth/authQuery.ts";
 
 type ProfileProps = {
     profile: ProfileInterface | null;
@@ -39,11 +38,10 @@ export default function Profiles({
     const loggedInUser = useLoggedInUserState();
 
     const {setMatches, matches} = matchSate;
-    const token = getAccessToken();
     const {toast} = useToast();
 
     const createMatchHandler = async () => {
-        const newMatch = await CreateMatch(loggedInUser!.userId, profile!.userId, token!);
+        const newMatch = await CreateMatch(loggedInUser!.userId, profile!.userId);
 
         if (newMatch) {
             setIsMatched(true);

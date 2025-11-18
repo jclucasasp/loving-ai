@@ -1,104 +1,100 @@
-import { HOST } from "@/lib/constants";
-import { ProfileInterface } from "@/lib/interfaces";
+import {HOST} from "@/lib/constants";
+import {ProfileInterface} from "@/lib/interfaces";
 
 export async function GetRandomProfile(
-  gender: string,
-  token: string,
+    gender: string
 ): Promise<ProfileInterface> {
-  return await fetch(HOST + "/api/profile/random", {
-    method: "POST",
-    headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-    },
-    cache: "force-cache",
-    body: JSON.stringify({ gender }),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return null;
-      }
-      return res.json();
+    return await fetch(HOST + "/api/profile/random", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        cache: "force-cache",
+        body: JSON.stringify({gender}),
     })
-    .then((data) => {
-      return data;
-    })
-    .catch((err) => {
-      console.log(err);
-      return null;
-    });
+        .then((res) => {
+            if (!res.ok) {
+                return null;
+            }
+            return res.json();
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
 }
 
 export async function GetProfileById(
-  userId: string,
-    token:string
+    userId: string
 ): Promise<ProfileInterface> {
-  return await fetch(HOST + "/api/profile/id", {
-    method: "POST",
-      credentials: "include",
-    headers: {
-        Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ userId }),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return null;
-      }
-      return res.json();
+    return await fetch(HOST + "/api/profile/id", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({userId}),
     })
-    .then((data) => {
-      return data;
-    })
-    .catch((err) => {
-      console.log(err);
-      return null;
-    });
+        .then((res) => {
+            if (!res.ok) {
+                return null;
+            }
+            return res.json();
+        })
+        .then((data) => {
+            return data;
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
 }
 
 export async function CreateNewUserProfile(newUser: FormData) {
-  return await fetch(HOST + "/api/user/create", {
-    method: "POST",
-    headers: {
-    },
-    body: newUser,
-    cache: "force-cache",
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return null;
-      }
-      return res;
+    return await fetch(HOST + "/api/user/create", {
+        method: "POST",
+        credentials: "include",
+        headers: {},
+        body: newUser,
+        cache: "force-cache",
     })
-    .catch((err) => {
-      console.log(err);
-      return null;
-    });
+        .then((res) => {
+            if (!res.ok) {
+                return null;
+            }
+            return res;
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
 }
 
 export async function UpdateUserProfile(
-  profile: ProfileInterface,
-  token: string
+    profile: ProfileInterface,
 ): Promise<ProfileInterface> {
-  return await fetch(HOST + "/api/profile/update", {
-    method: "POST",
-    headers: {
-        Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(profile),
-    cache: "force-cache",
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return null;
-      }
-      return res.json();
+    return await fetch(HOST + "/api/profile/update", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(profile),
+        cache: "force-cache",
     })
-    .then((data) => data)
-    .catch((err) => {
-      console.log(err);
-      return null;
-    });
+        .then((res) => {
+            if (!res.ok) {
+                return null;
+            }
+            return res.json();
+        })
+        .then((data) => data)
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
 }

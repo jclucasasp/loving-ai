@@ -3,13 +3,12 @@ import { HOST} from "@/lib/constants";
 
 export async function GetConversationFromTo(
     profileId: string,
-    toProfileId: string,
-    token: string
+    toProfileId: string
 ): Promise<ConversationInterface> {
     return await fetch(HOST + "/api/conversation/from-to", {
         method: "POST",
+        credentials: "include",
         headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({profileId, toProfileId}),
@@ -32,13 +31,12 @@ export async function GetConversationFromTo(
 
 export async function CreateMessage(
     matchId: string,
-    response: ResponseInterface,
-    token: string
+    response: ResponseInterface
 ): Promise<ConversationInterface> {
     return await fetch(HOST + "/api/conversation/add/" + matchId, {
         method: "POST",
+        credentials: "include",
         headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
         body: JSON.stringify(response),

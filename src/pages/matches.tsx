@@ -23,7 +23,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {getAccessToken} from "@/auth/authQuery.ts";
 
 type MatchesProps = {
   setCurrentProfile: React.Dispatch<
@@ -43,12 +42,10 @@ export default function Matches({
 
   const { toast } = useToast();
   const navigate = useNavigate();
-  //TODO: getAccessToken not working her
-  const token = getAccessToken();
 
   useEffect(() => {
     const fetchMatchedProfiles = async () => {
-      const res = await GetMatchedProfiles(loggedInUser!.userId, token!);
+      const res = await GetMatchedProfiles(loggedInUser!.userId);
       setProfiles(res);
       setLoading(false);
     };
@@ -58,15 +55,14 @@ export default function Matches({
   const handleChat = async (profileId: string, toProfile: ProfileInterface) => {
     const conversationData = await GetConversationFromTo(
       profileId,
-      toProfile.userId,
-        token!
+      toProfile.userId
     );
     setCurrentProfile(toProfile);
     navigate("/chat", { state: { conversationData, loggedInUser, toProfile } });
   };
 
   const handleDelete = async (userId: string) => {
-    const res = await deleteMatchById(userId, token!);
+    const res = await deleteMatchById(userId);
     if (!res || res.status >= 500) {
       toast({
         variant: "destructive",

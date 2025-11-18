@@ -31,14 +31,11 @@ import {
 } from "@/components/ui/select";
 import ComponentHeading from "@/components/component-heading";
 import {LoaderCircleIcon} from "lucide-react";
-import {getAccessToken} from "@/auth/authQuery.ts";
 
 export default function UserProfile() {
     const loggedInUser = useLoggedInUserState();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-
-    const token = getAccessToken();
 
     const form = useForm<ProfileForm>({
         resolver: zodResolver(ProfileSchema),
@@ -77,7 +74,7 @@ export default function UserProfile() {
             });
             return;
         }
-        const updatedProfile = await UpdateUserProfile(result.data, token!);
+        const updatedProfile = await UpdateUserProfile(result.data);
         setLoading(false);
 
         if (!updatedProfile.userId) {

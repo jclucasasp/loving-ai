@@ -7,7 +7,6 @@ import { User, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
 import { HOST } from "@/lib/constants";
-import {getAccessToken} from "@/auth/authQuery.ts";
 
 type NavProps = {
   currentProfile: ProfileInterface | null;
@@ -19,17 +18,15 @@ type NavProps = {
 export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const token = getAccessToken();
-  console.error("Auth Token is: ", token);
 
   const loggedInUser = useLoggedInUserState();
 
   const seedRandomProfile = async (id?: string) => {
     let profileData: Promise<ProfileInterface | null>;
     if (!id) {
-      profileData = GetRandomProfile(loggedInUser!.gender, token!);
+      profileData = GetRandomProfile(loggedInUser!.gender);
     } else {
-      profileData = GetProfileById(id, token!);
+      profileData = GetProfileById(id);
     }
 
     const [profile] = await Promise.all([profileData]);
