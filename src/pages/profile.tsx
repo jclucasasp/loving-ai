@@ -38,6 +38,7 @@ export default function Profiles({
     const loggedInUser = useLoggedInUserState();
 
     const {setMatches, matches} = matchSate;
+
     const {toast} = useToast();
 
     const createMatchHandler = async () => {

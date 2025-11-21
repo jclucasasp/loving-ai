@@ -287,7 +287,7 @@ export default function UserProfile() {
                                                             // personalityTypes.find(
                                                             //     (p) =>
                                                             //         p.id ===
-                                                                    loggedInUser?.myersBriggsPersonalityType
+                                                            loggedInUser?.myersBriggsPersonalityType
                                                             // )?.type
                                                         }
                                                     />
