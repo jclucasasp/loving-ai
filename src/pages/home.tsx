@@ -29,7 +29,7 @@ export default function Home() {
 
             <article className="mt-3 border-b-2 pb-3">
                 <h1 className="text-2xl font-bold text-[#FF0066]">
-                    Chat Instantly with Your Perfect AI Companion
+                    Your perfect AI Companion awaits you.
                 </h1>
                 <p className="text-xl mt-4 text-gray-700">
                     No swiping. No small talk. Just real, remembered conversations with someone who gets you.
@@ -46,7 +46,7 @@ export default function Home() {
                     onClick={() => navigate("/login")}
                     aria-label="Login"
                 >
-                    <h4>Start Chatting Now!</h4>
+                    <h4>Find Your Perfect Match - Free Signup</h4>
                 </Button>
             </article>
 
