@@ -44,7 +44,7 @@ export default function Home() {
                     onClick={() => navigate("/login")}
                     aria-label="Login"
                 >
-                    <h4 className={"text-sm"}>Find Your Perfect Match - Free Signup</h4>
+                    <h4 className={"text-sm lg:text-xl md:text-lg"}>Find Your Perfect Match - Free Signup</h4>
                 </Button>
             </article>
 
