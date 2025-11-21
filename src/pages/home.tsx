@@ -5,8 +5,6 @@ import {
     Carousel,
     CarouselContent,
     CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
 } from "@/components/ui/carousel";
 
 //TODO: Add a footer with about, contact and privacy policy
@@ -14,8 +12,8 @@ export default function Home() {
     const navigate = useNavigate();
 
     return (
-        <div>
-            <div className="flex items-center justify-center border-b-2 pb-3 sticky z-50">
+        <section>
+            <div className="flex items-center justify-center border-b-2 pb-3">
                 <div className="flex items-center">
                     <img
                         src={"/heart.png"}
@@ -23,19 +21,19 @@ export default function Home() {
                         height={80}
                         width={80}
                     />
-                    <h1 className="text-3xl text-[#FF0066] font-bold">Loving AI</h1>
+                    <h1 className="text-2xl md:text-3xl text-[#FF0066] font-bold">Loving AI</h1>
                 </div>
             </div>
 
             <article className="mt-3 border-b-2 pb-3">
-                <h1 className="text-2xl font-bold text-[#FF0066]">
+                <h1 className="text-xl md:text-2xl font-bold text-[#FF0066]">
                     Your perfect AI Companion awaits you.
                 </h1>
-                <p className="text-xl mt-4 text-gray-700">
+                <p className="md:text-xl mt-2  md:mt-4 text-gray-700">
                     No swiping. No small talk. Just real, remembered conversations with someone who gets you.
                 </p>
 
-                <p className="mt-6 text-sm text-gray-500">
+                <p className="mt-3 md:mt-6 text-xs md:text-sm text-gray-500">
                     ★ Already 1,000+ people chatting daily • 100% Private • No data sold
                 </p>
 
@@ -46,7 +44,7 @@ export default function Home() {
                     onClick={() => navigate("/login")}
                     aria-label="Login"
                 >
-                    <h4>Find Your Perfect Match - Free Signup</h4>
+                    <h4 className={"text-sm"}>Find Your Perfect Match - Free Signup</h4>
                 </Button>
             </article>
 
@@ -55,7 +53,7 @@ export default function Home() {
             </ComponentHeading>
 
             <Carousel className="" opts={{loop: true, align: "center"}}>
-                <CarouselContent className="-ml-2 ">
+                <CarouselContent className="ml-2 ">
                     <CarouselItem className="basis-1/2">
                         <img src={"/AsianW.png"} alt="picture of an asian woman"/>
                     </CarouselItem>
@@ -81,9 +79,7 @@ export default function Home() {
                         <img src={"/IndianW.png"} alt="picture of an indian woman"/>
                     </CarouselItem>
                 </CarouselContent>
-                <CarouselPrevious/>
-                <CarouselNext/>
             </Carousel>
-        </div>
+        </section>
     );
 }
