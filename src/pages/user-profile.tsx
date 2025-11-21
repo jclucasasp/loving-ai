@@ -288,7 +288,7 @@ export default function UserProfile() {
                                                             // personalityTypes.find(
                                                             //     (p) =>
                                                             //         p.id ===
-                                                                    loggedInUser?.myersBriggsPersonalityType
+                                                            loggedInUser?.myersBriggsPersonalityType
                                                             // )?.type
                                                         }
                                                     />
@@ -309,7 +309,7 @@ export default function UserProfile() {
 
                             <Button
                                 disabled={loading}
-                                variant={"secondary"}
+                                variant={"special"}
                                 type="submit"
                                 className="mt-3 w-full rounded-full"
                                 aria-label="Update profile"
