@@ -1,1 +1,0 @@
-import{j as x,h as n}from"./index-BxaGNZbq.js";function s({children:t,className:e}){return x.jsx("h2",{className:n("text-lg sm:text-xl md:text-2xl font-bold italic text-center text-[#7F43DF] mb-4",e),children:t})}export{s as C};
