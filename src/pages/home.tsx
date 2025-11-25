@@ -7,7 +7,6 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel";
 
-//TODO: Add a footer with about, contact and privacy policy
 export default function Home() {
     const navigate = useNavigate();
 
@@ -81,7 +80,7 @@ export default function Home() {
                 </CarouselContent>
             </Carousel>
              <footer className="mt-10 py-6 text-center text-gray-600 text-sm">
-                Loving AI | South Africa | <a href="/privacy" className="text-purple-600 hover:underline">Privacy Policy</a> | <a href="/terms" className="text-purple-600 hover:underline">Terms of Service</a><br />
+                Loving AI | South Africa | <span onClick={() => navigate("/privacy")} className="cursor-pointer text-purple-600 hover:underline">Privacy Policy</span> | <span onClick={() => navigate("/terms")} className="cursor-pointer text-purple-600 hover:underline">Terms of Service</span><br />
                 Questions? Contact us at <a href="mailto:lovingaiteam@gmail.com" className="text-purple-600 hover:underline">lovingaiteam@gmail.com</a> <br />
                 © 2025 Loving AI. All rights reserved.
             </footer>
