@@ -82,24 +82,27 @@ export default function SignUp() {
         }
 
         await CreateNewUserProfile(formData).then((res) => {
-            if (!res || res.status >= 500) {
-                toast({
-                    variant: "destructive",
-                    description: "Something went wrong. Please try again.",
-                    action: <ToastAction altText="Retry">Retry</ToastAction>,
-                });
-                return;
-            }
-
             if (res && res.status >= 400 && res.status < 500) {
                 toast({
                     variant: "destructive",
                     description: "Email already taken. Please try again.",
                     action: <ToastAction altText="Retry">Retry</ToastAction>,
                 });
+                setLoading(false);
                 return;
-            }
+                }
+
+                if (!res || res.status >= 500) {
+                    toast({
+                        variant: "destructive",
+                        description: "Something went wrong. Please try again.",
+                        action: <ToastAction altText="Retry">Retry</ToastAction>,
+                    });
+                    setLoading(false);
+                    return;
+                }
             setLoading(false);
+
             navigate("/login", {
                 state: {email: result.data.email, password: result.data.password},
             });

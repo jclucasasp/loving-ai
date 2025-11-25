@@ -9,6 +9,8 @@ import useLoggedInUserState from "@/hooks/use-user-state";
 import {lazy, Suspense, useState} from "react";
 import Nav from "@/components/nav-component";
 import Profiles from "@/pages/profile";
+import Terms from "@/pages/terms.tsx";
+import Privacy from "@/pages/privacy.tsx";
 
 export default function Navigation() {
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(
@@ -57,6 +59,8 @@ export default function Navigation() {
                                 <Route path="/signUp" element={<SignUp/>}/>
                                 <Route path="/reset" element={<PasswordReset/>}/>
                                 <Route path="/*" element={<Navigate replace to="/"/>}/>
+                                <Route path="/terms" element={<Terms/>}/>
+                                <Route path="/privacy" element={<Privacy/>}/>
                             </>
                         ) : /* Case 2: Logged In but Not Verified */
                         !loggedInUser.verified ? (

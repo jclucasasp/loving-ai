@@ -80,6 +80,11 @@ export default function Home() {
                     </CarouselItem>
                 </CarouselContent>
             </Carousel>
+             <footer className="mt-10 py-6 text-center text-gray-600 text-sm">
+                Loving AI | South Africa | <a href="/privacy" className="text-purple-600 hover:underline">Privacy Policy</a> | <a href="/terms" className="text-purple-600 hover:underline">Terms of Service</a><br />
+                Questions? Contact us at <a href="mailto:lovingaiteam@gmail.com" className="text-purple-600 hover:underline">lovingaiteam@gmail.com</a> <br />
+                © 2025 Loving AI. All rights reserved.
+            </footer>
         </section>
     );
 }
