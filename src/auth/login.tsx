@@ -61,7 +61,8 @@ export default function Login() {
       return;
     }
 
-    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data)));
+    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data.profile)));
+    sessionStorage.setItem("token", JSON.stringify(data.ACCESS_TOKEN));
     navigate("/profile");
   }
 

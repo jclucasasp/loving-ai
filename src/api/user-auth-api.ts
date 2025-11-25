@@ -16,7 +16,7 @@ export async function LoginAuth(email: string, password: string) {
       }
       return res.json();
     })
-    .then((data: ProfileInterface) => {
+    .then((data: { ACCESS_TOKEN: string, profile: ProfileInterface }) => {
       return data;
     })
     .catch((err) => {
