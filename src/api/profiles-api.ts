@@ -1,10 +1,11 @@
 import {AUTH_HEADER, HOST} from "@/lib/constants";
 import {ProfileInterface} from "@/lib/interfaces";
+import {getAuthToken} from "@/hooks/use-auth-token.ts";
 
 export async function GetRandomProfile(
     gender: string
 ): Promise<ProfileInterface> {
-    const token = sessionStorage.getItem("token");
+    const token = getAuthToken();
     return await fetch(HOST + "/api/profile/random", {
         method: "POST",
         credentials: "include",

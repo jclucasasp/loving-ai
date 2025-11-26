@@ -1,15 +1,15 @@
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import ComponentHeading from "@/components/component-heading";
-import useLoggedInUserState from "@/hooks/use-user-state";
 import {OTPRequest} from "@/api/user-auth-api";
 import {LoaderCircleIcon} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {toast} from "@/hooks/use-toast";
 import {useState} from "react";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 export default function Verify() {
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 

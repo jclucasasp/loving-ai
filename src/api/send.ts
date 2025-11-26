@@ -1,7 +1,7 @@
-import useLoggedInUserState from "@/hooks/use-user-state"
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts"
 
 export default async function EmailToken(email: string) {
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
 
     const data = {
         service_id: import.meta.env.VITE_EMAIJS_SERVICE_ID,

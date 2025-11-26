@@ -5,10 +5,10 @@ import {
     Navigate,
 } from "react-router-dom";
 import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
-import useLoggedInUserState from "@/hooks/use-user-state";
 import {lazy, Suspense, useState} from "react";
 import Nav from "@/components/nav-component";
 import Profiles from "@/pages/profile";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 export default function Navigation() {
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(
@@ -19,7 +19,7 @@ export default function Navigation() {
     );
     const [isMatched, setIsMatched] = useState(false);
 
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
     useNavigate();
 
     // Lazy-load components

@@ -3,6 +3,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginAuth, OTPRequest } from "@/api/user-auth-api";
 import { LoginForm, LoginFormSchema } from "@/lib/utils";
+import { setAuthToken } from "@/hooks/use-auth-token.ts";
 import SkeletonCard from "@/components/skeleton-card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastAction } from "@/components/ui/toast";
@@ -14,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { z } from "zod";
+import {setLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 export default function Login() {
 
@@ -31,7 +33,6 @@ export default function Login() {
       password: password
     }
   });
-
 
   const navigate = useNavigate();
 
@@ -61,8 +62,10 @@ export default function Login() {
       return;
     }
 
-    sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data.profile)));
-    sessionStorage.setItem("token", JSON.stringify(data.ACCESS_TOKEN));
+    setLoggedInUser(data.profile);
+    // sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data.profile)));
+    setAuthToken(data.ACCESS_TOKEN);
+
     navigate("/profile");
   }
 

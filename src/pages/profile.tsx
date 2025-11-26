@@ -1,6 +1,5 @@
 import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
 import React, {useCallback, useEffect, useState} from "react";
-import useLoggedInUserState from "@/hooks/use-user-state";
 import {Card, CardContent} from "@/components/ui/card";
 import {ToastAction} from "@/components/ui/toast";
 import BlurredImage from "@/assets/Blurred.jpg";
@@ -10,6 +9,7 @@ import KissyFace from "@/assets/kissyFace.png";
 import Thinking from "@/assets/thinking.png";
 import {useToast} from "@/hooks/use-toast";
 import {HOST} from "@/lib/constants";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 type ProfileProps = {
     profile: ProfileInterface | null;
@@ -35,7 +35,7 @@ export default function Profiles({
                                      isMatchedState,
                                  }: ProfileProps) {
     const {isMatched, setIsMatched} = isMatchedState;
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
 
     const {setMatches, matches} = matchSate;
 

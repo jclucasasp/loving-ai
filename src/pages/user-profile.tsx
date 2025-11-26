@@ -1,5 +1,5 @@
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
-import useLoggedInUserState from "@/hooks/use-user-state";
+import {getLoggedInUser, setLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import {PersonalityTypeInterface} from "@/lib/interfaces";
 import {GetPersonalityTypes} from "@/api/personality-api";
 import {ProfileForm, ProfileSchema} from "@/lib/utils";
@@ -33,7 +33,7 @@ import ComponentHeading from "@/components/component-heading";
 import {LoaderCircleIcon} from "lucide-react";
 
 export default function UserProfile() {
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
@@ -92,10 +92,11 @@ export default function UserProfile() {
         }
 
         sessionStorage.clear();
-        sessionStorage.setItem(
-            "loggedInUser",
-            btoa(JSON.stringify(updatedProfile))
-        );
+        setLoggedInUser(updatedProfile);
+        // sessionStorage.setItem(
+        //     "loggedInUser",
+        //     btoa(JSON.stringify(updatedProfile))
+        // );
         navigate("/profile");
 
         toast({

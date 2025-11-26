@@ -3,7 +3,6 @@ import deleteMatchById, {GetMatchedProfiles} from "@/api/matches-api";
 import {GetConversationFromTo} from "@/api/conversation-api";
 import ComponentHeading from "@/components/component-heading";
 import SkeletonMatches from "@/components/skeleton-matches";
-import useLoggedInUserState from "@/hooks/use-user-state";
 import {ProfileInterface} from "@/lib/interfaces";
 import {XCircle, CheckCircle} from "lucide-react";
 import React, {useEffect, useState} from "react";
@@ -23,6 +22,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 type MatchesProps = {
     setCurrentProfile: React.Dispatch<
@@ -35,7 +35,7 @@ export default function Matches({
                                     setCurrentProfile,
                                     setIsMatched,
                                 }: MatchesProps) {
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
 
     const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>([]);
     const [loading, setLoading] = useState<boolean>(true);

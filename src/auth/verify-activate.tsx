@@ -1,5 +1,4 @@
 import {Card, CardContent} from "@/components/ui/card";
-import useLoggedInUserState from "@/hooks/use-user-state";
 import {ToastAction} from "@/components/ui/toast";
 import {Button} from "@/components/ui/button";
 import {VerifyOTP} from "@/api/user-auth-api";
@@ -26,6 +25,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import ComponentHeading from "@/components/component-heading";
 import {useState} from "react";
 import {LoaderCircleIcon} from "lucide-react";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 const FormSchema = z.object({
     otp: z
@@ -34,7 +34,7 @@ const FormSchema = z.object({
 });
 
 export default function VerifyActivate() {
-    const loggedInUser = useLoggedInUserState();
+    const loggedInUser = getLoggedInUser();
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
