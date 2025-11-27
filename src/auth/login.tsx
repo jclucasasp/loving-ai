@@ -64,7 +64,7 @@ export default function Login() {
 
     setLoggedInUser(data.profile);
     // sessionStorage.setItem("loggedInUser", btoa(JSON.stringify(data.profile)));
-    setAuthToken(data.ACCESS_TOKEN);
+    setAuthToken(data.accessToken);
 
     navigate("/profile");
   }

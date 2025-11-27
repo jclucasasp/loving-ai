@@ -1,6 +1,7 @@
+import {getAuthToken} from "@/hooks/use-auth-token.ts";
 import {AUTH_HEADER, HOST} from "@/lib/constants";
 import {ProfileInterface} from "@/lib/interfaces";
-import {getAuthToken} from "@/hooks/use-auth-token.ts";
+import refreshApi from "@/api/refresh-api.ts";
 
 export async function GetRandomProfile(
     gender: string
@@ -8,18 +9,33 @@ export async function GetRandomProfile(
     const token = getAuthToken();
     return await fetch(HOST + "/api/profile/random", {
         method: "POST",
-        credentials: "include",
+        mode: "cors",
         headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
         },
-        cache: "force-cache",
         body: JSON.stringify({gender}),
+        credentials: "include",
     })
-        .then((res) => {
+        .then(async (res) => {
+
+            console.log("HTTP Status: ", res.status);
+
             if (!res.ok) {
                 return null;
             }
+
+            if (res.status === 401 || res.status === 403 && token) {
+                const refreshSuccess = await refreshApi();
+                if (refreshSuccess) {
+                    console.log("Refreshed token success: ", refreshSuccess);
+                    await GetRandomProfile(gender);
+                } else {
+                    console.log("Refreshed token failed: ", refreshSuccess);
+                    return null;
+                }
+            }
+
             return res.json();
         })
         .then((data) => {
@@ -36,11 +52,13 @@ export async function GetProfileById(
 ): Promise<ProfileInterface> {
     return await fetch(HOST + "/api/profile/id", {
         method: "POST",
+        mode: "cors",
         headers: {
             Authorization: AUTH_HEADER,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({userId}),
+        credentials: "include",
     })
         .then((res) => {
             if (!res.ok) {

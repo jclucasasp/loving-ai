@@ -1,8 +1,8 @@
 export function getAuthToken() {
-        return localStorage.getItem('ACCESS_TOKEN');
+        return localStorage.getItem('accessToken');
 }
 
 export function setAuthToken(accessToken: string) {
-    if (accessToken) localStorage.setItem('ACCESS_TOKEN', accessToken);
-    else localStorage.removeItem('ACCESS_TOKEN');
+    if (accessToken) localStorage.setItem('accessToken', accessToken);
+    else localStorage.removeItem('accessToken');
 }

@@ -4,10 +4,12 @@ import {ProfileInterface} from "@/lib/interfaces";
 export async function LoginAuth(email: string, password: string) {
     return await fetch(HOST + "/api/user/login", {
         method: "POST",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({email, password}),
+        credentials: "include"
     })
         .then((res) => {
             if (!res.ok) {
@@ -15,7 +17,7 @@ export async function LoginAuth(email: string, password: string) {
             }
             return res.json();
         })
-        .then((data: { ACCESS_TOKEN: string, profile: ProfileInterface }) => {
+        .then((data: { accessToken: string, profile: ProfileInterface }) => {
             return data;
         })
         .catch((err) => {
@@ -26,17 +28,19 @@ export async function LoginAuth(email: string, password: string) {
 
 export async function LogoutAuth(id: string) {
     return await fetch(HOST + "/api/user/logout", {
-        credentials: "include",
         method: "POST",
+        mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
         keepalive: true,
         body: JSON.stringify({id}),
+        credentials: "include",
     })
         .then((res) => {
             if (res.ok) {
                 sessionStorage.clear();
+                localStorage.clear();
             }
         })
         .catch((err) => {
