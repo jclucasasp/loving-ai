@@ -2,21 +2,24 @@ import {setAuthToken} from "@/hooks/use-auth-token.ts";
 import {HOST} from "@/lib/constants.ts";
 
 export default async function refreshApi() {
-    await fetch(HOST + "/api/user/refresh", {
-        method: "POST",
-        credentials: "include"
-    })
-        .then((res) => {
-            if (res.ok) {
-                console.log("Refresh api call response: ", res.json())
-                return res.json()
-            }
-            return null;
-        })
-        .then((data: { accessToken: string }) => {
-            setAuthToken(data.accessToken);
-            return true;
-        })
-        .catch(err => console.log(err));
+try {
+    const res = await fetch(`${HOST}/api/user/refresh`, {
+      method: "POST",
+      mode: "cors",
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      console.error("Refresh failed – HTTP ", res.status);
+      return false;
+    }
+
+    const data = await res.json() as { accessToken: string };
+
+    setAuthToken(data.accessToken);   // save it in your cookie/local‑storage helper
+    return true;
+  } catch (e) {
+    console.error("Refresh API error:", e);
     return false;
+  }
 }

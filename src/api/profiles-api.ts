@@ -1,7 +1,6 @@
 import {getAuthToken} from "@/hooks/use-auth-token.ts";
 import {AUTH_HEADER, HOST} from "@/lib/constants";
 import {ProfileInterface} from "@/lib/interfaces";
-import refreshApi from "@/api/refresh-api.ts";
 
 export async function GetRandomProfile(
     gender: string
@@ -23,17 +22,6 @@ export async function GetRandomProfile(
 
             if (!res.ok) {
                 return null;
-            }
-
-            if (res.status === 401 || res.status === 403 && token) {
-                const refreshSuccess = await refreshApi();
-                if (refreshSuccess) {
-                    console.log("Refreshed token success: ", refreshSuccess);
-                    await GetRandomProfile(gender);
-                } else {
-                    console.log("Refreshed token failed: ", refreshSuccess);
-                    return null;
-                }
             }
 
             return res.json();
