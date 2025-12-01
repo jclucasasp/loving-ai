@@ -1,13 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {HOST, PROFILE_API_ID, PROFILE_API_RANDOM} from "@/lib/constants";
 import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ProfileInterface } from "@/lib/interfaces";
 import { User, MessageCircle } from "lucide-react";
-import {GetProfileById} from "@/api/profiles-api";
 import {customFetch} from "@/api/customFetch.ts";
 import { Button } from "@/components/ui/button";
 import React, { useEffect } from "react";
-import { HOST } from "@/lib/constants";
 
 type NavProps = {
   currentProfile: ProfileInterface | null;
@@ -26,9 +25,10 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
     let profileData: Promise<ProfileInterface | null>;
     if (!id) {
       // profileData = GetRandomProfile(loggedInUser!.gender);
-      profileData = customFetch<ProfileInterface>("/api/profile/random", "POST", { key: "gender", value: loggedInUser!.gender});
+      profileData = customFetch<ProfileInterface>(PROFILE_API_RANDOM, "POST", {"gender": loggedInUser!.gender});
     } else {
-      profileData = GetProfileById(id);
+      // profileData = GetProfileById(id);
+      profileData = customFetch<ProfileInterface>(PROFILE_API_ID, "POST", {"id": id});
     }
 
     const [profile] = await Promise.all([profileData]);
@@ -42,7 +42,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
       location.pathname == "/profile"
     )
       seedRandomProfile();
-  }, [currentProfile, location.pathname]);
+  }, [currentProfile, location.pathname, loggedInUser]);
 
   return (
     <nav className="flex justify-between items-center mt-4 mb-6 w-full">

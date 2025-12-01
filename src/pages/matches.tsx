@@ -1,16 +1,17 @@
+import {HOST, MATCH_API_ALL, MATCH_API_DELETE_BY_ID, MATCH_API_PROFILES} from "@/lib/constants";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import deleteMatchById, {GetMatchedProfiles} from "@/api/matches-api";
-import {GetConversationFromTo} from "@/api/conversation-api";
+import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import ComponentHeading from "@/components/component-heading";
+import {GetConversationFromTo} from "@/api/conversation-api";
 import SkeletonMatches from "@/components/skeleton-matches";
-import {ProfileInterface} from "@/lib/interfaces";
 import {XCircle, CheckCircle} from "lucide-react";
 import React, {useEffect, useState} from "react";
+import {customFetch} from "@/api/customFetch.ts";
 import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "@/hooks/use-toast";
 import {Card} from "@/components/ui/card";
-import {HOST} from "@/lib/constants";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -22,7 +23,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 type MatchesProps = {
     setCurrentProfile: React.Dispatch<
@@ -37,7 +37,7 @@ export default function Matches({
                                 }: MatchesProps) {
     const loggedInUser = getLoggedInUser();
 
-    const [profiles, setProfiles] = useState<ProfileInterface[] | undefined>([]);
+    const [profiles, setProfiles] = useState<ProfileInterface[] | null>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     const {toast} = useToast();
@@ -45,7 +45,12 @@ export default function Matches({
 
     useEffect(() => {
         const fetchMatchedProfiles = async () => {
-            const res = await GetMatchedProfiles(loggedInUser!.userId);
+            // const res = await GetMatchedProfiles(loggedInUser!.userId);
+            const matches = await customFetch<MatchInterface[]>(MATCH_API_ALL, "POST", {"userId": loggedInUser!.userId});
+
+            if (!matches) return null;
+            const res = await customFetch<ProfileInterface[]>(MATCH_API_PROFILES, "POST",  matches);
+
             setProfiles(res);
             setLoading(false);
         };
@@ -62,16 +67,17 @@ export default function Matches({
     };
 
     const handleDelete = async (userId: string) => {
-        const res = await deleteMatchById(userId);
+        // const res = await deleteMatchById(userId);
+        const res = await customFetch<Response>(MATCH_API_DELETE_BY_ID, "DELETE", {"userId" : userId});
         if (!res || res.status >= 500) {
             toast({
                 variant: "destructive",
                 description: "Something went wrong",
                 duration: 3000,
             });
-        } else {
-            setProfiles((prevState) =>
-                prevState?.filter((profile) => profile.userId !== userId)
+        } else if (res.ok && profiles != null) {
+            setProfiles((prevState) : ProfileInterface[] | null =>
+                prevState!.filter((profile) => profile.userId !== userId)
             );
         }
     };
@@ -114,7 +120,7 @@ export default function Matches({
 
                             <section className="flex gap-2 md:gap-6">
                                 <Button
-                                    variant={"secondary"}
+                                    variant={"special"}
                                     className="gap-1 sm:gap-2 rounded-full"
                                     onClick={() => {
                                         handleChat(loggedInUser!.userId, profile);

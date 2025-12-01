@@ -1,15 +1,15 @@
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
 import React, {useCallback, useEffect, useState} from "react";
 import {Card, CardContent} from "@/components/ui/card";
+import {HOST, MATCH_API_CREATE} from "@/lib/constants";
 import {ToastAction} from "@/components/ui/toast";
+import {customFetch} from "@/api/customFetch.ts";
 import BlurredImage from "@/assets/Blurred.jpg";
-import {CreateMatch} from "@/api/matches-api";
 import HeartFace from "@/assets/heartFace.png";
 import KissyFace from "@/assets/kissyFace.png";
 import Thinking from "@/assets/thinking.png";
 import {useToast} from "@/hooks/use-toast";
-import {HOST} from "@/lib/constants";
-import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 type ProfileProps = {
     profile: ProfileInterface | null;
@@ -42,7 +42,11 @@ export default function Profiles({
     const {toast} = useToast();
 
     const createMatchHandler = async () => {
-        const newMatch = await CreateMatch(loggedInUser!.userId, profile!.userId);
+        // const newMatch = await CreateMatch(loggedInUser!.userId, profile!.userId);
+        const newMatch = await customFetch<MatchInterface>(MATCH_API_CREATE, "POST", {
+            "profileId": loggedInUser!.userId,
+            "toProfileId": profile!.userId
+        });
 
         if (newMatch) {
             setIsMatched(true);

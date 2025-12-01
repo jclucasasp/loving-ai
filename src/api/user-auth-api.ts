@@ -1,5 +1,5 @@
-import {AUTH_HEADER, HOST} from "@/lib/constants";
 import {ProfileInterface} from "@/lib/interfaces";
+import {HOST} from "@/lib/constants";
 
 export async function LoginAuth(email: string, password: string) {
     return await fetch(HOST + "/api/user/login", {
@@ -55,7 +55,6 @@ export async function OTPRequest(identifier: string) {
             credentials: "include",
             method: "POST",
             headers: {
-                Authorization: AUTH_HEADER,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({email: identifier}),
@@ -73,7 +72,6 @@ export async function OTPRequest(identifier: string) {
         credentials: "include",
         method: "POST",
         headers: {
-            Authorization: AUTH_HEADER,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({id: identifier}),
@@ -96,7 +94,6 @@ export async function VerifyAndResetPassword(
         credentials: "include",
         method: "POST",
         headers: {
-            Authorization: AUTH_HEADER,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({email, otp, password}),
@@ -121,7 +118,6 @@ export async function VerifyOTP(userId: string, otp: string) {
         credentials: "include",
         method: "POST",
         headers: {
-            Authorization: AUTH_HEADER,
             "Content-Type": "application/json",
         },
         body: JSON.stringify({userId, otp}),

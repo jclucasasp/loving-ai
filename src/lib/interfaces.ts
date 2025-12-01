@@ -75,8 +75,3 @@ export interface PasswordResetInterface {
 }
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-
-export interface PayLoadInterface {
-    key: string;
-    value: any;
-}
