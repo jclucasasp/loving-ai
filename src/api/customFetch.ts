@@ -3,7 +3,7 @@ import {HttpMethod} from "@/lib/interfaces";
 import refreshApi from "@/api/refresh-api.ts";
 
 export type Payload<P extends object> =
-    | Record<string, P | string | number>
+    | Record<string, P | string | number | boolean>
     | Array<Record<string, P | string | number>>
     | P[];
 

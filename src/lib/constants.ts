@@ -10,3 +10,6 @@ export const MATCH_API_DELETE_BY_ID = `${HOST}/api/match/delete-by-id`;
 export const MATCH_API_PROFILES = `${HOST}/api/match/profiles`;
 export const MATCH_API_CREATE = `${HOST}/api/match/create`;
 export const MATCH_API_ALL = `${HOST}/api/matches/all`;
+
+export const CONVERSATION_API_FROM_TO = `${HOST}/api/conversation/from-to`;
+export const CONVERSATION_API_ADD = `${HOST}/api/conversation/add/`;

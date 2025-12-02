@@ -1,12 +1,12 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {CONVERSATION_API_ADD, HOST} from "@/lib/constants";
 import EmojiComponent from "@/components/emoji-component";
 import {ConversationInterface} from "@/lib/interfaces";
-import {CreateMessage} from "@/api/conversation-api";
 import {useEffect, useRef, useState} from "react";
 import {Textarea} from "@/components/ui/textarea";
+import {customFetch} from "@/api/customFetch.ts";
 import {useLocation} from "react-router-dom";
 import {Card} from "@/components/ui/card";
-import {HOST} from "@/lib/constants";
 import {cn} from "@/lib/utils";
 
 export default function ChatMessages() {
@@ -23,7 +23,17 @@ export default function ChatMessages() {
     const handleMessageSubmit = async () => {
         if (message.trim()) {
             setLoading(true);
-            const newConversation = await CreateMessage(conversation!.matchId, {
+            // const newConversation = await CreateMessage(conversation!.matchId, {
+            //     messagePrompt: message,
+            //     userId: loggedInUser?.userId,
+            //     name: toProfile?.firstName + " " + toProfile?.lastName,
+            //     age: toProfile?.age || 0,
+            //     ethnicity: toProfile?.ethnicity || "",
+            //     gender: toProfile?.gender || "",
+            //     bio: toProfile?.bio || "",
+            //     personality: toProfile?.myersBriggsPersonalityType || "",
+            // });
+            const newConversationObject = {
                 messagePrompt: message,
                 userId: loggedInUser?.userId,
                 name: toProfile?.firstName + " " + toProfile?.lastName,
@@ -32,7 +42,8 @@ export default function ChatMessages() {
                 gender: toProfile?.gender || "",
                 bio: toProfile?.bio || "",
                 personality: toProfile?.myersBriggsPersonalityType || "",
-            });
+            }
+            const newConversation = await customFetch<ConversationInterface>(CONVERSATION_API_ADD + conversation?.matchId, "POST", newConversationObject)
             setConversation(newConversation);
             setLoading(false);
         }

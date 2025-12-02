@@ -1,17 +1,22 @@
-import {HOST, MATCH_API_ALL, MATCH_API_DELETE_BY_ID, MATCH_API_PROFILES} from "@/lib/constants";
+import {ConversationInterface, MatchInterface, ProfileInterface} from "@/lib/interfaces";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
 import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import ComponentHeading from "@/components/component-heading";
-import {GetConversationFromTo} from "@/api/conversation-api";
 import SkeletonMatches from "@/components/skeleton-matches";
 import {XCircle, CheckCircle} from "lucide-react";
-import React, {useEffect, useState} from "react";
 import {customFetch} from "@/api/customFetch.ts";
 import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "@/hooks/use-toast";
 import {Card} from "@/components/ui/card";
+// import React, {useEffect} from "react";
+import {
+    CONVERSATION_API_FROM_TO,
+    HOST,
+    MATCH_API_ALL,
+    MATCH_API_DELETE_BY_ID,
+    MATCH_API_PROFILES
+} from "@/lib/constants";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -23,12 +28,14 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {useQuery, useQueryClient} from "react-query";
+import {Dispatch, SetStateAction} from "react";
 
 type MatchesProps = {
-    setCurrentProfile: React.Dispatch<
-        React.SetStateAction<ProfileInterface | null>
+    setCurrentProfile: Dispatch<
+        SetStateAction<ProfileInterface | null>
     >;
-    setIsMatched: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsMatched: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function Matches({
@@ -37,57 +44,74 @@ export default function Matches({
                                 }: MatchesProps) {
     const loggedInUser = getLoggedInUser();
 
-    const [profiles, setProfiles] = useState<ProfileInterface[] | null>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    // const [profiles, setProfiles] = useState<ProfileInterface[] | null>([]);
+    // const [loading, setLoading] = useState<boolean>(true);
 
     const {toast} = useToast();
+    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchMatchedProfiles = async () => {
-            // const res = await GetMatchedProfiles(loggedInUser!.userId);
-            const matches = await customFetch<MatchInterface[]>(MATCH_API_ALL, "POST", {"userId": loggedInUser!.userId});
+    const fetchMatchedProfiles = async () => {
+        // const res = await GetMatchedProfiles(loggedInUser!.userId);
+        const matches = await customFetch<MatchInterface[]>(MATCH_API_ALL, "POST", {"userId": loggedInUser!.userId});
 
-            if (!matches) return null;
-            const res = await customFetch<ProfileInterface[]>(MATCH_API_PROFILES, "POST",  matches);
+        if (!matches) return null;
+        return await customFetch<ProfileInterface[]>(MATCH_API_PROFILES, "POST", matches);
+        // setProfiles(res);
+        // setLoading(false);
+    };
 
-            setProfiles(res);
-            setLoading(false);
-        };
-        fetchMatchedProfiles();
-    }, []);
+    const {isLoading, data} = useQuery(
+        ["matches"],
+        fetchMatchedProfiles,
+        {staleTime: 5000},
+    );
+
+    // useEffect(() => {
+    //     // fetchMatchedProfiles();
+    // }, []);
 
     const handleChat = async (profileId: string, toProfile: ProfileInterface) => {
-        const conversationData = await GetConversationFromTo(
+        // const conversationData = await GetConversationFromTo(
+        //     profileId,
+        //     toProfile.userId
+        // );
+        const toProfileId = toProfile.userId;
+        const conversationData = await customFetch<ConversationInterface>(CONVERSATION_API_FROM_TO, "POST", {
             profileId,
-            toProfile.userId
-        );
+            toProfileId
+        });
+
+        if (!conversationData) return;
         setCurrentProfile(toProfile);
         navigate("/chat", {state: {conversationData, loggedInUser, toProfile}});
     };
 
     const handleDelete = async (userId: string) => {
         // const res = await deleteMatchById(userId);
-        const res = await customFetch<Response>(MATCH_API_DELETE_BY_ID, "DELETE", {"userId" : userId});
+        const res = await customFetch<Response>(MATCH_API_DELETE_BY_ID, "DELETE", {"userId": userId});
         if (!res || res.status >= 500) {
             toast({
                 variant: "destructive",
                 description: "Something went wrong",
                 duration: 3000,
             });
-        } else if (res.ok && profiles != null) {
-            setProfiles((prevState) : ProfileInterface[] | null =>
-                prevState!.filter((profile) => profile.userId !== userId)
-            );
+
+        } else if (data != null) {
+            // setProfiles((prevState): ProfileInterface[] | null =>
+            //     prevState!.filter((profile) => profile.userId !== userId)
+            // );
+            queryClient.setQueryData("matches", old => old.filter(m => m.userId !== userId));
         }
+
     };
 
     const MatchesList = () => {
         return (
             <Card>
                 <ul className="flex h-[80dvh] flex-col sm:gap-3 overflow-y-scroll">
-                    {loading && <SkeletonMatches/>}
-                    {profiles?.map((profile) => (
+                    {isLoading && <SkeletonMatches/>}
+                    {data?.map((profile) => (
                         <li
                             key={profile.userId}
                             className="flex justify-between mt-5 mr-1 md:mr-2"

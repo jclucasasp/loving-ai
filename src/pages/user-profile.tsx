@@ -1,9 +1,8 @@
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
 import {getLoggedInUser, setLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
-import {PersonalityTypeInterface} from "@/lib/interfaces";
+import {PersonalityTypeInterface, ProfileInterface} from "@/lib/interfaces";
 import {GetPersonalityTypes} from "@/api/personality-api";
 import {ProfileForm, ProfileSchema} from "@/lib/utils";
-import {UpdateUserProfile} from "@/api/profiles-api";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ToastAction} from "@/components/ui/toast";
 import {Textarea} from "@/components/ui/textarea";
@@ -31,6 +30,8 @@ import {
 } from "@/components/ui/select";
 import ComponentHeading from "@/components/component-heading";
 import {LoaderCircleIcon} from "lucide-react";
+import {customFetch} from "@/api/customFetch.ts";
+import {PROFILE_API_UPDATE} from "@/lib/constants.ts";
 
 export default function UserProfile() {
     const loggedInUser = getLoggedInUser();
@@ -75,10 +76,12 @@ export default function UserProfile() {
             return;
         }
 
-        const updatedProfile = await UpdateUserProfile(result.data);
+        // const updatedProfile = await UpdateUserProfile(result.data);
+        const resultData = result.data;
+        const updatedProfile = await customFetch<ProfileInterface>(PROFILE_API_UPDATE, "POST", resultData);
         setLoading(false);
 
-        if (!updatedProfile.userId) {
+        if (updatedProfile == null) {
             console.error("Failed to update profile");
 
             toast({
