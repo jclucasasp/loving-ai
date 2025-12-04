@@ -1,4 +1,5 @@
 import {Card, CardContent, CardFooter} from "@/components/ui/card";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import ComponentHeading from "@/components/component-heading";
 import {OTPRequest} from "@/api/user-auth-api";
 import {LoaderCircleIcon} from "lucide-react";
@@ -6,7 +7,6 @@ import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {toast} from "@/hooks/use-toast";
 import {useState} from "react";
-import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 export default function Verify() {
     const loggedInUser = getLoggedInUser();

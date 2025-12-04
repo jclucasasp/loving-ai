@@ -101,6 +101,7 @@ export default function Matches({
             // setProfiles((prevState): ProfileInterface[] | null =>
             //     prevState!.filter((profile) => profile.userId !== userId)
             // );
+            // @ts-expect-error
             queryClient.setQueryData("matches", old => old.filter(m => m.userId !== userId));
         }
 

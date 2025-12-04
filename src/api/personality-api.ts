@@ -1,4 +1,4 @@
-import {AUTH_HEADER, HOST} from "@/lib/constants";
+import {HOST} from "@/lib/constants";
 import {
     PersonalityTypeInterface,
     PersonalityDescriptionInterface,
@@ -10,7 +10,6 @@ export async function GetPersonalityTypes(): Promise<
 > {
     return await fetch(HOST + "/api/personality/types", {
         headers: {
-            Authorization: AUTH_HEADER,
             "Content-Type": "application/json",
         },
     })
@@ -34,7 +33,6 @@ export async function GetPersonalityDescriptions(): Promise<
 > {
     return await fetch(HOST + "/api/personality/descriptions", {
         headers: {
-            Authorization: AUTH_HEADER,
             "Content-Type": "application/json",
         },
     })
