@@ -1,6 +1,27 @@
 import {ProfileInterface} from "@/lib/interfaces";
 import {HOST} from "@/lib/constants";
 
+export async function CreateNewUser(newUser: FormData) {
+    return await fetch(HOST + "/api/user/create", {
+        method: "POST",
+        mode: "cors",
+        headers: {
+        },
+        body: newUser,
+        credentials: "include"
+    })
+        .then((res) => {
+            if (!res.ok) {
+                return null;
+            }
+            return res;
+        })
+        .catch((err) => {
+            console.log(err);
+            return null;
+        });
+}
+
 export async function LoginAuth(email: string, password: string) {
     return await fetch(HOST + "/api/user/login", {
         method: "POST",

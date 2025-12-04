@@ -1,6 +1,6 @@
 import {getAuthToken} from "@/hooks/use-auth-token.ts";
-import {HttpMethod} from "@/lib/interfaces";
 import refreshApi from "@/api/refresh-api.ts";
+import {HttpMethod} from "@/lib/interfaces";
 
 export type Payload<P extends object> =
     | Record<string, P | string | number | boolean>

@@ -16,8 +16,8 @@ import {
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {useLocation, useNavigate} from "react-router-dom";
 import {PersonalityTypeInterface} from "@/lib/interfaces";
-import {CreateNewUserProfile} from "@/api/profiles-api";
 import {NewUserForm, NewUserSchema} from "@/lib/utils";
+import {CreateNewUser} from "@/api/user-auth-api.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Textarea} from "@/components/ui/textarea";
 import {ToastAction} from "@/components/ui/toast";
@@ -81,7 +81,7 @@ export default function SignUp() {
             }
         }
 
-        await CreateNewUserProfile(formData).then((res) => {
+        await CreateNewUser(formData).then((res) => {
             if (res && res.status >= 400 && res.status < 500) {
                 toast({
                     variant: "destructive",

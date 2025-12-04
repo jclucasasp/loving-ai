@@ -2,7 +2,6 @@ export const HOST = import.meta.env.VITE_HOST;
 export const AUTH_HEADER = import.meta.env.VITE_AUTHORISE_HEADER;
 
 export const PROFILE_API_RANDOM = `${HOST}/api/profile/random`;
-export const PROFILE_API_CREATE = `${HOST}/api/profile/create`;
 export const PROFILE_API_UPDATE = `${HOST}/api/profile/update`;
 export const PROFILE_API_ID = `${HOST}/api/profile/id`;
 

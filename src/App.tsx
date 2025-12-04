@@ -60,6 +60,7 @@ export default function Navigation() {
                                 <Route path="/reset" element={<PasswordReset/>}/>
                                 <Route path="/privacy" element={<Privacy/>}/>
                                 <Route path="/terms" element={<Terms/>}/>
+                                <Route path="/verify/activate" element={<VerifyActivate/>}/>
                                 <Route path="/*" element={<Navigate replace to="/"/>}/>
                             </>
                         ) : /* Case 2: Logged In but Not Verified */

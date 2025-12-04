@@ -63,27 +63,6 @@ export async function GetProfileById(
         });
 }
 
-export async function CreateNewUserProfile(newUser: FormData) {
-    return await fetch(HOST + "/api/user/create", {
-        method: "POST",
-        headers: {
-            Authorization: AUTH_HEADER,
-        },
-        body: newUser,
-        cache: "force-cache",
-    })
-        .then((res) => {
-            if (!res.ok) {
-                return null;
-            }
-            return res;
-        })
-        .catch((err) => {
-            console.log(err);
-            return null;
-        });
-}
-
 export async function UpdateUserProfile(
     profile: ProfileInterface
 ): Promise<ProfileInterface> {
