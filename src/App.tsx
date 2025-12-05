@@ -5,10 +5,10 @@ import {
     Navigate,
 } from "react-router-dom";
 import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import {lazy, Suspense, useState} from "react";
 import Nav from "@/components/nav-component";
 import Profiles from "@/pages/profile";
-import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 export default function Navigation() {
     const [currentProfile, setCurrentProfile] = useState<ProfileInterface | null>(

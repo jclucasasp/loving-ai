@@ -10,6 +10,7 @@ import HeartFace from "@/assets/heartFace.png";
 import KissyFace from "@/assets/kissyFace.png";
 import Thinking from "@/assets/thinking.png";
 import {useToast} from "@/hooks/use-toast";
+import {useMutation, useQueryClient} from "react-query";
 
 type ProfileProps = {
     profile: ProfileInterface | null;
@@ -40,25 +41,42 @@ export default function Profiles({
     const {setMatches, matches} = matchSate;
 
     const {toast} = useToast();
+    const queryClient = useQueryClient();
 
     const createMatchHandler = async () => {
-        // const newMatch = await CreateMatch(loggedInUser!.userId, profile!.userId);
-        const newMatch = await customFetch<MatchInterface>(MATCH_API_CREATE, "POST", {
+        return await customFetch<MatchInterface>(MATCH_API_CREATE, "POST", {
             "profileId": loggedInUser!.userId,
             "toProfileId": profile!.userId
         });
+        //
+        // if (newMatch) {
+        //     setIsMatched(true);
+        //     await queryClient.invalidateQueries(["matches"]);
+        //     toast({
+        //         title: "Match created successfully",
+        //         description: "May this be the beginning of something great!",
+        //         action: <ToastAction altText="Okay">Okay</ToastAction>,
+        //         duration: 3000,
+        //     });
+        //     setMatches([...matches, newMatch]);
+        // }
+    };
 
-        if (newMatch) {
+    const { mutate } = useMutation({
+        mutationFn: createMatchHandler,
+        onSuccess: async (data: MatchInterface) => {
             setIsMatched(true);
+            await queryClient.invalidateQueries(["matches"]);
             toast({
                 title: "Match created successfully",
                 description: "May this be the beginning of something great!",
                 action: <ToastAction altText="Okay">Okay</ToastAction>,
-                duration: 4000,
+                duration: 3000,
             });
-            setMatches([...matches, newMatch]);
+            setMatches([...matches, data]);
         }
-    };
+    });
+
     const [currentPicture, setCurrentPicture] = useState("");
 
     const [currentBio, setCurrentBio] = useState("Bio Loading...");
@@ -116,7 +134,7 @@ export default function Profiles({
                         {!isMatched ? (
                             <div
                                 className="cursor-pointer flex flex-col items-center"
-                                onClick={createMatchHandler}
+                                onClick={()=> mutate()}
                                 aria-label="Like profile"
                             >
                                 <img

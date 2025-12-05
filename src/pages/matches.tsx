@@ -9,7 +9,6 @@ import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "@/hooks/use-toast";
 import {Card} from "@/components/ui/card";
-// import React, {useEffect} from "react";
 import {
     CONVERSATION_API_FROM_TO,
     HOST,
@@ -38,44 +37,31 @@ type MatchesProps = {
     setIsMatched: Dispatch<SetStateAction<boolean>>;
 };
 
+
 export default function Matches({
                                     setCurrentProfile,
                                     setIsMatched,
                                 }: MatchesProps) {
     const loggedInUser = getLoggedInUser();
 
-    // const [profiles, setProfiles] = useState<ProfileInterface[] | null>([]);
-    // const [loading, setLoading] = useState<boolean>(true);
-
     const {toast} = useToast();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const fetchMatchedProfiles = async () => {
-        // const res = await GetMatchedProfiles(loggedInUser!.userId);
         const matches = await customFetch<MatchInterface[]>(MATCH_API_ALL, "POST", {"userId": loggedInUser!.userId});
 
         if (!matches) return null;
         return await customFetch<ProfileInterface[]>(MATCH_API_PROFILES, "POST", matches);
-        // setProfiles(res);
-        // setLoading(false);
     };
 
     const {isLoading, data} = useQuery(
         ["matches"],
         fetchMatchedProfiles,
-        {staleTime: 5000},
+        {staleTime: 60 * 1000 * 60},
     );
 
-    // useEffect(() => {
-    //     // fetchMatchedProfiles();
-    // }, []);
-
     const handleChat = async (profileId: string, toProfile: ProfileInterface) => {
-        // const conversationData = await GetConversationFromTo(
-        //     profileId,
-        //     toProfile.userId
-        // );
         const toProfileId = toProfile.userId;
         const conversationData = await customFetch<ConversationInterface>(CONVERSATION_API_FROM_TO, "POST", {
             profileId,
@@ -88,7 +74,6 @@ export default function Matches({
     };
 
     const handleDelete = async (userId: string) => {
-        // const res = await deleteMatchById(userId);
         const res = await customFetch<Response>(MATCH_API_DELETE_BY_ID, "DELETE", {"userId": userId});
         if (!res || res.status >= 500) {
             toast({
@@ -98,11 +83,7 @@ export default function Matches({
             });
 
         } else if (data != null) {
-            // setProfiles((prevState): ProfileInterface[] | null =>
-            //     prevState!.filter((profile) => profile.userId !== userId)
-            // );
-            // @ts-expect-error
-            queryClient.setQueryData("matches", old => old.filter(m => m.userId !== userId));
+            queryClient.setQueryData<ProfileInterface[]>("matches", old => old!.filter(m => m.userId !== userId));
         }
 
     };
