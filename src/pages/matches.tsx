@@ -1,10 +1,12 @@
 import {ConversationInterface, MatchInterface, ProfileInterface} from "@/lib/interfaces";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
+import {useQuery, useQueryClient} from "@tanstack/react-query";
 import ComponentHeading from "@/components/component-heading";
 import SkeletonMatches from "@/components/skeleton-matches";
 import {XCircle, CheckCircle} from "lucide-react";
 import {customFetch} from "@/api/customFetch.ts";
+import {Dispatch, SetStateAction} from "react";
 import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import {useToast} from "@/hooks/use-toast";
@@ -27,8 +29,6 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {useQuery, useQueryClient} from "react-query";
-import {Dispatch, SetStateAction} from "react";
 
 type MatchesProps = {
     setCurrentProfile: Dispatch<
@@ -55,20 +55,25 @@ export default function Matches({
         return await customFetch<ProfileInterface[]>(MATCH_API_PROFILES, "POST", matches);
     };
 
-    const {isLoading, data} = useQuery(
-        ["matches"],
-        fetchMatchedProfiles,
-        {staleTime: 60 * 1000 * 60},
-    );
+    const {isLoading, data} = useQuery({
+        queryKey: ["matches"], staleTime: 60 * 1000 * 60, queryFn: fetchMatchedProfiles
+    },);
 
     const handleChat = async (profileId: string, toProfile: ProfileInterface) => {
-        const toProfileId = toProfile.userId;
-        const conversationData = await customFetch<ConversationInterface>(CONVERSATION_API_FROM_TO, "POST", {
-            profileId,
-            toProfileId
+
+        const queryKey = ["conversation", profileId, toProfile.userId];
+
+        const conversationData = await queryClient.fetchQuery<ConversationInterface | null>({
+            queryKey,
+            queryFn: () => customFetch(CONVERSATION_API_FROM_TO, "POST", {
+                profileId,
+                toProfileId: toProfile.userId,
+            }),
+            staleTime: 60 * 1000 * 60, // 1 hour; adjust as needed
         });
 
         if (!conversationData) return;
+
         setCurrentProfile(toProfile);
         navigate("/chat", {state: {conversationData, loggedInUser, toProfile}});
     };
@@ -83,9 +88,8 @@ export default function Matches({
             });
 
         } else if (data != null) {
-            queryClient.setQueryData<ProfileInterface[]>("matches", old => old!.filter(m => m.userId !== userId));
+            queryClient.setQueryData<ProfileInterface[]>(["matches"], old => old!.filter(m => m.userId !== userId));
         }
-
     };
 
     const MatchesList = () => {
@@ -128,9 +132,9 @@ export default function Matches({
                                 <Button
                                     variant={"special"}
                                     className="gap-1 sm:gap-2 rounded-full"
-                                    onClick={() => {
-                                        handleChat(loggedInUser!.userId, profile);
-                                    }}
+                                    onClick={() =>
+                                        handleChat(loggedInUser!.userId, profile)
+                                    }
                                     aria-label="Go to chat"
                                 >
                                     <CheckCircle/>

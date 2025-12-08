@@ -1,16 +1,16 @@
-import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {MatchInterface, ProfileInterface} from "@/lib/interfaces";
+import {getLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import React, {useCallback, useEffect, useState} from "react";
-import {Card, CardContent} from "@/components/ui/card";
 import {HOST, MATCH_API_CREATE} from "@/lib/constants";
+import {Card, CardContent} from "@/components/ui/card";
 import {ToastAction} from "@/components/ui/toast";
 import {customFetch} from "@/api/customFetch.ts";
 import BlurredImage from "@/assets/Blurred.jpg";
 import HeartFace from "@/assets/heartFace.png";
-import KissyFace from "@/assets/kissyFace.png";
+import KissFace from "@/assets/kissyFace.png";
 import Thinking from "@/assets/thinking.png";
 import {useToast} from "@/hooks/use-toast";
-import {useMutation, useQueryClient} from "react-query";
 
 type ProfileProps = {
     profile: ProfileInterface | null;
@@ -48,32 +48,20 @@ export default function Profiles({
             "profileId": loggedInUser!.userId,
             "toProfileId": profile!.userId
         });
-        //
-        // if (newMatch) {
-        //     setIsMatched(true);
-        //     await queryClient.invalidateQueries(["matches"]);
-        //     toast({
-        //         title: "Match created successfully",
-        //         description: "May this be the beginning of something great!",
-        //         action: <ToastAction altText="Okay">Okay</ToastAction>,
-        //         duration: 3000,
-        //     });
-        //     setMatches([...matches, newMatch]);
-        // }
     };
 
-    const { mutate } = useMutation({
+    const {mutate} = useMutation<MatchInterface | null>({
         mutationFn: createMatchHandler,
-        onSuccess: async (data: MatchInterface) => {
+        onSuccess: async (data) => {
             setIsMatched(true);
-            await queryClient.invalidateQueries(["matches"]);
+            await queryClient.invalidateQueries({queryKey: ["matches"]});
             toast({
                 title: "Match created successfully",
                 description: "May this be the beginning of something great!",
                 action: <ToastAction altText="Okay">Okay</ToastAction>,
                 duration: 3000,
             });
-            setMatches([...matches, data]);
+            setMatches([...matches, data!]);
         }
     });
 
@@ -124,7 +112,8 @@ export default function Profiles({
                         <div
                             className="cursor-pointer flex flex-col items-center"
                             onClick={() => {
-                                setNextProfile(null), setIsMatched(false);
+                                setNextProfile(null);
+                                setIsMatched(false);
                             }}
                             aria-label="Go to next profile"
                         >
@@ -134,7 +123,7 @@ export default function Profiles({
                         {!isMatched ? (
                             <div
                                 className="cursor-pointer flex flex-col items-center"
-                                onClick={()=> mutate()}
+                                onClick={() => mutate()}
                                 aria-label="Like profile"
                             >
                                 <img
@@ -148,7 +137,7 @@ export default function Profiles({
                         ) : (
                             <div className="cursor-not-allowed" aria-label="Already matched">
                                 <img
-                                    src={KissyFace}
+                                    src={KissFace}
                                     alt="kissy face emoji"
                                     height={60}
                                     width={65}

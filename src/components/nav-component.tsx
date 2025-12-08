@@ -24,10 +24,8 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
   const seedRandomProfile = async (id?: string) => {
     let profileData: Promise<ProfileInterface | null>;
     if (!id) {
-      // profileData = GetRandomProfile(loggedInUser!.gender);
       profileData = customFetch<ProfileInterface>(PROFILE_API_RANDOM, "POST", {"gender": loggedInUser!.gender});
     } else {
-      // profileData = GetProfileById(id);
       profileData = customFetch<ProfileInterface>(PROFILE_API_ID, "POST", {"id": id});
     }
 
@@ -46,7 +44,7 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
 
   return (
     <nav className="flex justify-between items-center mt-4 mb-6 w-full">
-      
+
       <Button variant={"link"}
         className="cursor-pointer hover:text-[#7F43DF] hover:scale-105 hover:italic"
         disabled={!loggedInUser?.verified}
@@ -59,9 +57,9 @@ export default function Nav({ currentProfile, setCurrentProfile }: NavProps) {
         </div>
       </Button>
 
-      
+
         <Button
-          variant={"link"} 
+          variant={"link"}
           className="text-[#7F43DF] hover:scale-110 disabled:cursor-not-allowed"
           onClick={() => navigate("/userProfile")}
           aria-label="Go to user profile"

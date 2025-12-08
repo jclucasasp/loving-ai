@@ -8,6 +8,7 @@ import {customFetch} from "@/api/customFetch.ts";
 import {useLocation} from "react-router-dom";
 import {Card} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
+import {useQueryClient} from "@tanstack/react-query";
 
 export default function ChatMessages() {
     const {conversationData, toProfile, loggedInUser} = useLocation().state;
@@ -17,22 +18,15 @@ export default function ChatMessages() {
     const [loading, setLoading] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
 
+    const queryClient = useQueryClient();
+
     const messageInputContainer = useRef<HTMLTextAreaElement>(null);
     const conversationContainer = useRef<HTMLDivElement>(null);
 
     const handleMessageSubmit = async () => {
         if (message.trim()) {
             setLoading(true);
-            // const newConversation = await CreateMessage(conversation!.matchId, {
-            //     messagePrompt: message,
-            //     userId: loggedInUser?.userId,
-            //     name: toProfile?.firstName + " " + toProfile?.lastName,
-            //     age: toProfile?.age || 0,
-            //     ethnicity: toProfile?.ethnicity || "",
-            //     gender: toProfile?.gender || "",
-            //     bio: toProfile?.bio || "",
-            //     personality: toProfile?.myersBriggsPersonalityType || "",
-            // });
+
             const newConversationObject = {
                 messagePrompt: message,
                 userId: loggedInUser?.userId,
@@ -43,8 +37,13 @@ export default function ChatMessages() {
                 bio: toProfile?.bio || "",
                 personality: toProfile?.myersBriggsPersonalityType || "",
             }
-            const newConversation = await customFetch<ConversationInterface>(CONVERSATION_API_ADD + conversation?.matchId, "POST", newConversationObject)
+            const newConversation = await customFetch<ConversationInterface | null>(CONVERSATION_API_ADD + conversation?.matchId, "POST", newConversationObject)
+
             setConversation(newConversation);
+            const queryKey = ["conversation", loggedInUser?.userId, toProfile.userId];
+            await queryClient.setQueryData(queryKey, newConversation);
+            await queryClient.invalidateQueries({queryKey: queryKey});
+
             setLoading(false);
         }
         setMessage("");
@@ -52,11 +51,11 @@ export default function ChatMessages() {
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
-            handleMessageSubmit();
+            return handleMessageSubmit();
         }
 
         if (e.key === "Enter" && e.shiftKey) {
-            if ((e.type = "keydown")) {
+            if ((e.type == "keydown")) {
                 return 13; // 13 is enter
             }
             e.preventDefault();
