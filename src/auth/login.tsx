@@ -1,5 +1,6 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {setLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoginAuth, OTPRequest } from "@/api/user-auth-api";
 import { LoginForm, LoginFormSchema } from "@/lib/utils";
@@ -13,9 +14,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
+import Heart from "/heart.png"
 import { useState } from "react";
 import { z } from "zod";
-import {setLoggedInUser} from "@/hooks/use-fetchLoggedInUser.ts";
 
 export default function Login() {
 
@@ -118,7 +119,7 @@ export default function Login() {
      { !loadingOTP && <Card>
         <CardHeader className="text-center text-2xl">
           <div className="flex justify-center mb-3">
-            <img src="/heart.png" alt="heart with arrow through it" height={80} width={80} />
+            <img src={Heart} alt="heart with arrow through it" height={80} width={80} />
           </div>
           <CardTitle className="text-[#FF0066]">Welcome to Loving AI</CardTitle>
         </CardHeader>

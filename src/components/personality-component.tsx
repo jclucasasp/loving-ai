@@ -69,7 +69,7 @@ export default function Personality() {
                         className="overflow-y-auto h-auto mb-6 text-sm text-slate-500 border-b-2">
                         {loading && <SkeletonPersonality/>}
                         {personalityTypes.map((type) => (
-                            <div key={type.id} className="flex gap-2 border-b-2 p-2">
+                            <div key={type.type} className="flex gap-2 border-b-2 p-2">
                                 <p className="font-bold">
                                     {type.type + " : "}
                                     <span className="font-normal">

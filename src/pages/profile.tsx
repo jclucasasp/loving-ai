@@ -65,27 +65,29 @@ export default function Profiles({
         }
     });
 
+    const [imageLoading, setImageLoading] = useState<boolean>(true);
     const [currentPicture, setCurrentPicture] = useState("");
 
     const [currentBio, setCurrentBio] = useState("Bio Loading...");
-    const [currentName, setCurrentName] = useState("John Doe...");
-    const [currentAge, setCurrentAge] = useState(0);
 
-    const [loading, setLoading] = useState(true);
-
-    const fetchProfileDetails = useCallback(async () => {
+    const loadProfileDetails = useCallback(() => {
         if (profile) {
-            setCurrentPicture(HOST + "/images/" + profile.imageUrl);
-            setCurrentBio(profile.bio);
-            setCurrentName(profile.firstName + " " + profile.lastName);
-            setCurrentAge(profile.age);
-            setLoading(false);
+            const img = new Image();
+            img.src = HOST + "/images/" + profile.imageUrl;
+            img.onload = () => {
+                setCurrentPicture(img.src);
+                setCurrentBio(profile.bio);
+                setImageLoading(false);
+            }
+            img.onerror = () => {
+                setImageLoading(false);
+            }
         }
     }, [profile]);
 
     useEffect(() => {
-        fetchProfileDetails();
-    }, [fetchProfileDetails]);
+        loadProfileDetails();
+    }, [loadProfileDetails]);
 
     return (
         <>
@@ -93,14 +95,13 @@ export default function Profiles({
                 <CardContent>
                     <div className="relative flex justify-center mt-6">
                         <img
-                            src={loading ? BlurredImage : currentPicture}
-                            width={700}
+                            src={imageLoading ? BlurredImage : currentPicture}
                             alt="profile image"
-                            className="rounded-xl"
+                            className="rounded-xl w-full max-w-[700px] aspect-square object-cover"
                         />
                         <div className="absolute top-0 left-0 p-2 text-slate-100 text-lg bg-slate-700/20 rounded-xl">
-                            <h2 className="text-base sm:text-lg">{currentName}</h2>
-                            <h2 className="text-sm sm:text-base">{currentAge}</h2>
+                            <h2 className="text-base sm:text-lg">{profile ? `${profile.firstName} ${profile.lastName}` : "Fetching"}</h2>
+                            <h2 className="text-sm sm:text-base">{profile?.age ?? 0}</h2>
                         </div>
                     </div>
                     <div className="p-4">

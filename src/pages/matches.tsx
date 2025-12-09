@@ -69,7 +69,7 @@ export default function Matches({
                 profileId,
                 toProfileId: toProfile.userId,
             }),
-            staleTime: 60 * 1000 * 60, // 1 hour; adjust as needed
+            staleTime: 60 * 1000 * 60, // 1 hour
         });
 
         if (!conversationData) return;

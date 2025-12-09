@@ -1,14 +1,14 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {CONVERSATION_API_ADD, HOST} from "@/lib/constants";
 import EmojiComponent from "@/components/emoji-component";
+import React, {useEffect, useRef, useState} from "react";
 import {ConversationInterface} from "@/lib/interfaces";
-import {useEffect, useRef, useState} from "react";
+import {useQueryClient} from "@tanstack/react-query";
 import {Textarea} from "@/components/ui/textarea";
 import {customFetch} from "@/api/customFetch.ts";
 import {useLocation} from "react-router-dom";
 import {Card} from "@/components/ui/card";
 import {cn} from "@/lib/utils";
-import {useQueryClient} from "@tanstack/react-query";
 
 export default function ChatMessages() {
     const {conversationData, toProfile, loggedInUser} = useLocation().state;
@@ -42,7 +42,7 @@ export default function ChatMessages() {
             setConversation(newConversation);
             const queryKey = ["conversation", loggedInUser?.userId, toProfile.userId];
             await queryClient.setQueryData(queryKey, newConversation);
-            await queryClient.invalidateQueries({queryKey: queryKey});
+            // await queryClient.invalidateQueries({queryKey: queryKey});
 
             setLoading(false);
         }
