@@ -9,6 +9,7 @@ export async function GetPersonalityTypes(): Promise<
     PersonalityTypeInterface[]
 > {
     return await fetch(HOST + "/api/personality/types", {
+        mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
@@ -32,6 +33,7 @@ export async function GetPersonalityDescriptions(): Promise<
     PersonalityDescriptionInterface[]
 > {
     return await fetch(HOST + "/api/personality/descriptions", {
+        mode: "cors",
         headers: {
             "Content-Type": "application/json",
         },
