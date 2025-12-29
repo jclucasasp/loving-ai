@@ -57,12 +57,9 @@ export default function Personality() {
             {personalityTypes && (
                 <Card className=" mt-3 md:mt-6">
                     <CardHeader>
-                        <CardTitle>Personality</CardTitle>
+                        <CardTitle className={"drop-shadow-md"}>Personality</CardTitle>
                         <CardDescription className="border-b-2 mb-3 p-2">
-                            Here is a breakdown of the different personality types and a
-                            short description.
-                            You should totally take the free personality test to make sure
-                            you get yours right?
+                            Explore personality types below. Not sure? Take a free test! Then create your account to match with compatible companions.
                         </CardDescription>
                     </CardHeader>
                     <CardContent
@@ -85,8 +82,8 @@ export default function Personality() {
                     </CardContent>
                     <CardFooter className="justify-between gap-2 flex-col sm:flex-row">
                         <Button
-                            variant={"default"}
-                            className="w-full rounded-full"
+                            variant={"outline"}
+                            className="w-full rounded-full border-[#FF0066] hover:text-[#ff0066]"
                             aria-label="Free Personality Test on a different website"
                             onClick={() => {
                                 window.open(
@@ -95,7 +92,7 @@ export default function Personality() {
                                 );
                             }}
                         >
-                            Free Personality Test
+                            Discover My Type (Free Test)
                         </Button>
                         <Button
                             variant={"special"}
@@ -105,7 +102,7 @@ export default function Personality() {
                             }}
                             aria-label="Create account"
                         >
-                            Create account
+                            Sign Up Now
                         </Button>
                     </CardFooter>
                 </Card>

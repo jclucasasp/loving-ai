@@ -87,7 +87,7 @@ export default function PasswordReset() {
         <section className="mt-24">
             <Card className="max-w-sm">
                 <CardHeader>
-                    <CardTitle>Password Reset</CardTitle>
+                    <CardTitle className={"drop-shadow-md"}>Password Reset</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>

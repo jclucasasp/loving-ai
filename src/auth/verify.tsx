@@ -33,7 +33,7 @@ export default function Verify() {
 
     return (
         <section className="flex flex-col w-full items-center justify-center">
-            <ComponentHeading>Lets Get You Verified</ComponentHeading>
+            <ComponentHeading className={"drop-shadow-md"}>Lets Get You Verified</ComponentHeading>
             <Card>
                 <CardContent className="text-xs sm:text-sm mt-3">
                     <p className="mb-2">

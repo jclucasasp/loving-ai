@@ -85,7 +85,7 @@ export default function VerifyActivate() {
 
     return (
         <section className="flex flex-col items-center justify-center">
-            <ComponentHeading>Activate Your Account</ComponentHeading>
+            <ComponentHeading className={"drop-shadow-md"}>Activate Your Account</ComponentHeading>
             <Card>
                 <CardContent className="mt-3">
                     <Form {...form}>

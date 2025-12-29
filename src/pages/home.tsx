@@ -1,4 +1,5 @@
 import ComponentHeading from "@/components/component-heading";
+import Autoplay from "embla-carousel-autoplay";
 import {Button} from "@/components/ui/button";
 import {useNavigate} from "react-router-dom";
 import CaucasianM from "/CaucasianM.png";
@@ -29,7 +30,7 @@ export default function Home() {
                         height={80}
                         width={80}
                     />
-                    <h1 className="text-2xl md:text-3xl text-[#FF0066] font-bold">Loving AI</h1>
+                    <h1 className="text-2xl md:text-3xl text-[#FF0066] font-bold drop-shadow-md">Loving AI</h1>
                 </div>
             </div>
 
@@ -49,18 +50,26 @@ export default function Home() {
                     variant={"special"}
                     size={"default"}
                     className="text-xl mt-6 w-full"
-                    onClick={() => navigate("/login")}
+                    onClick={() => navigate("/personality")}
                     aria-label="Login"
                 >
-                    <h4 className={"text-sm lg:text-xl md:text-lg"}>Find Your Perfect Match - Free Signup</h4>
+                    <h4 className={"text-sm lg:text-xl md:text-lg"}>Discover Your Perfect Match - Free Signup</h4>
+                </Button>
+                <Button variant={"outline"}
+                        size={"default"}
+                        className={" text-xl rounded-full mt-6 w-full border-[#ff0066] hover:text-[#ff0066] bg-transparent"}
+                onClick={() => navigate("/login")}
+                aria-label="Login">
+                    <h4 className={"text-sm lg:text-xl md:text-lg"}>Login & Reconnect</h4>
                 </Button>
             </article>
 
             <ComponentHeading className="mt-3 underline">
-                Meet some of the Hotties:
+                Meet Some of Our Charming Companions:
             </ComponentHeading>
 
-            <Carousel className="" opts={{loop: true, align: "center"}}>
+            <Carousel className="" opts={{loop: true, align: "center"}}
+                      plugins={[Autoplay({delay: 2500, stopOnInteraction: false})]}>
                 <CarouselContent className="ml-2 ">
                     <CarouselItem className="basis-1/2">
                         <img src={AsianW} alt="picture of an asian woman"/>
@@ -88,9 +97,12 @@ export default function Home() {
                     </CarouselItem>
                 </CarouselContent>
             </Carousel>
-             <footer className="mt-10 py-6 text-center text-gray-600 text-sm">
-                Loving AI | South Africa | <span onClick={() => navigate("/privacy")} className="cursor-pointer text-purple-600 hover:underline">Privacy Policy</span> | <span onClick={() => navigate("/terms")} className="cursor-pointer text-purple-600 hover:underline">Terms of Service</span><br />
-                Questions? Contact us at <a href="mailto:lovingaiteam@gmail.com" className="text-purple-600 hover:underline">lovingaiteam@gmail.com</a> <br />
+            <footer className="mt-10 py-6 text-center text-gray-600 text-sm">
+                Loving AI | South Africa | <span onClick={() => navigate("/privacy")}
+                                                 className="cursor-pointer text-purple-600 hover:underline">Privacy Policy</span> | <span
+                onClick={() => navigate("/terms")} className="cursor-pointer text-purple-600 hover:underline">Terms of Service</span><br/>
+                Questions? Contact us at <a href="mailto:lovingaiteam@gmail.com"
+                                            className="text-purple-600 hover:underline">lovingaiteam@gmail.com</a> <br/>
                 © 2025 Loving AI. All rights reserved.
             </footer>
         </section>

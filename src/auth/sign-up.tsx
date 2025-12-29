@@ -121,7 +121,7 @@ export default function SignUp() {
                             width={80}
                         />
                     </div>
-                    <CardTitle className="text-[#FF0066]">Lets Get Started</CardTitle>
+                    <CardTitle className="text-[#FF0066] drop-shadow-md">Lets Get Started</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
@@ -239,7 +239,7 @@ export default function SignUp() {
                                         <FormControl>
                                             <Input
                                                 type="text"
-                                                placeholder={"Hopefully not alien"}
+                                                placeholder={"e.g., Asian, Caucasian, or whatever makes you unique!"}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -257,7 +257,7 @@ export default function SignUp() {
                                         <FormControl>
                                             <Textarea
                                                 rows={5}
-                                                placeholder={"I am definitely not an alien"}
+                                                placeholder={"Tell us about yourself—hobbies, dreams, or fun facts"}
                                                 {...field}
                                             />
                                         </FormControl>
@@ -360,7 +360,7 @@ export default function SignUp() {
                     <LoaderCircleIcon className="mr-2 h-4 w-4 animate-spin"/>
                   </span>
                                 )}
-                                Submit
+                                Create Account
                             </Button>
                         </form>
                     </Form>

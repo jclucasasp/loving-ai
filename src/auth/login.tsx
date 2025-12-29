@@ -121,7 +121,7 @@ export default function Login() {
           <div className="flex justify-center mb-3">
             <img src={Heart} alt="heart with arrow through it" height={80} width={80} />
           </div>
-          <CardTitle className="text-[#FF0066]">Welcome to Loving AI</CardTitle>
+          <CardTitle className="text-[#FF0066] drop-shadow-md">Welcome to Loving AI</CardTitle>
         </CardHeader>
         <CardContent>
 
@@ -163,7 +163,7 @@ export default function Login() {
 
         </CardContent>
         <CardFooter>
-          <Button variant="link" onClick={() => navigate("/personality")} className="text-slate-400">Don"t have an account? Sign up</Button>
+          <Button variant="link" onClick={() => navigate("/personality")} className="text-slate-400">New here? Sign up for free</Button>
         </CardFooter>
       </Card>}
     </section>
